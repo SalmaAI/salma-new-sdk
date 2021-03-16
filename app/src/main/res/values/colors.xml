@@ -7,4 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black_overlay">#66000000</color>
+
+    <color name="primaryColor">#FFFFFFFF</color>
+    <color name="secondaryColor">#FFFFFFFF</color>
+    <color name="accentColor">#FFFFFFFF</color>
+    <color name="pageBackgroundPrimaryColor">#001B44</color>
+    <color name="pageBackgroundSecondaryColor">#033785</color>
+    <color name="cardBackgroundColor">#FFFFFFFF</color>
+    <color name="toolbarBackgroundColor">#001B44</color>
+
+    <!-- Text filed colors-->
+    <color name="textFieldHintTextColor">#FFFFFFFF</color>
+    <color name="textFieldTextColor">#FFFFFFFF</color>
+    <color name="textFieldBackgroundColor">#FFFFFFFF</color>
+    <color name="textFieldCursorColor">#FFFFFFFF</color>
 </resources>
