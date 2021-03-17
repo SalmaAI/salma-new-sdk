@@ -4,4 +4,5 @@
     <string name="no_connection_message">Check you internet connection</string>
     <string name="no_data_available">لا يوجد بيانات</string>
     <string name="general_error_message">حصل خطأ ما</string>
+    <string name="help">المساعدة</string>
 </resources>

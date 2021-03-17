@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.banking.common.binding.BindingAdapters
+import com.banking.core.remote.remoteModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,7 +26,8 @@ class SalmaApplication : MultiDexApplication(), DataBindingComponent {
             val modules = modules(
                 listOf(
                     appModule,
-                    ChatModule
+                    ChatModule,
+                    remoteModule
                 )
             )
         }

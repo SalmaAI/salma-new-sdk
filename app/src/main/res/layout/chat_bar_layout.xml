@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primaryColor">
+
+    <ImageView
+        android:id="@+id/imgSend"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="@dimen/small_margin"
+        android:background="@drawable/circle"
+        android:padding="@dimen/small_margin"
+        android:src="@drawable/ic_microphone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/aviListening"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="@dimen/small_margin"
+        android:visibility="gone"
+        app:indicatorColor="@color/secondaryColor"
+        app:indicatorName="BallScaleMultipleIndicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/small_margin"
+        android:text="تكلم أنا أسمعك"
+        android:textColor="@color/textFieldTextColor"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgSend" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/aviSpeaking"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_margin"
+        android:visibility="gone"
+        app:indicatorColor="@color/secondaryColor"
+        app:indicatorName="LineScalePulseOutIndicator"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgSend" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_margin"
+        android:background="@null"
+        android:hint="اكتب أو اسألني سؤالاً"
+        android:textAlignment="viewStart"
+        android:textColor="@color/textFieldTextColor"
+        android:textColorHint="@color/textFieldHintTextColor"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSend"
+        app:layout_constraintEnd_toStartOf="@+id/imgSend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgSend" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
