@@ -35,14 +35,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.recyclerView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-//            // Wait till recycler_view will update itself and then scroll to the end.
-//            binding.recyclerView.post {
-//                adapter?.itemCount?.takeIf { it > 0 }?.let {
-//                    binding.recyclerView.scrollToPosition(it -1)
-//                }
-//            }
-//        }
     }
 
     override fun getViewModel(): BaseViewModel? {
@@ -63,9 +55,17 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
 
     /**
+     * this method will be called when user click on record button to start speaking
+     */
+    override fun onStartListening() {
+
+    }
+
+
+    /**
      * this method will be called when user click on end button while speaking
      */
-    override fun onEndSpeaking() {
-        TODO("Not yet implemented")
+    override fun onEndListening() {
+
     }
 }

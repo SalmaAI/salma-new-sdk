@@ -32,9 +32,10 @@ class ChatBarView : FrameLayout {
             if (actionStatus == ChatBarStatus.Listening
                 || actionStatus == ChatBarStatus.Speaking
             ) {
-                listener?.onEndSpeaking()
+                listener?.onEndListening()
                 stopListening()
             } else if (binding.etMessage.text.isNullOrEmpty()) {
+                listener?.onStartListening()
                 startListening()
             } else {
                 sendMessage()
@@ -123,6 +124,7 @@ class ChatBarView : FrameLayout {
 
     interface ChatBarListener {
         fun sendMessage(messageText: String)
-        fun onEndSpeaking()
+        fun onStartListening()
+        fun onEndListening()
     }
 }
