@@ -1,4 +1,4 @@
-package ai.mawdoo3.salma.data
+package ai.mawdoo3.salma.data.dataModel
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

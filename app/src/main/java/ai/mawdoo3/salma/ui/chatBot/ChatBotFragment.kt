@@ -1,7 +1,7 @@
-package ai.mawdoo3.salma.chatBot
+package ai.mawdoo3.salma.ui.chatBot
 
-import ai.mawdoo3.salma.data.MessageSender
-import ai.mawdoo3.salma.data.TextMessageUiModel
+import ai.mawdoo3.salma.data.dataModel.MessageSender
+import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.os.Bundle

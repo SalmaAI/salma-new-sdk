@@ -1,8 +1,8 @@
 package com.banking.core.remote
 
 
-import ai.mawdoo3.salma.data.SendMessageRequest
-import ai.mawdoo3.salma.data.SendMessageResponse
+import ai.mawdoo3.salma.data.dataModel.SendMessageRequest
+import ai.mawdoo3.salma.data.dataModel.SendMessageResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

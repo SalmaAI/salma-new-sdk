@@ -1,5 +1,6 @@
-package ai.mawdoo3.salma
+package ai.mawdoo3.salma.ui
 
+import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.databinding.ActivityMainBinding
 import android.os.Bundle
 import android.view.Menu
