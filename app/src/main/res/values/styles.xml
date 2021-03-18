@@ -6,4 +6,22 @@
         <item name="strokeWidth">1dp</item>
     </style>
 
+    <!--    CardView Style-->
+    <style name="Theme.Salma.CardView.OutComingMessage" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/outComingMessageBackgroundColor</item>
+        <item name="cardCornerRadius">@dimen/card_view_radius</item>
+        <item name="cardElevation">@dimen/card_view_elevation</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardUseCompatPadding">false</item>
+    </style>
+
+    <style name="Theme.Salma.CardView.InComingMessage" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/inComingMessageBackgroundColor</item>
+        <item name="cardCornerRadius">@dimen/card_view_radius</item>
+        <item name="cardElevation">@dimen/card_view_elevation</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardUseCompatPadding">false</item>
+    </style>
+
+
 </resources>

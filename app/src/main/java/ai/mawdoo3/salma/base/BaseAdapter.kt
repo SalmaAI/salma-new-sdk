@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>() {
 
     private var currentState: EnumState = EnumState.STATE_NORMAL
-    private var list = mutableListOf<M>()
+    protected var list = mutableListOf<M>()
     private var rvHandler: Handler = Handler()
     protected var onItemClickListener: OnItemClickListener<M>? = null
 
@@ -149,7 +149,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         REMOVE_ITEM
     }
 
-    private enum class EnumState {
+    internal enum class EnumState {
         STATE_LOADING {
             override fun viewType() = -2
         },

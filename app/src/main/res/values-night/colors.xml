@@ -19,6 +19,5 @@
 
     <color name="masaTitleTextColor">#FFFFFFFF</color>
     <color name="masaHeaderTextColor">#FFFFFFFF</color>
-    <color name="black_overlay">#80000000</color>
 
 </resources>

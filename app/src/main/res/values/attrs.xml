@@ -7,8 +7,9 @@
     <attr name="accentColor" format="color" />
     <attr name="pageBackgroundPrimaryColor" format="color" />
     <attr name="pageBackgroundSecondaryColor" format="color" />
-    <attr name="cardBackgroundColor" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
+    <attr name="outComingMessageBackgroundColor" format="color" />
+    <attr name="inComingMessageBackgroundColor" format="color" />
 
     <!-- Text filed colors-->
     <attr name="textFieldHintTextColor" format="color" />
@@ -17,5 +18,7 @@
     <attr name="textFieldCursorColor" format="color" />
     <!---->
 
+    <attr name="titleTextColor" format="color" />
+    <attr name="headerTextColor" format="color" />
 
 </resources>
