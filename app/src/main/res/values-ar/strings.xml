@@ -7,4 +7,8 @@
     <string name="help">المساعدة</string>
     <string name="speak_im_listening">تكلم أنا أسمعك</string>
     <string name="message_text_hint">اكتب أو اسألني سؤالاً</string>
+    <string name="audio_permission_denied_message">لتتمكن من التحدث مع ماسة يجب عليك منح صلاحية للتطبيق لتسجيل الصوت</string>
+    <string name="go_to_settings">الذهاب الى الإعدادات</string>
+    <string name="cancel">الغاء</string>
+    <string name="permission_denied_title">لا يوجد صلاحية</string>
 </resources>

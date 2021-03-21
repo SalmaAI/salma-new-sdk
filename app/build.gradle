@@ -110,6 +110,9 @@ dependencies {
     //Gson json converter
     implementation "com.google.code.gson:gson:$gson_version"
 
+    //Runtime permissions
+    implementation 'com.nabinbhandari.android:permissions:3.8'
+
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")

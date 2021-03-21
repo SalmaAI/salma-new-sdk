@@ -4,13 +4,23 @@ import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
+import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.nabinbhandari.android.permissions.PermissionHandler
+import com.nabinbhandari.android.permissions.Permissions
+import java.util.*
+
 
 /**
  * created by Omar Qadomi on 3/17/21
@@ -36,7 +46,7 @@ class ChatBarView : FrameLayout {
                 stopListening()
             } else if (binding.etMessage.text.isNullOrEmpty()) {
                 listener?.onStartListening()
-                startListening()
+                checkPermissionAndStartListening()
             } else {
                 sendMessage()
             }
@@ -69,7 +79,7 @@ class ChatBarView : FrameLayout {
     fun setActionsStatus(status: ChatBarStatus) {
         when (status) {
             ChatBarStatus.Nothing -> stopListening()
-            ChatBarStatus.Listening -> startListening()
+            ChatBarStatus.Listening -> checkPermissionAndStartListening()
             ChatBarStatus.Speaking -> startSpeaking()
         }
 
@@ -78,6 +88,58 @@ class ChatBarView : FrameLayout {
     private fun sendMessage() {
         listener?.sendMessage(binding.etMessage.text.toString())
         binding.etMessage.text?.clear()
+    }
+
+    private fun checkPermissionAndStartListening() {
+        Permissions.check(
+            context,
+            Manifest.permission.RECORD_AUDIO,
+            null,
+            object : PermissionHandler() {
+                override fun onGranted() {
+                    startListening()
+                }
+
+                override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>?) {
+                    Snackbar.make(
+                        this@ChatBarView,
+                        context!!.getString(R.string.audio_permission_denied_message),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onBlocked(
+                    context: Context?,
+                    blockedList: ArrayList<String>?
+                ): Boolean {
+                    showSettingsDialog()
+                    return true
+                }
+            })
+
+    }
+
+    private fun showSettingsDialog() {
+        val alertDialogBuilder = MaterialAlertDialogBuilder(
+            context,
+            R.style.Theme_MobileBanking_JKB_MaterialAlertDialog
+        )
+            .setTitle(context.getString(R.string.permission_denied_title))
+            .setMessage(context!!.getString(R.string.audio_permission_denied_message))
+            .setPositiveButton(R.string.go_to_settings) { dialog, which ->
+                Intent(
+                    ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:${context!!.packageName}")
+                ).apply {
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(this)
+                }
+                dialog.dismiss()
+            }.setNegativeButton(R.string.cancel) { dialog, which ->
+                dialog.dismiss()
+            }
+        alertDialogBuilder.show()
     }
 
     private fun startSpeaking() {
