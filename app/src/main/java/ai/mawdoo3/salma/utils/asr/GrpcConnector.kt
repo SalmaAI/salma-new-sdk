@@ -11,6 +11,10 @@ import com.google.protobuf.Int32Value
 import com.google.protobuf.StringValue
 import io.grpc.ManagedChannel
 import io.grpc.stub.StreamObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.io.InputStream
 import java.lang.Exception
 
@@ -58,7 +62,9 @@ object GrpcConnector {
             override fun onNext(value: Asr.session_id?) {
                 sessionId = value?.sid?.value.toString()
                 voiceRecognition?.let {
-                    it.onSessionIdReceived(sessionId)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        it.onSessionIdReceived(sessionId)
+                    }
                 }
             }
 
@@ -78,12 +84,18 @@ object GrpcConnector {
                     value?.let {
 
                         voiceRecognition?.let { ref ->
+
                             it.text.value.let { value ->
-                                ref.onTranscriptionReceived(value)
+                                CoroutineScope(Dispatchers.Main).launch{
+                                    ref.onTranscriptionReceived(value)
+                                }
                             }
                             if (value.final.value) {
                                 streamObserverSpeakChunk?.onCompleted()
-                                ref.onFinalTranscriptionReceived(it.text.value)
+                                CoroutineScope(Dispatchers.Main).launch{
+                                    ref.onFinalTranscriptionReceived(it.text.value)
+                                }
+
                             }
                         }
                     }

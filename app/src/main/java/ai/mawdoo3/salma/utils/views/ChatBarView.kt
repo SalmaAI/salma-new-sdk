@@ -24,6 +24,9 @@ import com.google.protobuf.ByteString
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
 import io.grpc.ManagedChannel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -31,6 +34,7 @@ import java.util.*
  * created by Omar Qadomi on 3/17/21
  */
 class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
+    private lateinit var channel: ManagedChannel
     lateinit var binding: ChatBarLayoutBinding
     private var actionStatus = ChatBarStatus.Nothing
     private var listener: ChatBarListener? = null
@@ -51,7 +55,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     private fun init(context: Context?) {
         context?.let {
-            val channel = GrpcConnector.connect(it)
+            channel = GrpcConnector.connect(it)
             GrpcConnector.registerVoiceRecognitionListener(this)
             val mVoiceCallback: VoiceRecorder.Callback = getVoiceRecorderCallbacks(channel)
             mVoiceRecorder = VoiceRecorder(mVoiceCallback)
@@ -190,6 +194,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         binding.etMessage.makeGone()
         binding.tvSpeak.makeVisible()
         binding.tvGrpcText.makeGone()
+        GrpcConnector.startVoiceRecognition(channel)
     }
 
     private fun stopListening() {
@@ -217,7 +222,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun getVoiceRecorderCallbacks(channel: ManagedChannel): VoiceRecorder.Callback {
         return object : VoiceRecorder.Callback() {
             override fun onVoiceStart() {
-                setActionsStatus(ChatBarStatus.Speaking)
+                CoroutineScope(Dispatchers.Main).launch {
+                    setActionsStatus(ChatBarStatus.Speaking)
+                }
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
@@ -235,18 +242,21 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     override fun onTranscriptionReceived(text: String) {
         binding.tvGrpcText.text = text
-        Log.d("GRPC text", text)
+        Log.d("stremoe", text)
     }
 
     override fun onFinalTranscriptionReceived(text: String) {
         sendGRPCMessage(text)
         setActionsStatus(ChatBarStatus.Nothing)
+        mVoiceRecorder?.stop()
     }
 
     override fun onSessionIdReceived(sessionId: String) {
+        Log.d("sessionId", sessionId)
+
         // start voice recorder
+
         this.sessionId = sessionId
         mVoiceRecorder?.start()
-        Log.d("GRPC sessionId", sessionId)
     }
 }
