@@ -30,7 +30,7 @@ import android.media.MediaRecorder;
  */
 public class VoiceRecorder {
 
-    private static final int SAMPLE_RATE = 16000;
+    public static final int SAMPLE_RATE = 16000;
     private static final int BUFFER_SIZE_IN_BYTES = 10666;
 
     private static final int[] SAMPLE_RATE_CANDIDATES = new int[]{16000, 11025, 22050, 44100};
