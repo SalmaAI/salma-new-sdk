@@ -68,6 +68,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                 || actionStatus == ChatBarStatus.Speaking
             ) {
                 listener?.onEndListening()
+                mVoiceRecorder?.stop()
                 stopListening()
             } else if (binding.etMessage.text.isNullOrEmpty()) {
                 listener?.onStartListening()
@@ -101,24 +102,17 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         this.listener = listener
     }
 
-    fun setActionsStatus(status: ChatBarStatus) {
-        when (status) {
-            ChatBarStatus.Nothing -> stopListening()
-            ChatBarStatus.Listening -> checkPermissionAndStartListening()
-            ChatBarStatus.Speaking -> startSpeaking()
-        }
-
-    }
-
     private fun sendMessage() {
         listener?.sendMessage(binding.etMessage.text.toString())
         binding.etMessage.text?.clear()
     }
 
     private fun sendGRPCMessage(text: String) {
-        listener?.sendMessage(text)
-        binding.tvGrpcText.text = ""
-        binding.tvGrpcText.makeGone()
+        CoroutineScope(Dispatchers.Main).launch {
+            listener?.sendMessage(text)
+            binding.tvGrpcText.text = ""
+            binding.tvGrpcText.makeGone()
+        }
     }
 
     private fun checkPermissionAndStartListening() {
@@ -175,37 +169,48 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     private fun startSpeaking() {
         actionStatus = ChatBarStatus.Speaking
-        binding.aviListening.makeGone()
-        binding.aviSpeaking.makeVisible()
-        binding.imgSend.makeVisible()
-        binding.imgSend.setImageDrawable(null)
-        binding.etMessage.makeGone()
-        binding.tvSpeak.makeGone()
-        binding.tvGrpcText.makeVisible()
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.aviListening.makeGone()
+            binding.aviSpeaking.makeVisible()
+            binding.imgSend.makeVisible()
+            binding.imgSend.setImageDrawable(null)
+            binding.etMessage.makeGone()
+            binding.tvSpeak.makeGone()
+            binding.tvGrpcText.text = ""
+            binding.tvGrpcText.makeVisible()
+        }
     }
 
     private fun startListening() {
-        actionStatus = ChatBarStatus.Listening
-        var mediaPlayer = MediaPlayer.create(context, R.raw.ring)
-        mediaPlayer.start() // no need to call prepare(); create() does that for you
-        binding.aviListening.makeVisible()
-        binding.aviSpeaking.makeGone()
-        binding.imgSend.makeGone()
-        binding.etMessage.makeGone()
-        binding.tvSpeak.makeVisible()
-        binding.tvGrpcText.makeGone()
+        CoroutineScope(Dispatchers.Main).launch {
+            actionStatus = ChatBarStatus.Listening
+            var mediaPlayer = MediaPlayer.create(context, R.raw.ring)
+            mediaPlayer.start() // no need to call prepare(); create() does that for you
+            binding.aviListening.makeVisible()
+            binding.aviSpeaking.makeGone()
+            binding.imgSend.makeGone()
+            binding.etMessage.makeGone()
+            binding.tvSpeak.makeVisible()
+            binding.tvGrpcText.makeGone()
+        }
         GrpcConnector.startVoiceRecognition(channel)
     }
 
     private fun stopListening() {
-        actionStatus = ChatBarStatus.Nothing
-        binding.aviListening.makeGone()
-        binding.aviSpeaking.makeGone()
-        binding.tvSpeak.makeGone()
-        binding.imgSend.setImageResource(R.drawable.ic_microphone)
-        binding.imgSend.makeVisible()
-        binding.etMessage.makeVisible()
-        binding.tvGrpcText.makeGone()
+        Log.d("GRPC", "begin of Stop Listening")
+
+        mVoiceRecorder?.stop()
+        CoroutineScope(Dispatchers.Main).launch {
+            actionStatus = ChatBarStatus.Nothing
+            binding.aviListening.makeGone()
+            binding.aviSpeaking.makeGone()
+            binding.tvSpeak.makeGone()
+            binding.imgSend.setImageResource(R.drawable.ic_microphone)
+            binding.imgSend.makeVisible()
+            binding.etMessage.makeVisible()
+            binding.tvGrpcText.makeGone()
+            Log.d("GRPC", "end of Stop Listening")
+        }
     }
 
 
@@ -222,9 +227,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun getVoiceRecorderCallbacks(channel: ManagedChannel): VoiceRecorder.Callback {
         return object : VoiceRecorder.Callback() {
             override fun onVoiceStart() {
-                CoroutineScope(Dispatchers.Main).launch {
-                    setActionsStatus(ChatBarStatus.Speaking)
-                }
+                startSpeaking()
+
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
@@ -242,13 +246,15 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     override fun onTranscriptionReceived(text: String) {
         binding.tvGrpcText.text = text
-        Log.d("stremoe", text)
+        Log.d("GRPC", "Received text ->" + text)
     }
 
     override fun onFinalTranscriptionReceived(text: String) {
-        sendGRPCMessage(text)
-        setActionsStatus(ChatBarStatus.Nothing)
-        mVoiceRecorder?.stop()
+        Log.d("GRPC", "Final text ->" + text)
+        stopListening()
+        if (text.isNotEmpty()) {
+            sendGRPCMessage(text)
+        }
     }
 
     override fun onSessionIdReceived(sessionId: String) {

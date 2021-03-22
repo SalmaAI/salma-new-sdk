@@ -11,25 +11,21 @@ import com.google.protobuf.Int32Value
 import com.google.protobuf.StringValue
 import io.grpc.ManagedChannel
 import io.grpc.stub.StreamObserver
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import java.io.InputStream
-import java.lang.Exception
 
 /**
  * Created by iSaleem on 3/22/21
  */
 
 const val CERT_NAME = "asr_nemo.crt"
+
 object GrpcConnector {
 
-    private val stub : asr_serviceGrpc.asr_serviceStub? = null
+    private val stub: asr_serviceGrpc.asr_serviceStub? = null
     private var sessionId: String = ""
     var streamObserverSpeakChunk: StreamObserver<Asr.speak>? = null
 
-    fun connect(context: Context) : ManagedChannel {
+    fun connect(context: Context): ManagedChannel {
         var channel: ManagedChannel?
         var input: InputStream?
         try {
@@ -44,7 +40,7 @@ object GrpcConnector {
         }
     }
 
-    fun getASRStub(channel: ManagedChannel) : asr_serviceGrpc.asr_serviceStub{
+    fun getASRStub(channel: ManagedChannel): asr_serviceGrpc.asr_serviceStub {
         stub?.let {
             return it
         } ?: run {
@@ -52,19 +48,18 @@ object GrpcConnector {
         }
     }
 
-    fun getByteBuilder() : BytesValue.Builder{
+    fun getByteBuilder(): BytesValue.Builder {
         return BytesValue.newBuilder()
     }
 
-    fun startVoiceRecognition(channel: ManagedChannel){
+    fun startVoiceRecognition(channel: ManagedChannel) {
         val stub = getASRStub(channel)
         stub.getSid(Empty.getDefaultInstance(), object : StreamObserver<Asr.session_id> {
             override fun onNext(value: Asr.session_id?) {
                 sessionId = value?.sid?.value.toString()
                 voiceRecognition?.let {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        it.onSessionIdReceived(sessionId)
-                    }
+                    it.onSessionIdReceived(sessionId)
+
                 }
             }
 
@@ -76,7 +71,7 @@ object GrpcConnector {
         })
     }
 
-    fun sendVoice(channel: ManagedChannel,sessionId: String,voice: BytesValue?) {
+    fun sendVoice(channel: ManagedChannel, sessionId: String, voice: BytesValue?) {
         val stub = getASRStub(channel)
         streamObserverSpeakChunk =
             stub.transcribeStream(object : StreamObserver<Asr.transcription_stream> {
@@ -86,15 +81,12 @@ object GrpcConnector {
                         voiceRecognition?.let { ref ->
 
                             it.text.value.let { value ->
-                                CoroutineScope(Dispatchers.Main).launch{
-                                    ref.onTranscriptionReceived(value)
-                                }
+                                ref.onTranscriptionReceived(value)
+
                             }
                             if (value.final.value) {
                                 streamObserverSpeakChunk?.onCompleted()
-                                CoroutineScope(Dispatchers.Main).launch{
-                                    ref.onFinalTranscriptionReceived(it.text.value)
-                                }
+                                ref.onFinalTranscriptionReceived(it.text.value)
 
                             }
                         }
@@ -119,19 +111,19 @@ object GrpcConnector {
 
     private var voiceRecognition: ITranscriptionStream? = null
 
-    interface IVoiceRecognition{
-        fun onSessionIdReceived(sessionId:String)
+    interface IVoiceRecognition {
+        fun onSessionIdReceived(sessionId: String)
     }
 
     interface ITranscriptionStream : IVoiceRecognition {
-        fun onTranscriptionReceived(text:String)
-        fun onFinalTranscriptionReceived(text:String)
+        fun onTranscriptionReceived(text: String)
+        fun onFinalTranscriptionReceived(text: String)
     }
 
-    fun registerVoiceRecognitionListener(voiceRecognition:ITranscriptionStream){
+    fun registerVoiceRecognitionListener(voiceRecognition: ITranscriptionStream) {
         this.voiceRecognition = voiceRecognition
     }
 
 
-    class FailedChannelConnectionException(message:String) : Exception()
+    class FailedChannelConnectionException(message: String) : Exception()
 }
