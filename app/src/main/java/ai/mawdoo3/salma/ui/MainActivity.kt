@@ -20,13 +20,6 @@ class MainActivity : BaseActivity(){
         setSupportActionBar(binding.toolbar)
         this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close);
         this.supportActionBar?.setDisplayHomeAsUpEnabled(true);
-
-
-
-
-
-
-
     }
 
 
