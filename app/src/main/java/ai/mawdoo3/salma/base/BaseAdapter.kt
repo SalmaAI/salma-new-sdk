@@ -57,6 +57,13 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
+    fun addItems(items: List<M>) {
+        rvHandler.post {
+            list.addAll(items)
+            notifyItemRangeChanged(list.size - items.size - 1, list.size - 1)
+        }
+    }
+
     fun removeItem(position: Int) {
         rvHandler.post {
             list.removeAt(position)

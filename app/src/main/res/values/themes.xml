@@ -5,7 +5,7 @@
         <!-- Primary brand color. -->
         <item name="primaryColor">@color/masaPrimaryColor</item>
         <item name="secondaryColor">@color/masaSecondaryColor</item>
-        <item name="accentColor">@color/masaSecondaryColor</item>
+        <item name="accentColor">@color/masaAccentColor</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/toolbarBackgroundColor</item>
         <item name="toolbarBackgroundColor">@color/masaToolbarBackgroundColor</item>
@@ -20,8 +20,13 @@
         <item name="textFieldBackgroundColor">@color/masaTextFieldBackgroundColor</item>
         <item name="textFieldCursorColor">@color/masaTextFieldCursorColor</item>
         <!---->
+        <item name="subTitleTextColor">@color/masaSubTitleTextColor</item>
         <item name="titleTextColor">@color/masaTitleTextColor</item>
         <item name="headerTextColor">@color/masaHeaderTextColor</item>
+
+        <item name="cardButtonBackgroundColor">@color/masaCardButtonBackgroundColor</item>
+        <item name="cardButtonIconColor">@color/masaCardButtonIconColor</item>
+        <item name="cardButtonTextColor">@color/masaCardButtonTextColor</item>
 
         <!-- Customize your theme here. -->
 

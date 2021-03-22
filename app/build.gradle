@@ -8,6 +8,7 @@ plugins {
 }
 
 android {
+
     compileSdkVersion 29
 
     defaultConfig {
@@ -28,12 +29,16 @@ android {
             useProguard true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", baseURL
+            buildConfigField "String", "SECRET_KEY", secretKey
         }
 
         debug {
             minifyEnabled false
             useProguard false
             debuggable true
+            buildConfigField "String", "BASE_URL", baseURL
+            buildConfigField "String", "SECRET_KEY", secretKey
         }
     }
 

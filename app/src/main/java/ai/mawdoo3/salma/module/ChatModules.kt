@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val ChatModule = module {
     viewModel { ChatBotViewModel(get(), get()) }
-    factory { MessagesAdapter() }
+    factory { params -> MessagesAdapter(viewModel = params.get()) }
     single { ChatRemoteDataSource(get()) }
     single { ChatRepository(get()) }
 }

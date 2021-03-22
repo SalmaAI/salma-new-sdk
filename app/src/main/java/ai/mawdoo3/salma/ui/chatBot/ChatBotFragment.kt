@@ -12,11 +12,12 @@ import com.banking.common.base.BaseFragment
 import com.banking.common.base.BaseViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     private val viewModel: ChatBotViewModel by viewModel()
-    private val adapter: MessagesAdapter by inject()
+    private val adapter: MessagesAdapter by inject { parametersOf(viewModel) }
     private lateinit var binding: FragmentChatBotBinding
 
 
@@ -35,6 +36,16 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.messageResponseList.observe(viewLifecycleOwner, {
+            adapter.addItems(it)
+            binding.recyclerView.postDelayed(Runnable {
+                binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
+            }, 500)
+        })
+        viewModel.showLoader.observe(viewLifecycleOwner, {
+            binding.appBar.setExpanded(false)
+            adapter.loading(it)
+        })
     }
 
     override fun getViewModel(): BaseViewModel? {
@@ -45,12 +56,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
      * this method will be called when user click send button
      */
     override fun sendMessage(messageText: String) {
-        adapter.addItem(TextMessageUiModel(messageText, MessageSender.User))
-        adapter.loading(true)
-        binding.appBar.setExpanded(false)
-        binding.recyclerView.post {
-            binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
-        }
+        viewModel.sendMessage(messageText)
     }
 
 

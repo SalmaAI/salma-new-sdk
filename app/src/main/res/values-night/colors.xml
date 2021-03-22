@@ -15,9 +15,14 @@
     <color name="masaTextFieldTextColor">#FFFFFFFF</color>
     <color name="masaTextFieldBackgroundColor">#FFFFFFFF</color>
     <color name="masaTextFieldCursorColor">#FFFFFFFF</color>
+    <color name="masaCardButtonBackgroundColor">#001B44</color>
+    <color name="masaCardButtonTextColor">#FFFFFFFF</color>
+    <color name="masaCardButtonIconColor">#0072BF</color>
 
 
     <color name="masaTitleTextColor">#FFFFFFFF</color>
+    <color name="masaSubTitleTextColor">#577CB7</color>
     <color name="masaHeaderTextColor">#FFFFFFFF</color>
+    <color name="black_overlay">#80000000</color>
 
 </resources>

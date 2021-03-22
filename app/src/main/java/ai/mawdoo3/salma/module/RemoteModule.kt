@@ -51,8 +51,7 @@ val remoteModule = module {
     //Create retrofit builder
     single<Retrofit> {
         Retrofit.Builder()
-            .baseUrl("https://chatbot-builder2.mawdu.com/webhook/mobile/")
-//            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(get<Moshi>()))
             .client(get<OkHttpClient>())
             .build()

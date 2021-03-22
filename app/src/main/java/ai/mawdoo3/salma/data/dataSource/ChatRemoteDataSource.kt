@@ -12,7 +12,7 @@ class ChatRemoteDataSource(private val endpoints: ApiEndpoints) {
 
     suspend fun sendMessage(sendMessageRequest: SendMessageRequest): RepoResponse<SendMessageResponse>? {
         return try {
-            val result = endpoints.sendMessage(sendMessageRequest, "", "")
+            val result = endpoints.sendMessage(sendMessageRequest, "1", "500")
             RepoResponse.create(result)
         } catch (e: Exception) {
             RepoResponse.create(e)
