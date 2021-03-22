@@ -2,6 +2,8 @@ package ai.mawdoo3.salma.utils.views
 
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
+import ai.mawdoo3.salma.utils.asr.GrpcConnector
+import ai.mawdoo3.salma.utils.asr.VoiceRecorder
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
 import android.Manifest
@@ -13,28 +15,47 @@ import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.protobuf.ByteString
 import com.nabinbhandari.android.permissions.PermissionHandler
 import com.nabinbhandari.android.permissions.Permissions
+import io.grpc.ManagedChannel
 import java.util.*
 
 
 /**
  * created by Omar Qadomi on 3/17/21
  */
-class ChatBarView : FrameLayout {
+class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     lateinit var binding: ChatBarLayoutBinding
     private var actionStatus = ChatBarStatus.Nothing
     private var listener: ChatBarListener? = null
+    private var sessionId: String = ""
+    private var mVoiceRecorder: VoiceRecorder? = null
+
+
+    interface ChatBarListener {
+        fun sendMessage(messageText: String)
+        fun onStartListening()
+        fun onEndListening()
+    }
+
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context)
     }
 
     private fun init(context: Context?) {
+        context?.let {
+            val channel = GrpcConnector.connect(it)
+            GrpcConnector.registerVoiceRecognitionListener(this)
+            val mVoiceCallback: VoiceRecorder.Callback = getVoiceRecorderCallbacks(channel)
+            mVoiceRecorder = VoiceRecorder(mVoiceCallback)
+        }
         val inflater = LayoutInflater.from(context)
         binding = ChatBarLayoutBinding.inflate(inflater)
         this.addView(binding.root)
@@ -88,6 +109,12 @@ class ChatBarView : FrameLayout {
     private fun sendMessage() {
         listener?.sendMessage(binding.etMessage.text.toString())
         binding.etMessage.text?.clear()
+    }
+
+    private fun sendGRPCMessage(text: String) {
+        listener?.sendMessage(text)
+        binding.tvGrpcText.text = ""
+        binding.tvGrpcText.makeGone()
     }
 
     private fun checkPermissionAndStartListening() {
@@ -150,6 +177,7 @@ class ChatBarView : FrameLayout {
         binding.imgSend.setImageDrawable(null)
         binding.etMessage.makeGone()
         binding.tvSpeak.makeGone()
+        binding.tvGrpcText.makeVisible()
     }
 
     private fun startListening() {
@@ -161,6 +189,7 @@ class ChatBarView : FrameLayout {
         binding.imgSend.makeGone()
         binding.etMessage.makeGone()
         binding.tvSpeak.makeVisible()
+        binding.tvGrpcText.makeGone()
     }
 
     private fun stopListening() {
@@ -171,6 +200,7 @@ class ChatBarView : FrameLayout {
         binding.imgSend.setImageResource(R.drawable.ic_microphone)
         binding.imgSend.makeVisible()
         binding.etMessage.makeVisible()
+        binding.tvGrpcText.makeGone()
     }
 
 
@@ -184,9 +214,39 @@ class ChatBarView : FrameLayout {
 
     }
 
-    interface ChatBarListener {
-        fun sendMessage(messageText: String)
-        fun onStartListening()
-        fun onEndListening()
+    private fun getVoiceRecorderCallbacks(channel: ManagedChannel): VoiceRecorder.Callback {
+        return object : VoiceRecorder.Callback() {
+            override fun onVoiceStart() {
+                setActionsStatus(ChatBarStatus.Speaking)
+            }
+
+            override fun onVoice(data: ByteArray?, size: Int) {
+                data?.apply {
+                    val stringByte =
+                        GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))?.build()
+                    GrpcConnector.sendVoice(channel, sessionId, stringByte)
+                }
+            }
+
+            override fun onVoiceEnd() {
+            }
+        }
+    }
+
+    override fun onTranscriptionReceived(text: String) {
+        binding.tvGrpcText.text = text
+        Log.d("GRPC text", text)
+    }
+
+    override fun onFinalTranscriptionReceived(text: String) {
+        sendGRPCMessage(text)
+        setActionsStatus(ChatBarStatus.Nothing)
+    }
+
+    override fun onSessionIdReceived(sessionId: String) {
+        // start voice recorder
+        this.sessionId = sessionId
+        mVoiceRecorder?.start()
+        Log.d("GRPC sessionId", sessionId)
     }
 }

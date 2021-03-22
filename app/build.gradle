@@ -52,15 +52,17 @@ android {
             useProguard true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField ("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
-
+            buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
+            buildConfigField "String", "BASE_URL", baseURL
+            buildConfigField "String", "SECRET_KEY", secretKey
         }
         debug {
             minifyEnabled false
             useProguard false
             debuggable true
-            buildConfigField ("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
-
+            buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
+            buildConfigField "String", "BASE_URL", baseURL
+            buildConfigField "String", "SECRET_KEY", secretKey
         }
     }
 
