@@ -2,14 +2,10 @@ package ai.mawdoo3.salma.ui
 
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.databinding.ActivityMainBinding
-import ai.mawdoo3.salma.utils.asr.GrpcConnector
-import ai.mawdoo3.salma.utils.asr.VoiceRecorder
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.banking.common.base.BaseActivity
-import com.google.protobuf.ByteString
-import io.grpc.ManagedChannel
 
 class MainActivity : BaseActivity(){
     lateinit var binding: ActivityMainBinding
