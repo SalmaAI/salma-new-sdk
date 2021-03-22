@@ -12,6 +12,7 @@ import com.google.protobuf.StringValue
 import io.grpc.ManagedChannel
 import io.grpc.stub.StreamObserver
 import java.io.InputStream
+import java.lang.Exception
 
 /**
  * Created by iSaleem on 3/22/21
@@ -24,7 +25,7 @@ object GrpcConnector {
     private var sessionId: String = ""
     var streamObserverSpeakChunk: StreamObserver<Asr.speak>? = null
 
-    fun connect(context: Context) : ManagedChannel?{
+    fun connect(context: Context) : ManagedChannel {
         var channel: ManagedChannel?
         var input: InputStream?
         try {
@@ -35,9 +36,8 @@ object GrpcConnector {
             input.close()
             return channel
         } catch (e: Throwable) {
-            e.printStackTrace()
+            throw FailedChannelConnectionException("Cannot Connect to Server " + e.message)
         }
-        return null
     }
 
     fun getASRStub(channel: ManagedChannel) : asr_serviceGrpc.asr_serviceStub{
@@ -70,7 +70,7 @@ object GrpcConnector {
         })
     }
 
-    private fun sendVoice(channel: ManagedChannel,sessionId: String,voice: BytesValue?) {
+    fun sendVoice(channel: ManagedChannel,sessionId: String,voice: BytesValue?) {
         val stub = getASRStub(channel)
         streamObserverSpeakChunk =
             stub.transcribeStream(object : StreamObserver<Asr.transcription_stream> {
@@ -79,12 +79,11 @@ object GrpcConnector {
 
                         voiceRecognition?.let { ref ->
                             it.text.value.let { value ->
-
                                 ref.onTranscriptionReceived(value)
                             }
                             if (value.final.value) {
                                 streamObserverSpeakChunk?.onCompleted()
-                                ref.onFinalTranscriptionReceived()
+                                ref.onFinalTranscriptionReceived(it.text.value)
                             }
                         }
                     }
@@ -114,10 +113,13 @@ object GrpcConnector {
 
     interface ITranscriptionStream : IVoiceRecognition {
         fun onTranscriptionReceived(text:String)
-        fun onFinalTranscriptionReceived()
+        fun onFinalTranscriptionReceived(text:String)
     }
 
-    fun setIVoiceRecognitionListener(voiceRecognition:ITranscriptionStream){
+    fun registerVoiceRecognitionListener(voiceRecognition:ITranscriptionStream){
         this.voiceRecognition = voiceRecognition
     }
+
+
+    class FailedChannelConnectionException(message:String) : Exception()
 }
