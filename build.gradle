@@ -11,6 +11,7 @@ buildscript {
     ext.gson_version = "2.8.6"
     ext.grpc_plugin = "0.8.15"
     ext.grpc_lib="1.35.0"
+    ext.exp_player_version = "2.13.2"
     repositories {
         google()
         jcenter()
