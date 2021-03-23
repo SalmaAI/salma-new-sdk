@@ -8,10 +8,17 @@
     <string name="speak_im_listening">تكلم أنا أسمعك</string>
     <string name="message_text_hint">اكتب أو اسألني سؤالاً</string>
     <string name="audio_permission_denied_message">لتتمكن من التحدث مع ماسة يجب عليك منح صلاحية للتطبيق لتسجيل الصوت</string>
+    <string name="location_permission_denied_message">لتتمكن من الحصول على معلومات الفروع و الصرافات من حولك الرجاء اعطاء الصلاحية لماسة لاستخدام نظام المواقع</string>
     <string name="go_to_settings">الذهاب الى الإعدادات</string>
     <string name="cancel">الغاء</string>
     <string name="permission_denied_title">لا يوجد صلاحية</string>
     <string name="quick_replies_more">المزيد</string>
     <string name="directions">الاتجاهات</string>
     <string name="call">  اتصال  </string>
+    <string name="rate_dialog_title">كيف كانت الإجابة ؟</string>
+    <string name="rate_dialog_bad">بحاجة إلى تحسين</string>
+    <string name="rate_dialog_good">جيدة</string>
+    <string name="rate">تقييم</string>
+    <string name="get_location_failed_message">عذراً, لم أتمكن من تحديد موقعك</string>
+    <string name="use_my_location">استخدام موقعي الحالي</string>
 </resources>

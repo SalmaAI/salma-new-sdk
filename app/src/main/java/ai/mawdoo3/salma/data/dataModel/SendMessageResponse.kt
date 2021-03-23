@@ -1,5 +1,7 @@
 package ai.mawdoo3.salma.data.dataModel
 
+import ai.mawdoo3.salma.data.enums.MessageSender
+import ai.mawdoo3.salma.data.enums.MessageType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -32,12 +34,26 @@ data class MessageResponse(
     inner class Factory {
         fun create(): MessageUiModel? {
             val messageType = MessageType.from(type)
-            return if (messageType == MessageType.Text || messageType == MessageType.UnansweredText)
+            return if (messageType == MessageType.Text || messageType == MessageType.UnansweredText) {
                 TextMessageUiModel(messageContent.text, MessageSender.Masa)
-            else if (messageType == MessageType.QuickReply || messageType == MessageType.UnansweredQuickReply) {
+            } else if (messageType == MessageType.QuickReply || messageType == MessageType.UnansweredQuickReply) {
                 QuickReplyMessageUiModel(
                     messageContent.text,
                     messageContent.quickReplyElements, MessageSender.Masa
+                )
+            } else if (messageType == MessageType.TextLocation || messageType == MessageType.UnansweredTextLocation) {
+                val data = messageContent.text?.split(',')
+                val name = data?.get(0)?.removePrefix("الفرع :")
+                val address = data?.get(1)?.removePrefix("العنوان :")
+                val phone = data?.get(2)?.removePrefix("هاتف :")
+                val workingHours = data?.get(3)?.removePrefix("ساعات العمل :")
+                LocationMessageUiModel(
+                    name = name,
+                    address = address,
+                    workingHours = workingHours,
+                    geoFence = messageContent.attachmentId,
+                    phone = phone,
+                    messageSender = MessageSender.Masa
                 )
             } else {
                 null

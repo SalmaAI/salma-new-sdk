@@ -94,6 +94,9 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
+    //location services
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
     //Dependency ejection
     implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation "org.koin:koin-core:$koin_version"

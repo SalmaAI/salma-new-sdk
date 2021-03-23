@@ -13,6 +13,7 @@
     <attr name="cardButtonBackgroundColor" format="color" />
     <attr name="cardButtonTextColor" format="color" />
     <attr name="cardButtonIconColor" format="color" />
+    <attr name="dialogBackgroundColor" format="color" />
 
     <!-- Text filed colors-->
     <attr name="textFieldHintTextColor" format="color" />

@@ -2,6 +2,7 @@
 
 package com.banking.common.utils
 
+import ai.mawdoo3.salma.R
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -17,6 +18,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Patterns
 import android.util.TypedValue
@@ -25,6 +27,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDirections
@@ -32,6 +35,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.banking.common.base.BaseFragment
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -40,6 +44,30 @@ import kotlin.math.roundToInt
 
 
 object AppUtils {
+
+    fun showSettingsDialog(context: Context, @StringRes message: Int) {
+        val alertDialogBuilder = MaterialAlertDialogBuilder(
+            context,
+            R.style.Theme_MobileBanking_JKB_MaterialAlertDialog
+        )
+            .setTitle(context.getString(R.string.permission_denied_title))
+            .setMessage(message)
+            .setPositiveButton(R.string.go_to_settings) { dialog, which ->
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:${context!!.packageName}")
+                ).apply {
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(this)
+                }
+                dialog.dismiss()
+            }.setNegativeButton(R.string.cancel) { dialog, which ->
+                dialog.dismiss()
+            }
+        alertDialogBuilder.show()
+    }
+
     fun getColorFromAttr(context: Context, colorAttr: Int): Int {
         val typedValue = TypedValue()
         val theme = context.theme

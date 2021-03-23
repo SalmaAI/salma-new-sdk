@@ -1,4 +1,4 @@
-package ai.mawdoo3.salma.data.dataModel
+package ai.mawdoo3.salma.data.enums
 
 enum class MessageType(val value: String) {
     Text("TEXT"),

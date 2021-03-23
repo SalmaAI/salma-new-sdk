@@ -1,4 +1,4 @@
-package ai.mawdoo3.salma.data.dataModel
+package ai.mawdoo3.salma.data.enums
 
 enum class MessageSender(value: Int) {
     User(1),

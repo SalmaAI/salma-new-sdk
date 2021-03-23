@@ -8,6 +8,8 @@
         <variable
             name="location"
             type="ai.mawdoo3.salma.data.dataModel.LocationMessageUiModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -17,7 +19,6 @@
         android:layout_marginStart="@dimen/card_view_margin">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin">
@@ -37,20 +38,20 @@
                 tools:text="فرع المدينة المنورة" />
 
             <TextView
-                android:id="@+id/tvDetails"
+                android:id="@+id/tvAddress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="@{location.details}"
+                android:text="@{location.address}"
                 android:textColor="?attr/subTitleTextColor"
-                app:layout_constraintEnd_toEndOf="@+id/btnCall"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvName"
                 tools:text="شارع المدينة المنورة، مقابل مستشفى ابن الهيثم تلاع العلي الشمالي" />
 
 
             <TextView
-                android:id="@+id/tvText"
+                android:id="@+id/tvWorkingHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
@@ -58,33 +59,46 @@
                 android:textColor="?attr/titleTextColor"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDetails"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddress"
                 tools:text="الأحد - الخميس 9:00 am - 3:00 pm" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDirections"
-                style="@style/Theme.Salma.Button.CardButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="@string/directions"
-                app:icon="@drawable/ic_directions"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvText" />
+                app:layout_constraintTop_toBottomOf="@+id/tvWorkingHours">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCall"
-                style="@style/Theme.Salma.Button.CardButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_margin"
-                android:minWidth="120dp"
-                android:text="@string/call"
-                app:icon="@drawable/ic_call"
-                app:iconGravity="textStart"
-                app:layout_constraintBottom_toBottomOf="@+id/btnDirections"
-                app:layout_constraintStart_toEndOf="@+id/btnDirections"
-                app:layout_constraintTop_toTopOf="@+id/btnDirections" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDirections"
+                    style="@style/Theme.Salma.Button.CardButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/directions"
+                    app:icon="@drawable/ic_directions"
+                    app:iconGravity="textStart" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCall"
+                    style="@style/Theme.Salma.Button.CardButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_weight="1"
+                    android:minWidth="120dp"
+                    android:singleLine="true"
+                    android:text="@string/call"
+                    android:visibility="@{location.phone!=null?View.VISIBLE:View.GONE }"
+                    app:icon="@drawable/ic_call"
+                    app:iconGravity="textStart" />
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

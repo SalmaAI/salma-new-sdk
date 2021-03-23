@@ -9,6 +9,7 @@
     <color name="masaToolbarBackgroundColor">#001B44</color>
     <color name="masaOutComingMessageBackgroundColor">#0072BF</color>
     <color name="masaInComingMessageBackgroundColor">#003976</color>
+    <color name="masaDialogBackgroundColor">#001B44</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>

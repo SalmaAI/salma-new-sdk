@@ -3,12 +3,15 @@ package ai.mawdoo3.salma.ui.chatBot
 import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.dataSource.ChatRepository
+import ai.mawdoo3.salma.data.enums.MessageSender
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.banking.common.base.BaseViewModel
+import com.banking.common.utils.PhoneUtils
 import com.banking.core.remote.RepoErrorResponse
 import com.banking.core.remote.RepoSuccessResponse
+import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.launch
 
 class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
@@ -16,6 +19,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
     val messageResponseList = MutableLiveData<MutableList<MessageUiModel>>()
     val showLoader = MutableLiveData<Boolean>()
+    val rateAnswer = LiveEvent<String>()
+    val getUserLocation = LiveEvent<Boolean>()
 
     fun sendMessage(text: String) {
         showLoader.postValue(false)
@@ -25,7 +30,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             showLoader.postValue(true)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
-                    "",
+                    PhoneUtils.getDeviceId(applicationContext),
                     message = text,
                     BuildConfig.SECRET_KEY
                 )
@@ -33,9 +38,20 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             when (result) {
                 is RepoSuccessResponse -> {
                     val responseMessages = ArrayList<MessageUiModel>()
+                    val locationMessages = ArrayList<LocationMessageUiModel>()
                     val messagesResponse = result.body.messages
                     for (message in messagesResponse) {
-                        message.Factory().create()?.let { responseMessages.add(it) }
+                        message.Factory().create()?.let {
+                            if (it is LocationMessageUiModel)
+                                locationMessages.add(it)
+                            else {
+                                responseMessages.add(it)
+                            }
+                        }
+                    }
+                    if (locationMessages.isNotEmpty()) {
+                        val locationsListUiModel = LocationsListUiModel(locationMessages)
+                        responseMessages.add(locationsListUiModel)
                     }
                     messageResponseList.postValue(responseMessages)
                     showLoader.postValue(false)
@@ -103,4 +119,5 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             }
         }
     }
+
 }

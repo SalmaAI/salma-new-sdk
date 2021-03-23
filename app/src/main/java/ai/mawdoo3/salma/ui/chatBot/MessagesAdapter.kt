@@ -1,7 +1,19 @@
 package ai.mawdoo3.salma.ui.chatBot
 
-import ai.mawdoo3.salma.data.dataModel.*
-import ai.mawdoo3.salma.databinding.*
+import ai.mawdoo3.salma.data.dataModel.LocationsListUiModel
+import ai.mawdoo3.salma.data.dataModel.MessageUiModel
+import ai.mawdoo3.salma.data.dataModel.QuickReplyMessageUiModel
+import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
+import ai.mawdoo3.salma.data.enums.MessageSender
+import ai.mawdoo3.salma.data.enums.MessageViewType
+import ai.mawdoo3.salma.databinding.IncomingTextMessageItemBinding
+import ai.mawdoo3.salma.databinding.LocationsMessageItemBinding
+import ai.mawdoo3.salma.databinding.OutcomingTextMessageItemBinding
+import ai.mawdoo3.salma.databinding.QuickRepliesMessageItemBinding
+import ai.mawdoo3.salma.ui.viewHolders.InComingTextMessageViewHolder
+import ai.mawdoo3.salma.ui.viewHolders.LocationMessageViewHolder
+import ai.mawdoo3.salma.ui.viewHolders.OutComingTextMessageViewHolder
+import ai.mawdoo3.salma.ui.viewHolders.QuickRepliesMessageViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.banking.common.base.BaseAdapter
@@ -12,16 +24,11 @@ import com.banking.common.base.BaseViewHolder
  */
 class MessagesAdapter(val viewModel: ChatBotViewModel) :
     BaseAdapter<MessageUiModel, BaseViewHolder<MessageUiModel>>() {
-    enum class MessageType(val value: Int) {
-        InComingTextMessageType(1),
-        OutComingTextMessageType(2),
-        QuickRepliesMessageType(3),
-        LocationMessageType(4),
-    }
+
 
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<MessageUiModel> {
         when (viewType) {
-            MessageType.OutComingTextMessageType.value -> {
+            MessageViewType.OutComingTextMessageViewType.value -> {
                 return OutComingTextMessageViewHolder(
                     OutcomingTextMessageItemBinding.inflate(
                         LayoutInflater.from(parent.context),
@@ -30,31 +37,31 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     )
                 )
             }
-            MessageType.InComingTextMessageType.value -> {
+            MessageViewType.InComingTextMessageViewType.value -> {
                 return InComingTextMessageViewHolder(
                     IncomingTextMessageItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ), viewModel
                 )
             }
-            MessageType.QuickRepliesMessageType.value -> {
+            MessageViewType.QuickRepliesMessageViewType.value -> {
                 return QuickRepliesMessageViewHolder(
                     QuickRepliesMessageItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ), viewModel
                 )
             }
-            MessageType.LocationMessageType.value -> {
-                return QuickRepliesMessageViewHolder(
-                    QuickRepliesMessageItemBinding.inflate(
+            MessageViewType.LocationMessageViewType.value -> {
+                return LocationMessageViewHolder(
+                    LocationsMessageItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ), viewModel
                 )
             }
             else -> {
@@ -68,69 +75,17 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             return EnumState.STATE_LOADING.viewType()
         else if (list[position] is TextMessageUiModel) {//text message
             if (list[position].sender == MessageSender.User) {
-                return MessageType.OutComingTextMessageType.value
+                return MessageViewType.OutComingTextMessageViewType.value
             } else {
-                return MessageType.InComingTextMessageType.value
+                return MessageViewType.InComingTextMessageViewType.value
             }
         } else if (list[position] is QuickReplyMessageUiModel) {
-            return MessageType.QuickRepliesMessageType.value
-        } else if (list[position] is LocationMessageUiModel) {
-            return MessageType.LocationMessageType.value
+            return MessageViewType.QuickRepliesMessageViewType.value
+        } else if (list[position] is LocationsListUiModel) {
+            return MessageViewType.LocationMessageViewType.value
         } else {
             return 0
         }
     }
 
-    inner class InComingTextMessageViewHolder(val binding: IncomingTextMessageItemBinding) :
-        BaseViewHolder<MessageUiModel>(binding) {
-        override fun bind(position: Int, item: MessageUiModel?) {
-            return bind<IncomingTextMessageItemBinding> {
-                this.message = item as TextMessageUiModel?
-            }
-        }
-    }
-
-    inner class OutComingTextMessageViewHolder(val binding: OutcomingTextMessageItemBinding) :
-        BaseViewHolder<MessageUiModel>(binding) {
-        override fun bind(position: Int, item: MessageUiModel?) {
-            return bind<OutcomingTextMessageItemBinding> {
-                this.message = item as TextMessageUiModel?
-            }
-        }
-    }
-
-    inner class LocationMessageViewHolder(val binding: LocationsMessageItemBinding) :
-        BaseViewHolder<MessageUiModel>(binding) {
-        override fun bind(position: Int, item: MessageUiModel?) {
-            return bind<LocationsMessageItemBinding> {
-                val adapter = LocationsAdapter(viewModel)
-//                adapter.setItems(list)
-                this.recyclerLocations.adapter = adapter
-            }
-        }
-    }
-
-    inner class QuickRepliesMessageViewHolder(val binding: QuickRepliesMessageItemBinding) :
-        BaseViewHolder<MessageUiModel>(binding) {
-        override fun bind(position: Int, item: MessageUiModel?) {
-            return bind<QuickRepliesMessageItemBinding> {
-                this.message = item as QuickReplyMessageUiModel?
-                binding.quickRepliesLayout.removeAllViews()
-                item?.replies?.forEach { replyElement ->
-                    binding.quickRepliesLayout.addView(
-                        QuickReplyItemBinding.inflate(
-                            LayoutInflater.from(this.root.context),
-                            null,
-                            false
-                        ).apply {
-                            this.quickReply = replyElement
-                            this.root.setOnClickListener {
-                                viewModel.sendMessage(replyElement.quickReplyPayload)
-                            }
-                        }.root
-                    )
-                }
-            }
-        }
-    }
 }

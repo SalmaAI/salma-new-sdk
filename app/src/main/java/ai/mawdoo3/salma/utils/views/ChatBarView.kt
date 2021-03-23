@@ -8,17 +8,14 @@ import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.media.MediaPlayer
-import android.net.Uri
-import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.banking.common.utils.AppUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.protobuf.ByteString
 import com.nabinbhandari.android.permissions.PermissionHandler
@@ -137,34 +134,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                     context: Context?,
                     blockedList: ArrayList<String>?
                 ): Boolean {
-                    showSettingsDialog()
+                    AppUtils.showSettingsDialog(
+                        this@ChatBarView.context,
+                        R.string.audio_permission_denied_message
+                    )
                     return true
                 }
             })
 
-    }
-
-    private fun showSettingsDialog() {
-        val alertDialogBuilder = MaterialAlertDialogBuilder(
-            context,
-            R.style.Theme_MobileBanking_JKB_MaterialAlertDialog
-        )
-            .setTitle(context.getString(R.string.permission_denied_title))
-            .setMessage(context!!.getString(R.string.audio_permission_denied_message))
-            .setPositiveButton(R.string.go_to_settings) { dialog, which ->
-                Intent(
-                    ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:${context!!.packageName}")
-                ).apply {
-                    addCategory(Intent.CATEGORY_DEFAULT)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(this)
-                }
-                dialog.dismiss()
-            }.setNegativeButton(R.string.cancel) { dialog, which ->
-                dialog.dismiss()
-            }
-        alertDialogBuilder.show()
     }
 
     private fun startSpeaking() {
@@ -173,7 +150,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.aviListening.makeGone()
             binding.aviSpeaking.makeVisible()
             binding.imgSend.makeVisible()
-            binding.imgSend.setImageDrawable(null)
+            binding.imgSend.setImageResource(R.drawable.ic_volume_mute)
             binding.etMessage.makeGone()
             binding.tvSpeak.makeGone()
             binding.tvGrpcText.text = ""
