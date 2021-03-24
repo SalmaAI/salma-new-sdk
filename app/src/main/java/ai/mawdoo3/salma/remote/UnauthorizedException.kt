@@ -1,3 +1,3 @@
-package com.banking.core.remote
+package ai.mawdoo3.salma.remote
 
 class UnauthorizedException : Exception()

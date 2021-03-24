@@ -1,12 +1,12 @@
-package com.banking.common.binding
+package ai.mawdoo3.salma.binding
 
+import ai.mawdoo3.salma.utils.AppUtils
 import android.graphics.Color
 import android.text.Spannable
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.TextViewCompat
-import com.banking.common.utils.AppUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop

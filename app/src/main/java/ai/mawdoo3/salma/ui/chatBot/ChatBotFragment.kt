@@ -2,11 +2,14 @@ package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.RateAnswerDialogListener
+import ai.mawdoo3.salma.base.BaseFragment
+import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.ui.GpsUtils
+import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.location.Location
@@ -19,9 +22,6 @@ import com.afollestad.assent.GrantResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
 import com.afollestad.assent.isAllGranted
-import com.banking.common.base.BaseFragment
-import com.banking.common.base.BaseViewModel
-import com.banking.common.utils.AppUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices

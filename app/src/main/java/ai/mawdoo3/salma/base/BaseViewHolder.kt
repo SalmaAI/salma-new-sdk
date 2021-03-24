@@ -1,4 +1,4 @@
-package com.banking.common.base
+package ai.mawdoo3.salma.base
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

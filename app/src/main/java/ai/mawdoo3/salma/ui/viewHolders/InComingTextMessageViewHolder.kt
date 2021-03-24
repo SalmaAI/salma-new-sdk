@@ -1,12 +1,12 @@
 package ai.mawdoo3.salma.ui.viewHolders
 
+import ai.mawdoo3.salma.base.BaseViewHolder
 import ai.mawdoo3.salma.data.dataModel.MessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.databinding.IncomingTextMessageItemBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
-import com.banking.common.base.BaseViewHolder
 
 class InComingTextMessageViewHolder(
     val binding: IncomingTextMessageItemBinding,

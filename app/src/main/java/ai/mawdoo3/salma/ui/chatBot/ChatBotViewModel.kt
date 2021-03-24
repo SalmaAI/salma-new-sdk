@@ -1,17 +1,17 @@
 package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.BuildConfig
+import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.MessageSender
+import ai.mawdoo3.salma.remote.RepoErrorResponse
+import ai.mawdoo3.salma.remote.RepoSuccessResponse
+import ai.mawdoo3.salma.utils.PhoneUtils
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.afollestad.assent.Permission
-import com.banking.common.base.BaseViewModel
-import com.banking.common.utils.PhoneUtils
-import com.banking.core.remote.RepoErrorResponse
-import com.banking.core.remote.RepoSuccessResponse
 import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.launch
 

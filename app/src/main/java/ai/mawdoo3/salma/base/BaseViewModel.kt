@@ -1,4 +1,4 @@
-package com.banking.common.base
+package ai.mawdoo3.salma.base
 
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.utils.UnauthorizedException

@@ -1,14 +1,14 @@
 package ai.mawdoo3.salma
 
+import ai.mawdoo3.salma.binding.BindingAdapters
 import ai.mawdoo3.salma.module.ChatModule
 import ai.mawdoo3.salma.module.appModule
+import ai.mawdoo3.salma.remote.remoteModule
 import android.content.Context
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
-import com.banking.common.binding.BindingAdapters
-import com.banking.core.remote.remoteModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

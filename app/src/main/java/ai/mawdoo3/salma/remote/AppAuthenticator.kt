@@ -1,4 +1,4 @@
-package com.banking.core.remote
+package ai.mawdoo3.salma.remote
 
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator

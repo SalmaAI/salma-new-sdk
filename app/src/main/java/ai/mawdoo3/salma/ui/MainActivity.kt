@@ -1,6 +1,7 @@
 package ai.mawdoo3.salma.ui
 
 import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.base.BaseActivity
 import ai.mawdoo3.salma.databinding.ActivityMainBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotFragment
 import android.app.Activity
@@ -8,7 +9,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.banking.common.base.BaseActivity
 
 
 class MainActivity : BaseActivity() {

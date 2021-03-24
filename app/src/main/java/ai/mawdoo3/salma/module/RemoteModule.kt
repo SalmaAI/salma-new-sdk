@@ -1,4 +1,4 @@
-package com.banking.core.remote
+package ai.mawdoo3.salma.remote
 
 
 import ai.mawdoo3.salma.BuildConfig

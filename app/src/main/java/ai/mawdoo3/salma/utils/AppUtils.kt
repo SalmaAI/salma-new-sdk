@@ -1,8 +1,9 @@
 @file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "DEPRECATION")
 
-package com.banking.common.utils
+package ai.mawdoo3.salma.utils
 
 import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.base.BaseFragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -33,7 +34,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.banking.common.base.BaseFragment
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File

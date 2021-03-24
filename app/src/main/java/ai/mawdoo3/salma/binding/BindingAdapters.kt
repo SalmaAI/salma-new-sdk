@@ -1,4 +1,4 @@
-package com.banking.common.binding
+package ai.mawdoo3.salma.binding
 
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageView

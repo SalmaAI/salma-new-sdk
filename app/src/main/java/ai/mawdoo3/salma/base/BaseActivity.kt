@@ -1,11 +1,11 @@
-package com.banking.common.base
+package ai.mawdoo3.salma.base
 
+import ai.mawdoo3.salma.utils.LocalizationHelper
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.banking.common.utils.LocalizationHelper
 import org.koin.android.ext.android.inject
 
 

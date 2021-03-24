@@ -1,4 +1,4 @@
-package com.banking.common.utils
+package ai.mawdoo3.salma.utils
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -1,9 +1,9 @@
 package ai.mawdoo3.salma.module
 
+import ai.mawdoo3.salma.binding.BindingAdapters
+import ai.mawdoo3.salma.binding.BindingAdaptersImpl
+import ai.mawdoo3.salma.utils.PreferenceHelper
 import android.content.SharedPreferences
-import com.banking.common.binding.BindingAdapters
-import com.banking.common.binding.BindingAdaptersImpl
-import com.banking.common.utils.PreferenceHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.qualifier.named

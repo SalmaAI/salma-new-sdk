@@ -1,5 +1,7 @@
 package ai.mawdoo3.salma.ui.chatBot
 
+import ai.mawdoo3.salma.base.BaseAdapter
+import ai.mawdoo3.salma.base.BaseViewHolder
 import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.data.enums.MessageViewType
@@ -7,8 +9,6 @@ import ai.mawdoo3.salma.databinding.*
 import ai.mawdoo3.salma.ui.viewHolders.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.banking.common.base.BaseAdapter
-import com.banking.common.base.BaseViewHolder
 
 /**
  * created by Omar Qadomi on 3/17/21

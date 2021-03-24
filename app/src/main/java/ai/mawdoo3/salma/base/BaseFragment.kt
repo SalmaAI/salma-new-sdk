@@ -1,7 +1,8 @@
-package com.banking.common.base
+package ai.mawdoo3.salma.base
 
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.databinding.FragmentBaseBinding
+import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.setVisible
 import android.content.Context
 import android.os.Bundle
@@ -13,8 +14,6 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-
-import com.banking.common.utils.AppUtils
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment : Fragment() {

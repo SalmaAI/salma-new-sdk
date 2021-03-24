@@ -2,7 +2,7 @@ package ai.mawdoo3.salma.data.dataSource
 
 import ai.mawdoo3.salma.data.dataModel.SendMessageRequest
 import ai.mawdoo3.salma.data.dataModel.SendMessageResponse
-import com.banking.core.remote.RepoResponse
+import ai.mawdoo3.salma.remote.RepoResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

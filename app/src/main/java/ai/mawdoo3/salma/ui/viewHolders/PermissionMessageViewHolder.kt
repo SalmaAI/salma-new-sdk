@@ -1,10 +1,10 @@
 package ai.mawdoo3.salma.ui.viewHolders
 
+import ai.mawdoo3.salma.base.BaseViewHolder
 import ai.mawdoo3.salma.data.dataModel.MessageUiModel
 import ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel
 import ai.mawdoo3.salma.databinding.PermissionItemBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
-import com.banking.common.base.BaseViewHolder
 
 class PermissionMessageViewHolder(
     val binding: PermissionItemBinding,

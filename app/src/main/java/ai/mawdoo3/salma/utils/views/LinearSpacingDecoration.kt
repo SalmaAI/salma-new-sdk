@@ -1,4 +1,4 @@
-package com.banking.common.utils.views
+package ai.mawdoo3.salma.utils.views
 
 import android.graphics.Rect
 import android.view.View

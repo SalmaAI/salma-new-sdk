@@ -1,4 +1,4 @@
-package com.banking.common.utils
+package ai.mawdoo3.salma.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
