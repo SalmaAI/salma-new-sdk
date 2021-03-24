@@ -2,7 +2,7 @@ package ai.mawdoo3.salma.ui
 
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.base.BaseActivity
-import ai.mawdoo3.salma.databinding.ActivityMainBinding
+import ai.mawdoo3.salma.databinding.ActivityMainBotBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotFragment
 import android.app.Activity
 import android.content.Intent
@@ -11,11 +11,11 @@ import android.view.Menu
 import android.view.MenuItem
 
 
-class MainActivity : BaseActivity() {
-    lateinit var binding: ActivityMainBinding
+class BotMainActivity : BaseActivity() {
+    lateinit var binding: ActivityMainBotBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBotBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close);
