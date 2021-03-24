@@ -8,7 +8,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/chatActionsView"
+        app:layout_constraintBottom_toTopOf="@+id/chatBarView"
         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -76,7 +76,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <ai.mawdoo3.salma.utils.views.ChatBarView
-        android:id="@+id/chatActionsView"
+        android:id="@+id/chatBarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

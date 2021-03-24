@@ -7,6 +7,7 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.afollestad.assent.Permission
 import com.banking.common.base.BaseViewModel
 import com.banking.common.utils.PhoneUtils
 import com.banking.core.remote.RepoErrorResponse
@@ -21,6 +22,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val showLoader = MutableLiveData<Boolean>()
     val rateAnswer = LiveEvent<String>()
     val getUserLocation = LiveEvent<Boolean>()
+    val ttsAudioList = LiveEvent<List<String>>()
+    val requestPermission = LiveEvent<Permission>()
 
     fun sendMessage(text: String) {
         showLoader.postValue(false)
@@ -39,9 +42,13 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 is RepoSuccessResponse -> {
                     val responseMessages = ArrayList<MessageUiModel>()
                     val locationMessages = ArrayList<LocationMessageUiModel>()
+                    val messageAudiolist = ArrayList<String>()
                     val messagesResponse = result.body.messages
                     for (message in messagesResponse) {
                         message.Factory().create()?.let {
+                            if (!message.ttsId.isNullOrEmpty()) {
+                                messageAudiolist.add(message.ttsId)
+                            }
                             if (it is LocationMessageUiModel)
                                 locationMessages.add(it)
                             else {
@@ -54,6 +61,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                         responseMessages.add(locationsListUiModel)
                     }
                     messageResponseList.postValue(responseMessages)
+                    ttsAudioList.postValue(messageAudiolist)
                     showLoader.postValue(false)
                 }
                 is RepoErrorResponse -> {
@@ -107,6 +115,13 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                         items,
                         MessageSender.Masa
                     )
+                    val audioList = ArrayList<String>()
+                    audioList.add("20210323115331.2e76069c-0bb1-4171-9127-515dc196f759")
+                    audioList.add("20210323115332.88635623-b883-4d11-8054-65ac5354ea2c")
+                    audioList.add("20210323115332.1d3364f3-9f89-4da6-83d6-3842be25e2f4")
+                    audioList.add("20210323115333.75232e8b-a89e-49af-afc8-fa92660ed3f3")
+                    audioList.add("20210323115333.5c7ee0df-94ab-468f-83a3-43e3c7faa3a8")
+                    ttsAudioList.postValue(audioList)
                     responseMessages.add(quickReplies)
                     messageResponseList.postValue(responseMessages)
                     showLoader.postValue(false)

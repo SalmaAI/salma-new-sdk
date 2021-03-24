@@ -1,19 +1,10 @@
 package ai.mawdoo3.salma.ui.chatBot
 
-import ai.mawdoo3.salma.data.dataModel.LocationsListUiModel
-import ai.mawdoo3.salma.data.dataModel.MessageUiModel
-import ai.mawdoo3.salma.data.dataModel.QuickReplyMessageUiModel
-import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
+import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.data.enums.MessageViewType
-import ai.mawdoo3.salma.databinding.IncomingTextMessageItemBinding
-import ai.mawdoo3.salma.databinding.LocationsMessageItemBinding
-import ai.mawdoo3.salma.databinding.OutcomingTextMessageItemBinding
-import ai.mawdoo3.salma.databinding.QuickRepliesMessageItemBinding
-import ai.mawdoo3.salma.ui.viewHolders.InComingTextMessageViewHolder
-import ai.mawdoo3.salma.ui.viewHolders.LocationMessageViewHolder
-import ai.mawdoo3.salma.ui.viewHolders.OutComingTextMessageViewHolder
-import ai.mawdoo3.salma.ui.viewHolders.QuickRepliesMessageViewHolder
+import ai.mawdoo3.salma.databinding.*
+import ai.mawdoo3.salma.ui.viewHolders.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.banking.common.base.BaseAdapter
@@ -64,6 +55,15 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+            MessageViewType.PermissionMessageViewType.value -> {
+                return PermissionMessageViewHolder(
+                    PermissionItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
             else -> {
                 TODO("Not yet implemented")
             }
@@ -83,6 +83,8 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             return MessageViewType.QuickRepliesMessageViewType.value
         } else if (list[position] is LocationsListUiModel) {
             return MessageViewType.LocationMessageViewType.value
+        } else if (list[position] is PermissionMessageUiModel) {
+            return MessageViewType.PermissionMessageViewType.value
         } else {
             return 0
         }

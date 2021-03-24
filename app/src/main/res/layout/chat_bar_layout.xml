@@ -19,7 +19,7 @@
         tools:text="ما هي مزايا القرض الشخصي" />
 
     <ImageView
-        android:id="@+id/imgSend"
+        android:id="@+id/img_action"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_margin="@dimen/small_margin"
@@ -52,9 +52,9 @@
         android:text="@string/speak_im_listening"
         android:textColor="?attr/textFieldTextColor"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/imgSend"
+        app:layout_constraintBottom_toBottomOf="@+id/img_action"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imgSend" />
+        app:layout_constraintTop_toTopOf="@+id/img_action" />
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/aviSpeaking"
@@ -65,9 +65,9 @@
         android:visibility="gone"
         app:indicatorColor="?attr/secondaryColor"
         app:indicatorName="LineScalePulseOutIndicator"
-        app:layout_constraintBottom_toBottomOf="@+id/imgSend"
+        app:layout_constraintBottom_toBottomOf="@+id/img_action"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imgSend" />
+        app:layout_constraintTop_toTopOf="@+id/img_action" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etMessage"
@@ -81,9 +81,9 @@
         android:textColorHint="?attr/textFieldHintTextColor"
         android:textCursorDrawable="@drawable/edit_text_cursor"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/imgSend"
-        app:layout_constraintEnd_toStartOf="@+id/imgSend"
+        app:layout_constraintBottom_toBottomOf="@+id/img_action"
+        app:layout_constraintEnd_toStartOf="@+id/img_action"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imgSend" />
+        app:layout_constraintTop_toTopOf="@+id/img_action" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

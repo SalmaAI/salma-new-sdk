@@ -6,5 +6,6 @@ package ai.mawdoo3.salma.utils.views
 enum class ChatBarStatus {
     Nothing,
     Listening,
-    Speaking
+    Speaking,
+    PlayingAudio
 }

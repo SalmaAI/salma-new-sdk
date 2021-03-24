@@ -44,7 +44,7 @@ class MainActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GpsUtils.GPS_REQUEST && resultCode == Activity.RESULT_OK) {
             val navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.navHostMain)
+                supportFragmentManager.findFragmentById(R.id.navHostBotMain)
             val currentFragment = navHostFragment!!.childFragmentManager.fragments[0]
             if (currentFragment is ChatBotFragment) {
                 currentFragment.requestCurrentLocation()

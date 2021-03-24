@@ -5,4 +5,5 @@ enum class MessageViewType(val value: Int) {
     OutComingTextMessageViewType(2),
     QuickRepliesMessageViewType(3),
     LocationMessageViewType(4),
+    PermissionMessageViewType(5),
 }

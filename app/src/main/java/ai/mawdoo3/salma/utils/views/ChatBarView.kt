@@ -1,12 +1,13 @@
 package ai.mawdoo3.salma.utils.views
 
+import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
+import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
-import android.Manifest
 import android.content.Context
 import android.media.MediaPlayer
 import android.text.Editable
@@ -15,16 +16,14 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import com.banking.common.utils.AppUtils
-import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
+import com.afollestad.assent.Permission
+import com.afollestad.assent.isAllGranted
 import com.google.protobuf.ByteString
-import com.nabinbhandari.android.permissions.PermissionHandler
-import com.nabinbhandari.android.permissions.Permissions
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 /**
@@ -37,12 +36,12 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private var listener: ChatBarListener? = null
     private var sessionId: String = ""
     private var mVoiceRecorder: VoiceRecorder? = null
-
+    private var cancelCurrentRecord: Boolean = false
+    private lateinit var audioList: ArrayList<String>
 
     interface ChatBarListener {
         fun sendMessage(messageText: String)
-        fun onStartListening()
-        fun onEndListening()
+        fun requestMicPermission()
     }
 
 
@@ -60,15 +59,25 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         val inflater = LayoutInflater.from(context)
         binding = ChatBarLayoutBinding.inflate(inflater)
         this.addView(binding.root)
-        binding.imgSend.setOnClickListener {
+        TTSStreamHelper.getInstance(this.context).setTtsStreamCompletionListener {
+            if (audioList.size > 0) {
+                playAudio(audioList[0])
+                audioList.removeAt(0)
+            } else {
+                stopListening()
+            }
+        }
+        binding.imgAction.setOnClickListener {
             if (actionStatus == ChatBarStatus.Listening
                 || actionStatus == ChatBarStatus.Speaking
             ) {
-                listener?.onEndListening()
-                mVoiceRecorder?.stop()
+                cancelCurrentRecord = true
+                stopListening()
+            } else if (actionStatus == ChatBarStatus.PlayingAudio) {
+                TTSStreamHelper.getInstance(this.context).stopStream()
+                audioList.clear()
                 stopListening()
             } else if (binding.etMessage.text.isNullOrEmpty()) {
-                listener?.onStartListening()
                 checkPermissionAndStartListening()
             } else {
                 sendMessage()
@@ -86,13 +95,19 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
             override fun afterTextChanged(s: Editable?) {
                 if (s.isNullOrEmpty()) {
-                    binding.imgSend.setImageResource(R.drawable.ic_microphone)
+                    binding.imgAction.setImageResource(R.drawable.ic_microphone)
                 } else {
-                    binding.imgSend.setImageResource(R.drawable.ic_send)
+                    binding.imgAction.setImageResource(R.drawable.ic_send)
                 }
             }
 
         })
+    }
+
+    fun playAudioList(list: List<String>) {
+        audioList = ArrayList(list)
+        playAudio(audioList[0])
+        this.audioList.removeAt(0)
     }
 
     fun setActionsListener(listener: ChatBarListener) {
@@ -113,44 +128,46 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun checkPermissionAndStartListening() {
-        Permissions.check(
-            context,
-            Manifest.permission.RECORD_AUDIO,
-            null,
-            object : PermissionHandler() {
-                override fun onGranted() {
-                    startListening()
-                }
-
-                override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>?) {
-                    Snackbar.make(
-                        this@ChatBarView,
-                        context!!.getString(R.string.audio_permission_denied_message),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onBlocked(
-                    context: Context?,
-                    blockedList: ArrayList<String>?
-                ): Boolean {
-                    AppUtils.showSettingsDialog(
-                        this@ChatBarView.context,
-                        R.string.audio_permission_denied_message
-                    )
-                    return true
-                }
-            })
-
+        val permissionsGranted: Boolean =
+            (this.context as AppCompatActivity).isAllGranted(Permission.RECORD_AUDIO)
+        if (permissionsGranted) {
+            startListening()
+        } else {
+            listener?.requestMicPermission()
+        }
+//        // Requests one or more permissions, sending the result to a callback
+//        (this.context as AppCompatActivity).askForPermissions(Permission.RECORD_AUDIO) { result ->
+//            // Check the result, see the Using Results section
+//            // Returns GRANTED, DENIED, or PERMANENTLY_DENIED
+//            when (result[Permission.RECORD_AUDIO]) {
+//                GrantResult.GRANTED -> {
+//                    startListening()
+//                }
+//                GrantResult.DENIED -> {
+//                    Snackbar.make(
+//                        this@ChatBarView,
+//                        context!!.getString(R.string.audio_permission_denied_message),
+//                        Snackbar.LENGTH_SHORT
+//                    ).show()
+//                }
+//                GrantResult.PERMANENTLY_DENIED -> {
+//                    AppUtils.showSettingsDialog(
+//                        this@ChatBarView.context,
+//                        R.string.audio_permission_denied_message
+//                    )
+//                }
+//            }
+//        }
     }
 
     private fun startSpeaking() {
+        Log.d("GRPC", "begin of start speaking")
         actionStatus = ChatBarStatus.Speaking
         CoroutineScope(Dispatchers.Main).launch {
             binding.aviListening.makeGone()
             binding.aviSpeaking.makeVisible()
-            binding.imgSend.makeVisible()
-            binding.imgSend.setImageResource(R.drawable.ic_volume_mute)
+            binding.imgAction.makeVisible()
+            binding.imgAction.setImageResource(R.drawable.ic_delete)
             binding.etMessage.makeGone()
             binding.tvSpeak.makeGone()
             binding.tvGrpcText.text = ""
@@ -158,14 +175,15 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         }
     }
 
-    private fun startListening() {
+    fun startListening() {
+        Log.d("GRPC", "begin of start Listening")
         CoroutineScope(Dispatchers.Main).launch {
             actionStatus = ChatBarStatus.Listening
             var mediaPlayer = MediaPlayer.create(context, R.raw.ring)
             mediaPlayer.start() // no need to call prepare(); create() does that for you
             binding.aviListening.makeVisible()
             binding.aviSpeaking.makeGone()
-            binding.imgSend.makeGone()
+            binding.imgAction.makeGone()
             binding.etMessage.makeGone()
             binding.tvSpeak.makeVisible()
             binding.tvGrpcText.makeGone()
@@ -175,18 +193,33 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     private fun stopListening() {
         Log.d("GRPC", "begin of Stop Listening")
-
-        mVoiceRecorder?.stop()
         CoroutineScope(Dispatchers.Main).launch {
             actionStatus = ChatBarStatus.Nothing
             binding.aviListening.makeGone()
             binding.aviSpeaking.makeGone()
             binding.tvSpeak.makeGone()
-            binding.imgSend.setImageResource(R.drawable.ic_microphone)
-            binding.imgSend.makeVisible()
+            binding.imgAction.setImageResource(R.drawable.ic_microphone)
+            binding.imgAction.makeVisible()
             binding.etMessage.makeVisible()
             binding.tvGrpcText.makeGone()
             Log.d("GRPC", "end of Stop Listening")
+        }
+        mVoiceRecorder?.stop()
+    }
+
+    private fun playAudio(ttsID: String) {
+
+        val url = String.format(BuildConfig.TTS_URL, ttsID)
+        TTSStreamHelper.getInstance(this.context).startStreaming(url)
+        CoroutineScope(Dispatchers.Main).launch {
+            actionStatus = ChatBarStatus.PlayingAudio
+            binding.aviListening.makeGone()
+            binding.aviSpeaking.makeVisible()
+            binding.imgAction.makeVisible()
+            binding.imgAction.setImageResource(R.drawable.ic_volume_mute)
+            binding.etMessage.makeGone()
+            binding.tvSpeak.makeGone()
+            binding.tvGrpcText.makeGone()
         }
     }
 
@@ -204,6 +237,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun getVoiceRecorderCallbacks(channel: ManagedChannel): VoiceRecorder.Callback {
         return object : VoiceRecorder.Callback() {
             override fun onVoiceStart() {
+                cancelCurrentRecord = false
                 startSpeaking()
 
             }
@@ -217,6 +251,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             }
 
             override fun onVoiceEnd() {
+                Log.d("GRPC", "onVoiceEnd")
+                stopListening()
             }
         }
     }
@@ -228,8 +264,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     override fun onFinalTranscriptionReceived(text: String) {
         Log.d("GRPC", "Final text ->" + text)
-        stopListening()
-        if (text.isNotEmpty()) {
+        if (text.isNotEmpty() && !cancelCurrentRecord) {
             sendGRPCMessage(text)
         }
     }
