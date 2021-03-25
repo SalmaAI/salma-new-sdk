@@ -20,13 +20,12 @@ class AuthorizationInterceptor() : Interceptor,
 //            }
 //        }
 
-        if (original.header("Content-Type") == null) {
-            newBuilder.addHeader("Content-Type", "multipart/form-data")
-        }
 
-//        newBuilder.addHeader("Accept", "application/json")
+
+
+        newBuilder.addHeader("Content-Type", "multipart/form-data")
+        newBuilder.addHeader("accept", "application/json")
         newBuilder.method(original.method, original.body)
-
         val request = newBuilder.build()
         return chain.proceed(request)
     }

@@ -53,6 +53,7 @@ val remoteModule = module {
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(get<Moshi>()))
+
             .client(get<OkHttpClient>())
             .build()
     }
