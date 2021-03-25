@@ -1,5 +1,6 @@
 package ai.mawdoo3.salma.base
 
+import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.utils.LocalizationHelper
 import android.content.Context
 import android.content.SharedPreferences
@@ -15,6 +16,7 @@ open class BaseActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        theme.applyStyle(R.style.Theme_Banking_Masa, true)
         currentLanguage = LocalizationHelper.getCurrentLocale(this)
         if (currentLanguage == LocalizationHelper.LANG_ARABIC) {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL;

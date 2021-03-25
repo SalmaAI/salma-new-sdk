@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface ApiEndpoints {
+interface MasaApiEndpoints {
 
     @POST("{botId}/{botChannelId}/message")
     suspend fun sendMessage(

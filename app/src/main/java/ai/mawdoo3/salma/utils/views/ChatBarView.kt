@@ -37,7 +37,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private var sessionId: String = ""
     private var mVoiceRecorder: VoiceRecorder? = null
     private var cancelCurrentRecord: Boolean = false
-    private lateinit var audioList: ArrayList<String>
+    private var audioList: ArrayList<String>? = null
 
     interface ChatBarListener {
         fun sendMessage(messageText: String)
@@ -60,11 +60,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         binding = ChatBarLayoutBinding.inflate(inflater)
         this.addView(binding.root)
         TTSStreamHelper.getInstance(this.context).setTtsStreamCompletionListener {
-            if (audioList.size > 0) {
-                playAudio(audioList[0])
-                audioList.removeAt(0)
-            } else {
-                stopListening()
+            audioList?.let {
+                if (it.size > 0) {
+                    playAudio(it[0])
+                    it.removeAt(0)
+                } else {
+                    stopListening()
+                }
+
             }
         }
         binding.imgAction.setOnClickListener {
@@ -75,7 +78,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                 stopListening()
             } else if (actionStatus == ChatBarStatus.PlayingAudio) {
                 TTSStreamHelper.getInstance(this.context).stopStream()
-                audioList.clear()
+                audioList?.clear()
                 stopListening()
             } else if (binding.etMessage.text.isNullOrEmpty()) {
                 checkPermissionAndStartListening()
@@ -106,8 +109,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     fun playAudioList(list: List<String>) {
         audioList = ArrayList(list)
-        playAudio(audioList[0])
-        this.audioList.removeAt(0)
+        playAudio(audioList!![0])
+        this.audioList!!.removeAt(0)
     }
 
     fun setActionsListener(listener: ChatBarListener) {
@@ -208,7 +211,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun playAudio(ttsID: String) {
-
+        mVoiceRecorder?.stop()
         val url = String.format(BuildConfig.TTS_URL, ttsID)
         TTSStreamHelper.getInstance(this.context).startStreaming(url)
         CoroutineScope(Dispatchers.Main).launch {

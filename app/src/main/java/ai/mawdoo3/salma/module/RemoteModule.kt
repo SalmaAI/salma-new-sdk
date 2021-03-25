@@ -7,6 +7,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -15,30 +16,30 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @JvmField
 val remoteModule = module {
 
-    single<Moshi> {
+    single<Moshi>(named("masaMoshi")) {
         Moshi.Builder()
             .add(DefaultIfNullFactory())
             .add(KotlinJsonAdapterFactory())
             .build()
         //adapter
     }
-    single {
+    single(named("masaAuthInterceptor")) {
         AuthorizationInterceptor()
     }
 
-    single {
+    single(named("masaAuth")) {
         AppAuthenticator()
     }
 
     //create OkHttpClient
-    single {
+    single(named("masaOkhttpClient")) {
         val builder = OkHttpClient.Builder()
 //            .readTimeout(30, TimeUnit.SECONDS)
 //            .writeTimeout(30, TimeUnit.SECONDS)
 //            .connectTimeout(30, TimeUnit.SECONDS)
 
-        builder.addInterceptor(get<AuthorizationInterceptor>())
-        builder.authenticator(get<AppAuthenticator>())
+        builder.addInterceptor(get<AuthorizationInterceptor>(named("masaAuthInterceptor")))
+        builder.authenticator(get<AppAuthenticator>(named("masaAuth")))
 
         if (BuildConfig.DEBUG) {
             val logger = HttpLoggingInterceptor()
@@ -49,16 +50,16 @@ val remoteModule = module {
     }
 
     //Create retrofit builder
-    single<Retrofit> {
+    single<Retrofit>(named("masaRetrofit")) {
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(get<Moshi>()))
-            .client(get<OkHttpClient>())
+            .addConverterFactory(MoshiConverterFactory.create(get<Moshi>(named("masaMoshi"))))
+            .client(get<OkHttpClient>(named("masaOkhttpClient")))
             .build()
     }
 
     //Create an implementation of the API endpoints
-    single<ApiEndpoints> {
-        get<Retrofit>().create(ApiEndpoints::class.java)
+    single<MasaApiEndpoints>(named("masaApiEndpoints")) {
+        get<Retrofit>(named("masaRetrofit")).create(MasaApiEndpoints::class.java)
     }
 }

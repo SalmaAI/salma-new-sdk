@@ -1,7 +1,5 @@
 package ai.mawdoo3.salma.module
 
-import ai.mawdoo3.salma.binding.BindingAdapters
-import ai.mawdoo3.salma.binding.BindingAdaptersImpl
 import ai.mawdoo3.salma.utils.PreferenceHelper
 import android.content.SharedPreferences
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,8 +23,5 @@ val appModule = module {
         Dispatchers.IO
     }
 
-    single<BindingAdapters> {
-        BindingAdaptersImpl()
-    }
 }
 

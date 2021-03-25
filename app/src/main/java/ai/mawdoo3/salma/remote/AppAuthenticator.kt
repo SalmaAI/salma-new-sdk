@@ -11,7 +11,7 @@ import org.koin.core.component.inject
 class AppAuthenticator() :
     Authenticator,
     KoinComponent {
-    val apiEndpoints: ApiEndpoints by inject()
+    val masaApiEndpoints: MasaApiEndpoints by inject()
 
     //The authenticate() method is called when server returns 401 Unauthorized.
     override fun authenticate(route: Route?, response: Response): Request? {

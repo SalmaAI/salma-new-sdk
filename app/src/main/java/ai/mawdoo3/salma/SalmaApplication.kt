@@ -1,22 +1,17 @@
 package ai.mawdoo3.salma
 
-import ai.mawdoo3.salma.binding.BindingAdapters
 import ai.mawdoo3.salma.module.ChatModule
 import ai.mawdoo3.salma.module.appModule
 import ai.mawdoo3.salma.remote.remoteModule
 import android.content.Context
-import androidx.databinding.DataBindingComponent
-import androidx.databinding.DataBindingUtil
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
-class SalmaApplication : MultiDexApplication(), DataBindingComponent {
+class SalmaApplication : MultiDexApplication() {
 
-    private val appBindingAdapters: BindingAdapters by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -31,16 +26,12 @@ class SalmaApplication : MultiDexApplication(), DataBindingComponent {
                 )
             )
         }
-        DataBindingUtil.setDefaultComponent(this)
+//        MasaSDK.initialize(this, "", "", "")
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
-    }
-
-    override fun getBindingAdapters(): BindingAdapters {
-        return appBindingAdapters
     }
 
 
