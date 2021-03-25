@@ -9,6 +9,7 @@ import ai.mawdoo3.salma.remote.RepoErrorResponse
 import ai.mawdoo3.salma.remote.RepoSuccessResponse
 import ai.mawdoo3.salma.utils.PhoneUtils
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.afollestad.assent.Permission
@@ -34,16 +35,19 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     PhoneUtils.getDeviceId(applicationContext),
-                    message = text,
+                    message = "مرحبا",
                     BuildConfig.SECRET_KEY
                 )
             )
+
             when (result) {
                 is RepoSuccessResponse -> {
                     val responseMessages = ArrayList<MessageUiModel>()
                     val locationMessages = ArrayList<LocationMessageUiModel>()
                     val messageAudiolist = ArrayList<String>()
-                    val messagesResponse = result.body.messages
+                    val messagesResponse = result.body
+                    Log.d("resultoo",messagesResponse.toString())
+                    /*
                     for (message in messagesResponse) {
                         message.Factory().create()?.let {
                             if (!message.ttsId.isNullOrEmpty()) {
@@ -63,8 +67,13 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     messageResponseList.postValue(responseMessages)
                     ttsAudioList.postValue(messageAudiolist)
                     showLoader.postValue(false)
+
+                     */
                 }
                 is RepoErrorResponse -> {
+
+                    Log.d("resultoo",result.error.toString())
+
                     val responseMessages = ArrayList<MessageUiModel>()
                     val items =
                         ArrayList<MessageResponse.MessageContentResponse.QuickReplyElement>()

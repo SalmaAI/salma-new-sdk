@@ -60,6 +60,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.sendMessage("")
+
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             adapter.addItems(it)
             scrollToBottom()
