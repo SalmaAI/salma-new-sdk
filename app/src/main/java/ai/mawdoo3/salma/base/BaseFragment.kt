@@ -1,7 +1,7 @@
 package ai.mawdoo3.salma.base
 
 import ai.mawdoo3.salma.R
-import ai.mawdoo3.salma.databinding.FragmentBaseBinding
+import ai.mawdoo3.salma.databinding.FragmentMasaBaseBinding
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.setVisible
 import android.content.Context
@@ -19,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 abstract class BaseFragment : Fragment() {
 
     private var toast: Toast? = null
-    var baseFragmentBinding: FragmentBaseBinding? = null
+    var baseFragmentBinding: FragmentMasaBaseBinding? = null
 
 
     //must override in fragment
@@ -39,8 +39,8 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        baseFragmentBinding = FragmentBaseBinding.inflate(inflater)
-        baseFragmentBinding?.stateLayout?.button?.setOnClickListener { onTryToReload() }
+        baseFragmentBinding = FragmentMasaBaseBinding.inflate(inflater)
+        baseFragmentBinding?.masaStateLayout?.button?.setOnClickListener { onTryToReload() }
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -119,37 +119,37 @@ abstract class BaseFragment : Fragment() {
     }
 
     private fun showLoadingState() {
-        baseFragmentBinding?.stateLayout?.loaderLayout?.setVisible(true)
-        baseFragmentBinding?.stateLayout?.errorLayout?.setVisible(false)
-        baseFragmentBinding?.stateLayout?.root?.bringToFront()
+        baseFragmentBinding?.masaStateLayout?.loaderLayout?.setVisible(true)
+        baseFragmentBinding?.masaStateLayout?.errorLayout?.setVisible(false)
+        baseFragmentBinding?.masaStateLayout?.root?.bringToFront()
     }
 
     open fun showNothingState() {
-        baseFragmentBinding?.stateLayout?.errorLayout?.setVisible(false)
-        baseFragmentBinding?.stateLayout?.loaderLayout?.setVisible(false)
+        baseFragmentBinding?.masaStateLayout?.errorLayout?.setVisible(false)
+        baseFragmentBinding?.masaStateLayout?.loaderLayout?.setVisible(false)
     }
 
     open fun showNoInternetState() {
-        baseFragmentBinding?.stateLayout?.loaderLayout?.setVisible(false)
-        baseFragmentBinding?.stateLayout?.errorLayout?.setVisible(true)
-        baseFragmentBinding?.stateLayout?.text?.setText(R.string.no_connection_message)
-        baseFragmentBinding?.stateLayout?.root?.bringToFront()
+        baseFragmentBinding?.masaStateLayout?.loaderLayout?.setVisible(false)
+        baseFragmentBinding?.masaStateLayout?.errorLayout?.setVisible(true)
+        baseFragmentBinding?.masaStateLayout?.text?.setText(R.string.no_connection_message)
+        baseFragmentBinding?.masaStateLayout?.root?.bringToFront()
     }
 
     open fun showEmptyState() {
-        baseFragmentBinding?.stateLayout?.loaderLayout?.setVisible(false)
-        baseFragmentBinding?.stateLayout?.errorLayout?.setVisible(true)
-        baseFragmentBinding?.stateLayout?.button?.setVisible(false)
-        baseFragmentBinding?.stateLayout?.text?.text = getString(R.string.no_data_available)
-        baseFragmentBinding?.stateLayout?.root?.bringToFront()
+        baseFragmentBinding?.masaStateLayout?.loaderLayout?.setVisible(false)
+        baseFragmentBinding?.masaStateLayout?.errorLayout?.setVisible(true)
+        baseFragmentBinding?.masaStateLayout?.button?.setVisible(false)
+        baseFragmentBinding?.masaStateLayout?.text?.text = getString(R.string.no_data_available)
+        baseFragmentBinding?.masaStateLayout?.root?.bringToFront()
     }
 
 
     open fun showGeneralState(message: String) {
-        baseFragmentBinding?.stateLayout?.loaderLayout?.setVisible(false)
-        baseFragmentBinding?.stateLayout?.errorLayout?.setVisible(true)
-        baseFragmentBinding?.stateLayout?.text?.text = message
-        baseFragmentBinding?.stateLayout?.root?.bringToFront()
+        baseFragmentBinding?.masaStateLayout?.loaderLayout?.setVisible(false)
+        baseFragmentBinding?.masaStateLayout?.errorLayout?.setVisible(true)
+        baseFragmentBinding?.masaStateLayout?.text?.text = message
+        baseFragmentBinding?.masaStateLayout?.root?.bringToFront()
     }
 
     /**

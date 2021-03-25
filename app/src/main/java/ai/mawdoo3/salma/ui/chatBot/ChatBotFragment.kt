@@ -12,7 +12,9 @@ import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +36,7 @@ import org.koin.core.parameter.parametersOf
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     RateAnswerDialogListener {
 
+    private var phone = ""
     private val viewModel: ChatBotViewModel by viewModel()
     private val adapter: MessagesAdapter by inject { parametersOf(viewModel) }
     private lateinit var binding: FragmentChatBotBinding
@@ -59,8 +62,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.sendMessage("")
 
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             adapter.addItems(it)
@@ -92,15 +93,48 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.requestPermission.observe(viewLifecycleOwner, {
             if (it == Permission.ACCESS_FINE_LOCATION) {
                 if (!isAllGranted(Permission.ACCESS_FINE_LOCATION)) {
-                    requestLocationPermission()
+                    requestPermission(Permission.ACCESS_FINE_LOCATION)
                 }
             } else if (it == Permission.RECORD_AUDIO) {
                 if (!isAllGranted(Permission.RECORD_AUDIO)) {
-                    requestRecordAudioPermission()
+                    requestPermission(Permission.RECORD_AUDIO)
+                }
+            } else if (it == Permission.CALL_PHONE) {
+                if (!isAllGranted(Permission.CALL_PHONE)) {
+                    requestPermission(Permission.CALL_PHONE)
                 }
             }
         })
+        viewModel.makeCall.observe(viewLifecycleOwner, {
+            phone = it
+            val permissionsGranted: Boolean = isAllGranted(Permission.CALL_PHONE)
+            if (permissionsGranted) {
+                makeCall()
+            } else {
+                adapter.addItem(
+                    PermissionMessageUiModel(
+                        getString(R.string.call_permission_message),
+                        getString(R.string.call_permission_button_title),
+                        Permission.CALL_PHONE
+                    )
+                )
+                scrollToBottom()
+            }
+        })
+        viewModel.goToLocation.observe(viewLifecycleOwner, {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr=$it")
+            )
+            startActivity(intent)
+        })
 
+    }
+
+    private fun makeCall() {
+        val intent = Intent(Intent.ACTION_CALL)
+        intent.data = Uri.parse("tel:" + phone)
+        startActivity(intent)
     }
 
     override fun getViewModel(): BaseViewModel? {
@@ -133,30 +167,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     /**
-     * this function will show native permission dialog to request location permission
-     */
-    private fun requestLocationPermission() {
-        // Requests one or more permissions, sending the result to a callback
-        askForPermissions(Permission.ACCESS_FINE_LOCATION) { result ->
-            // Check the result, see the Using Results section
-            // Returns GRANTED, DENIED, or PERMANENTLY_DENIED
-            when (result[Permission.ACCESS_FINE_LOCATION]) {
-                GrantResult.GRANTED -> {
-                    requestCurrentLocation()
-                }
-                GrantResult.DENIED -> {
-                }
-                GrantResult.PERMANENTLY_DENIED -> {
-                    AppUtils.showSettingsDialog(
-                        requireContext(),
-                        R.string.location_permission_denied_message
-                    )
-                }
-            }
-        }
-    }
-
-    /**
      * this function will check if GPS is enabled or not and then get current location
      */
     @SuppressLint("MissingPermission")
@@ -175,8 +185,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                         if (task.isSuccessful) {
                             val result: Location = task.result
                             "Location (success): ${result.latitude}, ${result.longitude}"
-                            showSnackbarMessage("Location (success): ${result.latitude}, ${result.longitude}")
                             adapter.loading(false)
+                            viewModel.sendMessage(
+                                result.latitude.toString() + "," + result.longitude.toString(),
+                                false
+                            )
                         } else {
                             adapter.loading(false)
                             showSnackbarMessage(getString(R.string.get_location_failed_message))
@@ -188,21 +201,46 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     /**
-     * this function will show native permission dialog to request location permission
+     * this function will show native permission dialog to request permission
+     * if permission permanently denied custom settings dialog will be shown
      */
-    private fun requestRecordAudioPermission() {
+    private fun requestPermission(permission: Permission) {
         // Requests one or more permissions, sending the result to a callback
-        askForPermissions(Permission.RECORD_AUDIO) { result ->
+        askForPermissions(permission) { result ->
             // Check the result, see the Using Results section
             // Returns GRANTED, DENIED, or PERMANENTLY_DENIED
-            when (result[Permission.RECORD_AUDIO]) {
+            when (result[permission]) {
                 GrantResult.GRANTED -> {
-                    binding.chatBarView.startListening()
+                    when (permission) {
+                        Permission.RECORD_AUDIO -> {
+                            binding.chatBarView.startListening()
+                        }
+                        Permission.CALL_PHONE -> {
+                            makeCall()
+                        }
+                        Permission.ACCESS_FINE_LOCATION -> {
+                            requestCurrentLocation()
+                        }
+                    }
                 }
                 GrantResult.PERMANENTLY_DENIED -> {
+                    val message = when (permission) {
+                        Permission.RECORD_AUDIO -> {
+                            R.string.record_audio_permission_message
+                        }
+                        Permission.CALL_PHONE -> {
+                            R.string.call_permission_message
+                        }
+                        Permission.ACCESS_FINE_LOCATION -> {
+                            R.string.location_permission_message
+                        }
+                        else -> {
+                            R.string.permission_denied_message
+                        }
+                    }
                     AppUtils.showSettingsDialog(
                         requireContext(),
-                        R.string.record_audio_permission_message
+                        message
                     )
                 }
             }

@@ -18,6 +18,7 @@ class LocationMessageViewHolder(
             val adapter = LocationsAdapter(viewModel)
             adapter.setItems(locations)
             this.recyclerLocations.adapter = adapter
+            executePendingBindings()
         }
     }
 }

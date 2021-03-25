@@ -11,8 +11,8 @@
             android:layout_height="match_parent" />
 
         <include
-            android:id="@+id/state_layout"
-            layout="@layout/state_layout"
+            android:id="@+id/masa_state_layout"
+            layout="@layout/masa_state_layout"
             android:visibility="visible" />
     </FrameLayout>
 

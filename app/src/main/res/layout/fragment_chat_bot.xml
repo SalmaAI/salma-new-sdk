@@ -67,6 +67,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/page_bg"
             android:nestedScrollingEnabled="true"
+            android:paddingBottom="@dimen/card_view_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:itemCount="5"

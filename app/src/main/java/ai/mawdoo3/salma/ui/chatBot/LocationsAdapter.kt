@@ -7,6 +7,7 @@ import ai.mawdoo3.salma.databinding.LocationItemBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
+
 /**
  * created by Omar Qadomi on 3/17/21
  */
@@ -34,6 +35,12 @@ class LocationsAdapter(val viewModel: ChatBotViewModel) :
         ) {
             return bind<LocationItemBinding> {
                 this.location = item
+                this.btnCall.setOnClickListener {
+                    viewModel.makeCall.postValue(item?.phone)
+                }
+                this.btnDirections.setOnClickListener {
+                    viewModel.goToLocation.postValue(item?.geoFence)
+                }
             }
         }
 

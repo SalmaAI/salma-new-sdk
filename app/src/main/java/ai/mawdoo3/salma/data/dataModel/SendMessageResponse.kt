@@ -42,11 +42,12 @@ data class MessageResponse(
                     messageContent.quickReplyElements, MessageSender.Masa
                 )
             } else if (messageType == MessageType.TextLocation || messageType == MessageType.UnansweredTextLocation) {
-                val data = messageContent.text?.split(',')
-                val name = data?.get(0)?.removePrefix("الفرع :")
-                val address = data?.get(1)?.removePrefix("العنوان :")
-                val phone = data?.get(2)?.removePrefix("هاتف :")
-                val workingHours = data?.get(3)?.removePrefix("ساعات العمل :")
+                val text = messageContent.text?.replace("الاحداثيات :", "")
+                val data = text?.split('،')
+                val name = data?.get(0)?.replace("الفرع :", "")
+                val address = data?.get(1)?.replace("العنوان :", "")
+                val phone = data?.get(2)?.replace("هاتف :", "")
+                val workingHours = data?.get(3)?.replace("ساعات العمل :", "")
                 LocationMessageUiModel(
                     name = name,
                     address = address,

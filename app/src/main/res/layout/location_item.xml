@@ -44,25 +44,27 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:text="@{location.address}"
                 android:textColor="?attr/subTitleTextColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout"
                 app:layout_constraintTop_toBottomOf="@+id/tvName"
                 tools:text="شارع المدينة المنورة، مقابل مستشفى ابن الهيثم تلاع العلي الشمالي" />
 
 
             <TextView
                 android:id="@+id/tvWorkingHours"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
                 android:text="@{location.workingHours}"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout"
                 app:layout_constraintTop_toBottomOf="@+id/tvAddress"
                 tools:text="الأحد - الخميس 9:00 am - 3:00 pm" />
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"

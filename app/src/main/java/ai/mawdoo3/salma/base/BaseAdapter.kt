@@ -1,6 +1,6 @@
 package ai.mawdoo3.salma.base
 
-import ai.mawdoo3.salma.databinding.LoaderRowBinding
+import ai.mawdoo3.salma.databinding.MasaLoaderRowBinding
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
@@ -112,7 +112,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): V {
         return if (viewType == EnumState.STATE_LOADING.viewType()) {
             LoaderViewHolder(
-                LoaderRowBinding.inflate(
+                MasaLoaderRowBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -144,8 +144,8 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     }
 
     //todo should be inner class
-    class LoaderViewHolder(binding: LoaderRowBinding) : BaseViewHolder<Nothing>(binding) {
-        override fun bind(position: Int, item: Nothing?) = bind<LoaderRowBinding> {
+    class LoaderViewHolder(binding: MasaLoaderRowBinding) : BaseViewHolder<Nothing>(binding) {
+        override fun bind(position: Int, item: Nothing?) = bind<MasaLoaderRowBinding> {
         }
     }
 
