@@ -44,16 +44,23 @@ data class MessageResponse(
             } else if (messageType == MessageType.TextLocation || messageType == MessageType.UnansweredTextLocation) {
                 val text = messageContent.text?.replace("الاحداثيات :", "")
                 val data = text?.split('،')
-                val name = data?.get(0)?.replace("الفرع :", "")
-                val address = data?.get(1)?.replace("العنوان :", "")
-                val phone = data?.get(2)?.replace("هاتف :", "")
-                val workingHours = data?.get(3)?.replace("ساعات العمل :", "")
+                var name = data?.get(0)?.trim()
+                var type = "branch"
+                if (name?.contains("الفرع") == false) {
+                    type = "ATM"
+                }
+                name = name?.replace("الفرع :", "")?.replace("الصراف الالي :", "")
+                    ?.replace("الصراف الالي التفاعلي :", "")?.trim()
+                val address = data?.get(1)?.replace("العنوان :", "")?.trim()
+                val phone = data?.get(2)?.replace("هاتف :", "")?.trim()
+                val workingHours = data?.get(3)?.replace("ساعات العمل :", "")?.trim()
                 LocationMessageUiModel(
                     name = name,
                     address = address,
                     workingHours = workingHours,
                     geoFence = messageContent.attachmentId,
                     phone = phone,
+                    type = type,
                     messageSender = MessageSender.Masa
                 )
             } else {

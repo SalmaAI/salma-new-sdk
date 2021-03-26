@@ -25,14 +25,15 @@
 
             <TextView
                 android:id="@+id/tvName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_branch"
+                android:drawableStart='@{location.type=="branch"?@drawable/ic_branch:@drawable/ic_withdraw}'
                 android:drawablePadding="@dimen/small_margin"
                 android:fontFamily="@font/almarai_bold"
                 android:text="@{location.name}"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="فرع المدينة المنورة" />

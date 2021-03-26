@@ -26,7 +26,12 @@ class SalmaApplication : MultiDexApplication() {
                 )
             )
         }
-//        MasaSDK.initialize(this, "", "", "")
+        MasaSdkInstance.initialize(
+            "1",
+            "LlfjJwVrMPJKeA",
+            "72K5WY2T7rkNX55wcjkruIOPc5xydUmbjneS4HDuGiPQDMAuZd4izLWQxUCX1I84",
+            "عمر"
+        )
     }
 
     override fun attachBaseContext(base: Context?) {

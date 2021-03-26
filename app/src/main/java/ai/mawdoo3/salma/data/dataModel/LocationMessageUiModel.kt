@@ -11,6 +11,7 @@ data class LocationMessageUiModel(
     val workingHours: String?,
     val geoFence: String?,
     val phone: String?,
+    val type: String?,
     val messageSender: MessageSender
 ) :
     MessageUiModel {

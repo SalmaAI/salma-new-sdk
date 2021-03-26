@@ -12,9 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/card_view_margin"
-        android:layout_marginTop="@dimen/card_view_margin">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -26,6 +24,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/card_view_margin"
+
+            android:layout_marginTop="@dimen/card_view_margin"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -47,7 +48,11 @@
                         android:id="@+id/tvText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:autoLink="phone|email"
                         android:text="@{message.text}"
+                        android:lineSpacingExtra="5dp"
+                        android:linksClickable="true"
+                        android:textColorLink="?attr/accentColor"
                         android:textColor="?attr/titleTextColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

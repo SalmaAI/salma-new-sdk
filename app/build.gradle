@@ -55,7 +55,6 @@ android {
             buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
             buildConfigField "String", "TTS_URL", ttsURL
             buildConfigField "String", "BASE_URL", baseURL
-            buildConfigField "String", "SECRET_KEY", secretKey
         }
         debug {
             minifyEnabled false
@@ -64,7 +63,6 @@ android {
             buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
             buildConfigField "String", "TTS_URL", ttsURL
             buildConfigField "String", "BASE_URL", baseURL
-            buildConfigField "String", "SECRET_KEY", secretKey
         }
     }
 

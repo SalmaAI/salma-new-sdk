@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="message"
             type="ai.mawdoo3.salma.data.dataModel.QuickReplyMessageUiModel" />
@@ -36,9 +38,10 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="@{message.title}"
+
                 android:textColor="?attr/titleTextColor"
+                android:visibility="@{message.title==null?View.GONE:View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="بعض ما يمكنني مساعدتك به" />

@@ -192,7 +192,13 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                             )
                         } else {
                             adapter.loading(false)
-                            showSnackbarMessage(getString(R.string.get_location_failed_message))
+                            adapter.addItem(
+                                TextMessageUiModel(
+                                    getString(R.string.get_location_failed_message),
+                                    MessageSender.Masa
+                                )
+                            )
+//                            showSnackbarMessage(getString(R.string.get_location_failed_message))
                         }
                     }
                 }
