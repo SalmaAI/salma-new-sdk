@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/toolbarBackgroundColor">
+
+    <TextView
+        android:id="@+id/tvGrpcText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/small_margin"
+        android:textColor="?attr/titleTextColor"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ما هي مزايا القرض الشخصي" />
+
+    <ImageView
+        android:id="@+id/img_action"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="@dimen/small_margin"
+        android:background="@drawable/circle"
+        android:padding="@dimen/small_margin"
+        android:src="@drawable/ic_microphone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvGrpcText" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/aviListening"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="@dimen/small_margin"
+        android:visibility="gone"
+        app:indicatorColor="?attr/secondaryColor"
+        app:indicatorName="BallScaleMultipleIndicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/small_margin"
+        android:text="@string/speak_im_listening"
+        android:textColor="?attr/textFieldTextColor"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/img_action"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_action" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/aviSpeaking"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_margin"
+        android:visibility="gone"
+        app:indicatorColor="?attr/secondaryColor"
+        app:indicatorName="LineScalePulseOutIndicator"
+        app:layout_constraintBottom_toBottomOf="@+id/img_action"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_action" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_margin"
+        android:background="@null"
+        android:hint="@string/message_text_hint"
+        android:textAlignment="viewStart"
+        android:textColor="?attr/textFieldTextColor"
+        android:textColorHint="?attr/textFieldHintTextColor"
+        android:textCursorDrawable="@drawable/edit_text_cursor"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/img_action"
+        app:layout_constraintEnd_toStartOf="@+id/img_action"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_action" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,37 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Banking.Masa" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="fontFamily">@font/almarai_regular</item>
+        <!-- Primary brand color. -->
+        <item name="primaryColor">@color/masaPrimaryColor</item>
+        <item name="secondaryColor">@color/masaSecondaryColor</item>
+        <item name="accentColor">@color/masaAccentColor</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/toolbarBackgroundColor</item>
+        <item name="toolbarBackgroundColor">@color/masaToolbarBackgroundColor</item>
+        <item name="pageBackgroundPrimaryColor">@color/masaPageBackgroundPrimaryColor</item>
+        <item name="pageBackgroundSecondaryColor">@color/masaPageBackgroundSecondaryColor</item>
+        <item name="outComingMessageBackgroundColor">@color/masaOutComingMessageBackgroundColor
+        </item>
+        <item name="inComingMessageBackgroundColor">@color/masaInComingMessageBackgroundColor</item>
+        <!-- Text filed colors-->
+        <item name="textFieldHintTextColor">@color/masaTextFieldHintTextColor</item>
+        <item name="textFieldTextColor">@color/masaTextFieldTextColor</item>
+        <item name="textFieldBackgroundColor">@color/masaTextFieldBackgroundColor</item>
+        <item name="textFieldCursorColor">@color/masaTextFieldCursorColor</item>
+        <!---->
+        <item name="subTitleTextColor">@color/masaSubTitleTextColor</item>
+        <item name="titleTextColor">@color/masaTitleTextColor</item>
+        <item name="headerTextColor">@color/masaHeaderTextColor</item>
+
+        <item name="cardButtonBackgroundColor">@color/masaCardButtonBackgroundColor</item>
+        <item name="cardButtonIconColor">@color/masaCardButtonIconColor</item>
+        <item name="cardButtonTextColor">@color/masaCardButtonTextColor</item>
+        <item name="dialogBackgroundColor">@color/masaDialogBackgroundColor</item>
+
+        <!-- Customize your theme here. -->
+
+        <!--    Main colors-->
+
+    </style>
+</resources>

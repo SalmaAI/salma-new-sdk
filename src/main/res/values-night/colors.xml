@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="masaPrimaryColor">#001B44</color>
+    <color name="masaSecondaryColor">#FFD100</color>
+    <color name="masaAccentColor">#0072BF</color>
+    <color name="masaPageBackgroundPrimaryColor">#001B44</color>
+    <color name="masaPageBackgroundSecondaryColor">#033785</color>
+    <color name="masaToolbarBackgroundColor">#001B44</color>
+    <color name="masaOutComingMessageBackgroundColor">#0072BF</color>
+    <color name="masaInComingMessageBackgroundColor">#003976</color>
+
+    <!-- Text filed colors-->
+    <color name="masaTextFieldHintTextColor">#577CB7</color>
+    <color name="masaTextFieldTextColor">#FFFFFFFF</color>
+    <color name="masaTextFieldBackgroundColor">#FFFFFFFF</color>
+    <color name="masaTextFieldCursorColor">#FFFFFFFF</color>
+    <color name="masaCardButtonBackgroundColor">#001B44</color>
+    <color name="masaCardButtonTextColor">#FFFFFFFF</color>
+    <color name="masaCardButtonIconColor">#0072BF</color>
+
+
+    <color name="masaTitleTextColor">#FFFFFFFF</color>
+    <color name="masaSubTitleTextColor">#577CB7</color>
+    <color name="masaHeaderTextColor">#FFFFFFFF</color>
+    <color name="black_overlay">#80000000</color>
+
+</resources>
