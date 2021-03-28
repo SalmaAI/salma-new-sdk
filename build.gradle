@@ -7,9 +7,9 @@ plugins {
     id 'com.google.protobuf'
 }
 
-grpc_plugin = "0.8.15"
-grpc_lib="1.35.0"
-exp_player_version = "2.13.2"
+ext.grpc_plugin = "0.8.15"
+ext.grpc_lib="1.35.0"
+ext.exp_player_version = "2.13.2"
 
 
 protobuf {
