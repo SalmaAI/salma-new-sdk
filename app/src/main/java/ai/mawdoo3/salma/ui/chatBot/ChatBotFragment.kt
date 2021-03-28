@@ -1,5 +1,6 @@
 package ai.mawdoo3.salma.ui.chatBot
 
+import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.RateAnswerDialogListener
 import ai.mawdoo3.salma.base.BaseFragment
@@ -57,6 +58,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         adapter.clear()
         adapter.addItem(TextMessageUiModel("كيف يمكنني مساعدتك؟", MessageSender.Masa))
         binding.recyclerView.adapter = adapter
+        binding.tvWelcome.text = "صباح الخير, ${MasaSdkInstance.username}"
         return attachView(binding.root)
     }
 
