@@ -11,7 +11,7 @@ import org.koin.core.context.loadKoinModules
  * created by Omar Qadomi on 3/24/21
  */
 object MasaSdkInstance {
-//test
+//test rwsr
     var botId: String = "1"
     var botChannelId: String = "1"
     var key: String = "1"
