@@ -16,6 +16,7 @@ object MasaSdkInstance {
     var botChannelId: String = "1"
     var key: String = "1"
     var username: String? = ""
+    var appName: String? = ""
 
     fun launchSDK(activity: FragmentActivity?) {
         activity?.startActivity(Intent(activity, BotMainActivity::class.java))
