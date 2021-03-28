@@ -11,12 +11,10 @@ import org.koin.core.context.loadKoinModules
  * created by Omar Qadomi on 3/24/21
  */
 object MasaSdkInstance {
-//test rwsr sdskk
     var botId: String = "1"
     var botChannelId: String = "1"
     var key: String = "1"
     var username: String? = ""
-    var appName: String? = ""
 
     fun launchSDK(activity: FragmentActivity?) {
         activity?.startActivity(Intent(activity, BotMainActivity::class.java))

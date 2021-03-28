@@ -8,7 +8,7 @@ plugins {
 }
 
 ext.grpc_plugin = "0.8.15"
-ext.grpc_lib="1.35.0"
+ext.grpc_lib = "1.35.0"
 ext.exp_player_version = "2.13.2"
 
 
@@ -57,16 +57,16 @@ android {
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
-            buildConfigField ("String", "TTS_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
-            buildConfigField ("String", "BASE_URL", '"https://hadklstrjkbelyadeedbakrahbashar.ingress.mawdu.com/tts-api-v4-0-3/tts?key=%1&diacritize_text=true&override_diacritics=true&streaming=true&as_attachment=false&tempo=0&encoding=mp3&bitrate=16000"')
+            buildConfigField("String", "TTS_URL", '"https://hadklstrjkbelyadeedbakrahbashar.ingress.mawdu.com/tts-api-v4-0-3/tts?key=%1$s&diacritize_text=true&override_diacritics=true&streaming=true&as_attachment=false&tempo=0&encoding=mp3&bitrate=16000"')
+            buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
         debug {
             minifyEnabled false
             useProguard false
             debuggable true
             buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
-            buildConfigField ("String", "TTS_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
-            buildConfigField ("String", "BASE_URL", '"https://hadklstrjkbelyadeedbakrahbashar.ingress.mawdu.com/tts-api-v4-0-3/tts?key=%1&diacritize_text=true&override_diacritics=true&streaming=true&as_attachment=false&tempo=0&encoding=mp3&bitrate=16000"')
+            buildConfigField("String", "TTS_URL", '"https://hadklstrjkbelyadeedbakrahbashar.ingress.mawdu.com/tts-api-v4-0-3/tts?key=%1$s&diacritize_text=true&override_diacritics=true&streaming=true&as_attachment=false&tempo=0&encoding=mp3&bitrate=16000"')
+            buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
     }
 

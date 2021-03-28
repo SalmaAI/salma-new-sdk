@@ -52,7 +52,7 @@ val remoteModule = module {
     //Create retrofit builder
     single<Retrofit>(named("masaRetrofit")) {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BuildConfig.BOT_API_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(get<Moshi>(named("masaMoshi"))))
             .client(get<OkHttpClient>(named("masaOkhttpClient")))
             .build()
