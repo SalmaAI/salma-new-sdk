@@ -22,6 +22,7 @@
 
 -keep class * extends androidx.fragment.app.Fragment{}
 -keep class ai.mawdoo3.salma.RateAnswerDialogListener
+-keep class com.banking.core.transfers.data.*
 
 
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
@@ -29,7 +30,7 @@
 -keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
 -keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
 
--keepclassmembernames class kotlinx.** {
+-keepclassmembernames class kotlinx.* {
    volatile <fields>;
 }
 
