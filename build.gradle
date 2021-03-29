@@ -52,7 +52,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-//            shrinkResources true
             useProguard true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -169,4 +168,8 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-core:$exp_player_version"
     implementation "com.google.android.exoplayer:exoplayer-dash:$exp_player_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exp_player_version"
+}
+
+afterEvaluate {
+    generateReleaseBuildConfig.enabled = true
 }
