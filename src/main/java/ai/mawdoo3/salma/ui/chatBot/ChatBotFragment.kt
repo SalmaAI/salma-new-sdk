@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.util.*
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     RateAnswerDialogListener {
@@ -58,7 +59,25 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         adapter.clear()
         adapter.addItem(TextMessageUiModel("كيف يمكنني مساعدتك؟", MessageSender.Masa))
         binding.recyclerView.adapter = adapter
-        binding.tvWelcome.text = "صباح الخير, ${MasaSdkInstance.username}"
+        var welcomeMessage = ""
+        var welcomeImage: Int
+        val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        when (hours) {
+            in 5..11 -> {
+                welcomeMessage = "${getString(R.string.good_morning)}, ${MasaSdkInstance.username}"
+                welcomeImage = R.drawable.header_morning
+            }
+            in 12..17 -> {
+                welcomeMessage = "${getString(R.string.good_evening)}, ${MasaSdkInstance.username}"
+                welcomeImage = R.drawable.header_evening
+            }
+            else -> {
+                welcomeMessage = "${getString(R.string.hello)}, ${MasaSdkInstance.username}"
+                welcomeImage = R.drawable.header_night
+            }
+        }
+        binding.tvHeader.text = welcomeMessage
+        binding.imgHeader.setImageResource(welcomeImage)
         return attachView(binding.root)
     }
 

@@ -44,23 +44,37 @@ data class MessageResponse(
             } else if (messageType == MessageType.TextLocation || messageType == MessageType.UnansweredTextLocation) {
                 val text = messageContent.text?.replace("الاحداثيات :", "")
                 val data = text?.split('،')
-                var name = data?.get(0)?.trim()
-                var type = "branch"
-                if (name?.contains("الفرع") == false) {
-                    type = "ATM"
+                var name: String? = null
+                var address: String? = null
+                var workingHours: String? = null
+                var phone: String? = null
+                var locationType: String? = null
+                if (!data.isNullOrEmpty()) {
+                    name = data[0].trim()
+                    locationType = if (name.contains("الفرع")) {
+                        "branch"
+                    } else {
+                        "ATM"
+                    }
+                    name = name.replace("الفرع :", "").replace("الصراف الالي :", "")
+                        .replace("الصراف الالي التفاعلي :", "").trim()
                 }
-                name = name?.replace("الفرع :", "")?.replace("الصراف الالي :", "")
-                    ?.replace("الصراف الالي التفاعلي :", "")?.trim()
-                val address = data?.get(1)?.replace("العنوان :", "")?.trim()
-                val phone = data?.get(2)?.replace("هاتف :", "")?.trim()
-                val workingHours = data?.get(3)?.replace("ساعات العمل :", "")?.trim()
+                if (!data.isNullOrEmpty() && data.size > 1) {
+                    address = data[1].replace("العنوان :", "").trim()
+                }
+                if (!data.isNullOrEmpty() && data.size > 2) {
+                    phone = data[2].replace("هاتف :", "").trim()
+                }
+                if (!data.isNullOrEmpty() && data.size > 3) {
+                    workingHours = data[3].replace("ساعات العمل :", "").trim()
+                }
                 LocationMessageUiModel(
                     name = name,
                     address = address,
                     workingHours = workingHours,
                     geoFence = messageContent.attachmentId,
                     phone = phone,
-                    type = type,
+                    type = locationType,
                     messageSender = MessageSender.Masa
                 )
             } else {
