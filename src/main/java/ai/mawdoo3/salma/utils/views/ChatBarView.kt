@@ -6,6 +6,8 @@ import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
 import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
+import ai.mawdoo3.salma.utils.makeGone
+import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
 import android.media.MediaPlayer
 import android.text.Editable
