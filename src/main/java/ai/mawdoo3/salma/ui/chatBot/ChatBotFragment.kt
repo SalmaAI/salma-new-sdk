@@ -21,6 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.GrantResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
@@ -30,6 +32,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -58,7 +61,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
         adapter.addItem(TextMessageUiModel("كيف يمكنني مساعدتك؟", MessageSender.Masa))
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.itemAnimator = SlideInUpAnimator()
+        binding.recyclerView.itemAnimator?.apply {
+            addDuration = 400
+            removeDuration = 0
+            moveDuration = 0
+            changeDuration = 0
+        }
         var welcomeMessage = ""
         var welcomeImage: Int
         val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -86,10 +97,20 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             adapter.addItems(it)
-            scrollToBottom()
+//            scrollToBottom()
+        })
+        viewModel.messageSent.observe(viewLifecycleOwner, {
+            adapter.clear()
+            binding.appBar.setExpanded(false)
+//            adapter.addItem(it)
+
+            binding.recyclerView.postDelayed({
+                adapter.addItem(it)
+            }, 500)
+//            scrollToBottom()
         })
         viewModel.ttsAudioList.observe(viewLifecycleOwner, {
-            binding.chatBarView.playAudioList(it)
+//            binding.chatBarView.playAudioList(it)
         })
         viewModel.showLoader.observe(viewLifecycleOwner, {
             adapter.loading(it)
@@ -278,6 +299,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
      * this method will be called when user click send button
      */
     override fun sendMessage(messageText: String) {
+        AppUtils.hideKeyboard(activity, binding.chatBarView)
         viewModel.sendMessage(messageText)
     }
 
@@ -295,8 +317,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     private fun scrollToBottom() {
         binding.appBar.setExpanded(false)
         binding.recyclerView.postDelayed(Runnable {
-            binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
+            binding.recyclerView.layoutManager?.smoothScrollToPosition(
+                binding.recyclerView,
+                RecyclerView.State(), adapter.getListCount() - 1
+            );
         }, 500)
+
     }
 
     override fun rateAnswer(answerId: String, isGood: Boolean) {

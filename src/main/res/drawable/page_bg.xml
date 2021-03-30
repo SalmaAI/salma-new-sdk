@@ -3,6 +3,7 @@
     android:shape="rectangle">
     <gradient
         android:angle="270"
-        android:endColor="?attr/pageBackgroundSecondaryColor"
-        android:startColor="?attr/pageBackgroundPrimaryColor" />
+        android:centerColor="?attr/pageBackgroundSecondColor"
+        android:endColor="?attr/pageBackgroundThirdColor"
+        android:startColor="?attr/pageBackgroundFirstColor" />
 </shape>

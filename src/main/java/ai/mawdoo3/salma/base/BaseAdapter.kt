@@ -65,9 +65,11 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     }
 
     fun removeItem(position: Int) {
-        rvHandler.post {
-            list.removeAt(position)
-            notifyItemRemoved(position)
+        if (list.size > position) {
+            rvHandler.post {
+                list.removeAt(position)
+                notifyItemRemoved(position)
+            }
         }
     }
 
@@ -82,6 +84,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
 
     fun clear() {
         rvHandler.post {
+            currentState = EnumState.STATE_NORMAL
             list.clear()
             notifyDataSetChanged()
         }
@@ -101,6 +104,10 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         } else {
             return list.size
         }
+    }
+
+    fun getListCount(): Int {
+        return list.size
     }
 
     override fun getItemViewType(position: Int): Int {

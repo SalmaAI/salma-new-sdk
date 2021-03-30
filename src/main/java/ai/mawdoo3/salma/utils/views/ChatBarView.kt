@@ -6,8 +6,6 @@ import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
 import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
-import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
 import android.media.MediaPlayer
 import android.text.Editable
@@ -118,11 +116,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun sendMessage() {
-        listener?.sendMessage(binding.etMessage.text.toString())
-        binding.etMessage.text?.clear()
+        if (binding.etMessage.text.toString().trim().isNotEmpty()) {
+            listener?.sendMessage(binding.etMessage.text.toString())
+            binding.etMessage.text?.clear()
+        }
     }
 
     private fun sendGRPCMessage(text: String) {
+        mVoiceRecorder?.stop()
         CoroutineScope(Dispatchers.Main).launch {
             listener?.sendMessage(text)
             binding.tvGrpcText.text = ""

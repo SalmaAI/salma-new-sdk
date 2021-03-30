@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.afollestad.assent.Permission
 import com.hadilq.liveevent.LiveEvent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
@@ -22,6 +23,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val makeCall = LiveEvent<String>()
     val goToLocation = LiveEvent<String>()
     val messageResponseList = MutableLiveData<MutableList<MessageUiModel>>()
+    val messageSent = MutableLiveData<MessageUiModel>()
     val showLoader = MutableLiveData<Boolean>()
     val rateAnswer = LiveEvent<String>()
     val getUserLocation = LiveEvent<Boolean>()
@@ -29,13 +31,14 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val requestPermission = LiveEvent<Permission>()
 
     fun sendMessage(text: String, showMessage: Boolean = true) {
-        showLoader.postValue(false)
+//        showLoader.postValue(false)
         messageResponseList.value = ArrayList()
         if (showMessage) {
-            messageResponseList.value?.add(TextMessageUiModel(text, MessageSender.User))
+            messageSent.postValue(TextMessageUiModel(text, MessageSender.User))
         }
         viewModelScope.launch {
             showLoader.postValue(true)
+            delay(1000)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     PhoneUtils.getDeviceId(applicationContext),
@@ -69,7 +72,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     }
                     messageResponseList.postValue(responseMessages)
                     if (messageAudiolist.size > 0) {
-                        ttsAudioList.postValue(messageAudiolist)
+//                        ttsAudioList.postValue(messageAudiolist)
                     }
                     showLoader.postValue(false)
 

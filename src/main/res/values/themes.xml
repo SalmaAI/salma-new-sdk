@@ -9,8 +9,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/toolbarBackgroundColor</item>
         <item name="toolbarBackgroundColor">@color/masaToolbarBackgroundColor</item>
-        <item name="pageBackgroundPrimaryColor">@color/masaPageBackgroundPrimaryColor</item>
-        <item name="pageBackgroundSecondaryColor">@color/masaPageBackgroundSecondaryColor</item>
+        <item name="pageBackgroundFirstColor">@color/masaPageBackgroundFirstColor</item>
+        <item name="pageBackgroundSecondColor">@color/masaPageBackgroundSecondColor</item>
+        <item name="pageBackgroundThirdColor">@color/masaPageBackgroundThirdColor</item>
         <item name="outComingMessageBackgroundColor">@color/masaOutComingMessageBackgroundColor
         </item>
         <item name="inComingMessageBackgroundColor">@color/masaInComingMessageBackgroundColor</item>

@@ -11,8 +11,7 @@ import ai.mawdoo3.salma.utils.makeVisible
 class InComingTextMessageViewHolder(
     val binding: IncomingTextMessageItemBinding,
     val viewModel: ChatBotViewModel
-) :
-    BaseViewHolder<MessageUiModel>(binding) {
+) : BaseViewHolder<MessageUiModel>(binding) {
     override fun bind(position: Int, item: MessageUiModel?) {
         return bind<IncomingTextMessageItemBinding> {
             this.message = item as TextMessageUiModel?

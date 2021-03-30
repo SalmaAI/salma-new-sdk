@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/toolbarBackgroundColor">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvGrpcText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -14,6 +14,8 @@
         android:padding="@dimen/small_margin"
         android:textColor="?attr/titleTextColor"
         android:visibility="gone"
+        android:fontFamily="@font/almarai_bold"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="ما هي مزايا القرض الشخصي" />
@@ -44,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvSpeak"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

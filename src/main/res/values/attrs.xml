@@ -5,8 +5,9 @@
     <attr name="primaryColor" format="color" />
     <attr name="secondaryColor" format="color" />
     <attr name="accentColor" format="color" />
-    <attr name="pageBackgroundPrimaryColor" format="color" />
-    <attr name="pageBackgroundSecondaryColor" format="color" />
+    <attr name="pageBackgroundFirstColor" format="color" />
+    <attr name="pageBackgroundSecondColor" format="color" />
+    <attr name="pageBackgroundThirdColor" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
     <attr name="outComingMessageBackgroundColor" format="color" />
     <attr name="inComingMessageBackgroundColor" format="color" />

@@ -157,6 +157,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //read more textview
+    implementation 'kr.co.prnd:readmore-textview:1.0.0'
+//recycler animator
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
+
     //grpc
     implementation "io.grpc:grpc-okhttp:$grpc_lib" // CURRENT_GRPC_VERSION
     implementation "io.grpc:grpc-protobuf-lite:$grpc_lib" // CURRENT_GRPC_VERSION

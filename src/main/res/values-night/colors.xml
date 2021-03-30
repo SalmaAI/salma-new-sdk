@@ -4,11 +4,13 @@
     <color name="masaPrimaryColor">#001B44</color>
     <color name="masaSecondaryColor">#FFD100</color>
     <color name="masaAccentColor">#0072BF</color>
-    <color name="masaPageBackgroundPrimaryColor">#001B44</color>
-    <color name="masaPageBackgroundSecondaryColor">#033785</color>
-    <color name="masaToolbarBackgroundColor">#001B44</color>
-    <color name="masaOutComingMessageBackgroundColor">#0072BF</color>
-    <color name="masaInComingMessageBackgroundColor">#003976</color>
+    <color name="masaPageBackgroundFirstColor">#011535</color>
+    <color name="masaPageBackgroundSecondColor">#011F4E</color>
+    <color name="masaPageBackgroundThirdColor">#002E73</color>
+    <color name="masaToolbarBackgroundColor">#011535</color>
+    <color name="masaOutComingMessageBackgroundColor">#0081D9</color>
+    <color name="masaInComingMessageBackgroundColor">#0A417C</color>
+    <color name="masaDialogBackgroundColor">#001B44</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>
