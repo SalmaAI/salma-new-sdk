@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium_margin"
-        android:layout_marginEnd="@dimen/medium_margin"
+
         android:background="?attr/dialogBackgroundColor"
         android:padding="@dimen/medium_margin">
 
@@ -24,11 +23,11 @@
 
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgSad"
+            android:id="@+id/imgBad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_margin"
-            android:src="@drawable/ic_sad"
+            android:src="@drawable/ic_bad"
             app:layout_constraintEnd_toEndOf="@+id/tvSad"
             app:layout_constraintStart_toStartOf="@+id/tvSad"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -41,7 +40,7 @@
             android:text="@string/rate_dialog_bad"
             android:textColor="?attr/titleTextColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgSad" />
+            app:layout_constraintTop_toBottomOf="@+id/imgBad" />
 
         <Space
             android:id="@+id/space"
@@ -53,13 +52,12 @@
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgHappy"
+            android:id="@+id/imgGood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
-            android:src="@drawable/ic_happy"
+            android:src="@drawable/ic_good"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/space"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <TextView
@@ -69,9 +67,9 @@
             android:layout_marginTop="@dimen/small_margin"
             android:text="@string/rate_dialog_good"
             android:textColor="?attr/titleTextColor"
-            app:layout_constraintEnd_toEndOf="@+id/imgHappy"
-            app:layout_constraintStart_toStartOf="@+id/imgHappy"
-            app:layout_constraintTop_toBottomOf="@+id/imgSad" />
+            app:layout_constraintEnd_toEndOf="@+id/imgGood"
+            app:layout_constraintStart_toStartOf="@+id/imgGood"
+            app:layout_constraintTop_toBottomOf="@+id/imgGood" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

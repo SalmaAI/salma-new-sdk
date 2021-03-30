@@ -45,33 +45,23 @@
                     android:layout_margin="@dimen/small_margin">
 
                     <kr.co.prnd.readmore.ReadMoreTextView
+                        android:id="@+id/tvMessage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:autoLink="phone|email"
+                        android:autoLink="phone|email|web"
+                        android:lineSpacingExtra="5dp"
+                        android:linksClickable="true"
                         android:text="@{message.text}"
                         android:textColor="?attr/titleTextColor"
+                        android:textColorLink="?attr/accentColor"
+                        android:textSize="@dimen/card_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:readMoreColor="?attr/accentColor"
+                        app:readMoreColor="?attr/readMoreTextColor"
                         app:readMoreMaxLine="6"
-                        app:readMoreText="...المزيد"
+                        app:readMoreText=" ...المزيد"
                         tools:text="كيف يمكنني مساعدتك؟" />
-                    <!--                    <TextView-->
-                    <!--                        android:id="@+id/tvText"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:autoLink="phone|email"-->
-                    <!--                        android:text="@{message.text}"-->
-                    <!--                        android:lineSpacingExtra="5dp"-->
-                    <!--                        android:linksClickable="true"-->
-                    <!--                        android:textColorLink="?attr/accentColor"-->
-                    <!--                        android:textColor="?attr/titleTextColor"-->
-                    <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                        app:layout_constraintTop_toTopOf="parent"-->
-                    <!--                        tools:text="كيف يمكنني مساعدتك؟" />-->
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 

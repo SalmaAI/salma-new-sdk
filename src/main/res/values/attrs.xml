@@ -15,6 +15,7 @@
     <attr name="cardButtonTextColor" format="color" />
     <attr name="cardButtonIconColor" format="color" />
     <attr name="dialogBackgroundColor" format="color" />
+    <attr name="readMoreTextColor" format="color" />
 
     <!-- Text filed colors-->
     <attr name="textFieldHintTextColor" format="color" />

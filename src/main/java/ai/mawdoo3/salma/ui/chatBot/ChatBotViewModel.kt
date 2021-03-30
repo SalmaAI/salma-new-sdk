@@ -22,7 +22,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
     val makeCall = LiveEvent<String>()
     val goToLocation = LiveEvent<String>()
-    val messageResponseList = MutableLiveData<MutableList<MessageUiModel>>()
+    val messageResponseList = MutableLiveData<List<MessageUiModel>>()
     val messageSent = MutableLiveData<MessageUiModel>()
     val showLoader = MutableLiveData<Boolean>()
     val rateAnswer = LiveEvent<String>()
@@ -32,12 +32,12 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
     fun sendMessage(text: String, showMessage: Boolean = true) {
 //        showLoader.postValue(false)
-        messageResponseList.value = ArrayList()
         if (showMessage) {
             messageSent.postValue(TextMessageUiModel(text, MessageSender.User))
         }
         viewModelScope.launch {
-            showLoader.postValue(true)
+//            showLoader.postValue(true)
+            Log.d("SendMessage", "delay request 1000 millisecond")
             delay(1000)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
@@ -53,7 +53,6 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     val locationMessages = ArrayList<LocationMessageUiModel>()
                     val messageAudiolist = ArrayList<String>()
                     val messagesResponse = result.body
-                    Log.d("resultoo", messagesResponse.toString())
                     for (message in messagesResponse.messages) {
                         message.Factory().create()?.let {
                             if (!message.ttsId.isNullOrEmpty()) {
@@ -70,76 +69,15 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                         val locationsListUiModel = LocationsListUiModel(locationMessages)
                         responseMessages.add(locationsListUiModel)
                     }
+                    //send response to fragment
                     messageResponseList.postValue(responseMessages)
                     if (messageAudiolist.size > 0) {
 //                        ttsAudioList.postValue(messageAudiolist)
                     }
-                    showLoader.postValue(false)
+//                    showLoader.postValue(false)
 
                 }
                 is RepoErrorResponse -> {
-
-                    Log.d("resultoo", result.error.toString())
-
-//                    val responseMessages = ArrayList<MessageUiModel>()
-//                    val items =
-//                        ArrayList<MessageResponse.MessageContentResponse.QuickReplyElement>()
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "ما هي آخر عمليات شراء قمت بها؟",
-//                            "ما هي آخر عمليات شراء قمت بها؟",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "ما مزايا القرض السكني؟",
-//                            "ما مزايا القرض السكني؟",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "أوقات عمل مركز خدمة العملاء",
-//                            "أوقات عمل مركز خدمة العملاء",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "القروض",
-//                            "القروض",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "البطاقات",
-//                            "البطاقات",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "التأمين",
-//                            "التأمين",
-//                            null
-//                        )
-//                    )
-//                    val quickReplies = QuickReplyMessageUiModel(
-//                        "بعض ما يمكنني مساعدتك به",
-//                        items,
-//                        MessageSender.Masa
-//                    )
-//                    val audioList = ArrayList<String>()
-//                    audioList.add("20210323115331.2e76069c-0bb1-4171-9127-515dc196f759")
-//                    audioList.add("20210323115332.88635623-b883-4d11-8054-65ac5354ea2c")
-//                    audioList.add("20210323115332.1d3364f3-9f89-4da6-83d6-3842be25e2f4")
-//                    audioList.add("20210323115333.75232e8b-a89e-49af-afc8-fa92660ed3f3")
-//                    audioList.add("20210323115333.5c7ee0df-94ab-468f-83a3-43e3c7faa3a8")
-//                    ttsAudioList.postValue(audioList)
-//                    responseMessages.add(quickReplies)
-//                    messageResponseList.postValue(responseMessages)
                     showLoader.postValue(false)
                     showErrorMessage.postValue("Something went wrong, please try again")
                 }

@@ -15,6 +15,7 @@ class InComingTextMessageViewHolder(
     override fun bind(position: Int, item: MessageUiModel?) {
         return bind<IncomingTextMessageItemBinding> {
             this.message = item as TextMessageUiModel?
+            binding.tvMessage.collapse()
             item?.text?.let {
                 if (it.contains("يرجى ارسال موقعك") || it.contains("ابعتلي موقعك")) {
                     binding.tvLocation.makeVisible()

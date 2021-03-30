@@ -11,6 +11,7 @@
     <color name="masaOutComingMessageBackgroundColor">#0081D9</color>
     <color name="masaInComingMessageBackgroundColor">#0A417C</color>
     <color name="masaDialogBackgroundColor">#001B44</color>
+    <color name="masaReadMoreTextColor">#FFD100</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>

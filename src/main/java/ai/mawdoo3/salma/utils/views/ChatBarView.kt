@@ -6,6 +6,8 @@ import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
 import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
+import ai.mawdoo3.salma.utils.makeGone
+import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
 import android.media.MediaPlayer
 import android.text.Editable
@@ -123,11 +125,11 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun sendGRPCMessage(text: String) {
-        mVoiceRecorder?.stop()
+        Log.d("GRPC", "Stop record")
+        stopListening()
         CoroutineScope(Dispatchers.Main).launch {
             listener?.sendMessage(text)
-            binding.tvGrpcText.text = ""
-            binding.tvGrpcText.makeGone()
+            Log.d("GRPC", "Send message ->" + text)
         }
     }
 
@@ -205,6 +207,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.imgAction.setImageResource(R.drawable.ic_microphone)
             binding.imgAction.makeVisible()
             binding.etMessage.makeVisible()
+            binding.tvGrpcText.setText("")
             binding.tvGrpcText.makeGone()
             Log.d("GRPC", "end of Stop Listening")
         }

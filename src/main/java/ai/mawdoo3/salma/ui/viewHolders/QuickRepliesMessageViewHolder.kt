@@ -30,7 +30,7 @@ class QuickRepliesMessageViewHolder(
                         false
                     ).apply {
                         this.quickReply = quickReplyElement
-                        this.root.setOnClickListener {
+                        this.tvText.setOnClickListener {
                             viewModel.sendMessage(quickReplyElement.quickReplyPayload)
                             binding.root.makeGone()
                         }

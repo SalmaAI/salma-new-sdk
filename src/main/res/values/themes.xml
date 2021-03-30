@@ -29,6 +29,7 @@
         <item name="cardButtonIconColor">@color/masaCardButtonIconColor</item>
         <item name="cardButtonTextColor">@color/masaCardButtonTextColor</item>
         <item name="dialogBackgroundColor">@color/masaDialogBackgroundColor</item>
+        <item name="readMoreTextColor">@color/masaReadMoreTextColor</item>
 
         <!-- Customize your theme here. -->
 

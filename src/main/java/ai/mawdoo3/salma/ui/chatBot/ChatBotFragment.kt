@@ -17,6 +17,7 @@ import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,16 +97,22 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
+            Log.d("SendMessage", "Hide loader")
+            adapter.loading(false)
+            Log.d("SendMessage", "Add Masa message")
             adapter.addItems(it)
 //            scrollToBottom()
         })
         viewModel.messageSent.observe(viewLifecycleOwner, {
+            Log.d("SendMessage", "Add user message")
             adapter.clear()
             binding.appBar.setExpanded(false)
 //            adapter.addItem(it)
 
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
+                Log.d("SendMessage", "Show loader")
+                adapter.loading(true)
             }, 500)
 //            scrollToBottom()
         })

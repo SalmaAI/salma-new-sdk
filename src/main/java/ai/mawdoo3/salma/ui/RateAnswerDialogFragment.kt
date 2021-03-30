@@ -37,11 +37,11 @@ class RateAnswerDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.imgHappy.setOnClickListener {
+        binding.imgGood.setOnClickListener {
             listener.rateAnswer(answerId, true)
             dismiss()
         }
-        binding.imgSad.setOnClickListener {
+        binding.imgBad.setOnClickListener {
             listener.rateAnswer(answerId, false)
             dismiss()
         }
