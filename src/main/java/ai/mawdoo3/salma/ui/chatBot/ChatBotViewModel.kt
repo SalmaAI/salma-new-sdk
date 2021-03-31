@@ -31,12 +31,11 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val requestPermission = LiveEvent<Permission>()
 
     fun sendMessage(text: String, showMessage: Boolean = true) {
-//        showLoader.postValue(false)
         if (showMessage) {
             messageSent.postValue(TextMessageUiModel(text, MessageSender.User))
         }
         viewModelScope.launch {
-//            showLoader.postValue(true)
+            showLoader.postValue(true)
             Log.d("SendMessage", "delay request 1000 millisecond")
             delay(1000)
             val result = chatRepository.sendMessage(
@@ -49,6 +48,9 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
             when (result) {
                 is RepoSuccessResponse -> {
+                    Log.d("SendMessage", "Response success")
+                    showLoader.postValue(false)
+
                     val responseMessages = ArrayList<MessageUiModel>()
                     val locationMessages = ArrayList<LocationMessageUiModel>()
                     val messageAudiolist = ArrayList<String>()
@@ -74,10 +76,10 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     if (messageAudiolist.size > 0) {
 //                        ttsAudioList.postValue(messageAudiolist)
                     }
-//                    showLoader.postValue(false)
 
                 }
                 is RepoErrorResponse -> {
+                    Log.d("SendMessage", "Response error")
                     showLoader.postValue(false)
                     showErrorMessage.postValue("Something went wrong, please try again")
                 }

@@ -45,7 +45,11 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
 
     fun loading(isLoading: Boolean) {
         rvHandler.post {
-            currentState = if (isLoading) EnumState.STATE_LOADING else EnumState.STATE_NORMAL
+            if (isLoading && currentState == EnumState.STATE_NORMAL) {
+                currentState = EnumState.STATE_LOADING
+            } else if (!isLoading && currentState == EnumState.STATE_LOADING) {
+                currentState = EnumState.STATE_NORMAL
+            }
             notifyItemChanged(list.size)
         }
     }

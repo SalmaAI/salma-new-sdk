@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.GrantResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
@@ -97,11 +96,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
-            Log.d("SendMessage", "Hide loader")
-            adapter.loading(false)
             Log.d("SendMessage", "Add Masa message")
             adapter.addItems(it)
-//            scrollToBottom()
         })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
@@ -111,8 +107,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
-                Log.d("SendMessage", "Show loader")
-                adapter.loading(true)
             }, 500)
 //            scrollToBottom()
         })
@@ -234,20 +228,17 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                         if (task.isSuccessful) {
                             val result: Location = task.result
                             "Location (success): ${result.latitude}, ${result.longitude}"
-                            adapter.loading(false)
                             viewModel.sendMessage(
                                 result.latitude.toString() + "," + result.longitude.toString(),
                                 false
                             )
                         } else {
-                            adapter.loading(false)
                             adapter.addItem(
                                 TextMessageUiModel(
                                     getString(R.string.get_location_failed_message),
                                     MessageSender.Masa
                                 )
                             )
-//                            showSnackbarMessage(getString(R.string.get_location_failed_message))
                         }
                     }
                 }
@@ -322,13 +313,13 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     private fun scrollToBottom() {
-        binding.appBar.setExpanded(false)
-        binding.recyclerView.postDelayed(Runnable {
-            binding.recyclerView.layoutManager?.smoothScrollToPosition(
-                binding.recyclerView,
-                RecyclerView.State(), adapter.getListCount() - 1
-            );
-        }, 500)
+//        binding.appBar.setExpanded(false)
+//        binding.recyclerView.postDelayed(Runnable {
+//            binding.recyclerView.layoutManager?.smoothScrollToPosition(
+//                binding.recyclerView,
+//                RecyclerView.State(), adapter.getListCount() - 1
+//            );
+//        }, 500)
 
     }
 

@@ -1,5 +1,6 @@
 package ai.mawdoo3.salma.data.dataSource
 
+import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.data.dataModel.SendMessageRequest
 import ai.mawdoo3.salma.data.dataModel.SendMessageResponse
 import ai.mawdoo3.salma.remote.MasaApiEndpoints
@@ -21,8 +22,8 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 .build()
 
             val result = endpoints.sendMessageNew(
-                "1",
-                "LlfjJwVrMPJKeA",
+                MasaSdkInstance.botId,
+                MasaSdkInstance.botChannelId,
                 body.part(0),
                 body.part(1),
                 body.part(2)
