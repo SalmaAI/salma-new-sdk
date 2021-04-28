@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="message"
+            type="ai.mawdoo3.salma.data.dataModel.TextMessageUiModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/card_view_margin"
+            android:layout_marginTop="@dimen/card_view_margin"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/textLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/medium_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <kr.co.prnd.readmore.ReadMoreTextView
+                    android:id="@+id/tvMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:autoLink="phone|email|web"
+                    android:background="@drawable/incoming_message_bg"
+                    android:lineSpacingExtra="5dp"
+                    android:linksClickable="true"
+                    android:padding="@dimen/small_margin"
+                    android:paddingEnd="@dimen/medium_margin"
+                    android:text="@{message.text}"
+                    android:textColor="?attr/inComingMessageTextColor"
+                    android:textColorLink="?attr/accentColor"
+                    android:textSize="@dimen/card_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:readMoreColor="?attr/readMoreTextColor"
+                    app:readMoreMaxLine="6"
+                    app:readMoreText=" ...المزيد"
+                    tools:text="كيف يمكنني مساعدتك؟" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/logo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="-35dp"
+                android:background="@drawable/shape_oval"
+                android:padding="5dp"
+                android:src="@drawable/ic_logo"
+                app:layout_constraintStart_toEndOf="@+id/textLayout"
+                app:layout_constraintTop_toTopOf="@+id/textLayout" />
+
+
+            <TextView
+                android:id="@+id/tvRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rate"
+                android:textColor="?attr/titleTextColor"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/textLayout"
+                app:layout_constraintTop_toBottomOf="@+id/textLayout" />
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:background="@drawable/tv_border_white"
+                android:drawableStart="@drawable/ic_location"
+                android:drawablePadding="@dimen/small_margin"
+                android:fontFamily="@font/font_bold"
+                android:padding="@dimen/small_margin"
+                android:text="@string/use_my_location"
+                android:textColor="?attr/titleTextColor"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
