@@ -1,9 +1,11 @@
 package ai.mawdoo3.salma
 
+import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.module.ChatModule
 import ai.mawdoo3.salma.remote.remoteModule
 import ai.mawdoo3.salma.ui.BotMainActivity
 import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import org.koin.core.context.loadKoinModules
 
@@ -15,9 +17,23 @@ object MasaSdkInstance {
     var botChannelId: String = "1"
     var key: String = "1"
     var username: String? = ""
+    var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
 
     fun launchSDK(activity: FragmentActivity?) {
         activity?.startActivity(Intent(activity, BotMainActivity::class.java))
+    }
+
+    fun launchSDKForResult(
+        activity: FragmentActivity?,
+        launcher: ActivityResultLauncher<Intent>
+    ) {
+        val intent = Intent(activity, BotMainActivity::class.java)
+        launcher.launch(intent)
+    }
+
+    fun setChatType(chatBarType: ChatBarType): MasaSdkInstance {
+        this.chatBarType = chatBarType
+        return this
     }
 
     fun initialize(

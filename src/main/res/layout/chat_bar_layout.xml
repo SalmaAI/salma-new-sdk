@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/toolbarBackgroundColor">
+    android:background="?attr/pageBackgroundColor">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvGrpcText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/small_margin"
-        android:textColor="?attr/titleTextColor"
+        android:textColor="?attr/secondaryColor"
         android:textSize="16sp"
         android:visibility="gone"
         app:fontFamily="@font/font_bold"
@@ -20,8 +20,10 @@
         tools:text="ما هي مزايا القرض الشخصي" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/textLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGrpcText">
@@ -92,6 +94,50 @@
             app:layout_constraintBottom_toBottomOf="@+id/img_action"
             app:layout_constraintEnd_toStartOf="@+id/img_action"
             app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/audioLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginBottom="@dimen/small_margin"
+        android:background="@drawable/circle"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvGrpcText">
+
+        <ImageView
+            android:id="@+id/imgRecord"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="@dimen/small_margin"
+            android:adjustViewBounds="true"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_microphone"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/aviRecord"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="@dimen/small_margin"
+            android:visibility="gone"
+            app:indicatorColor="@android:color/white"
+            app:indicatorName="LineScalePulseOutIndicator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

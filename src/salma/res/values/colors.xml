@@ -15,7 +15,7 @@
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>
-    <color name="masaTextFieldTextColor">#FFFFFFFF</color>
+    <color name="masaTextFieldTextColor">#000000</color>
     <color name="masaTextFieldBackgroundColor">#FFFFFFFF</color>
     <color name="masaTextFieldCursorColor">#FFFFFFFF</color>
     <color name="masaCardButtonBackgroundColor">#001B44</color>
