@@ -4,7 +4,7 @@
     <color name="masaPrimaryColor">#000000</color>
     <color name="masaSecondaryColor">#223CC8</color>
     <color name="masaAccentColor">#0072BF</color>
-    <color name="masaPageBackgroundColor">#FFFFFF</color>
+    <color name="masaPageBackgroundColor">#F6F6F6</color>
     <color name="masaToolbarBackgroundColor">#000000</color>
     <color name="masaOutComingMessageBackgroundColor">#4BA2EA</color>
     <color name="masaInComingMessageBackgroundColor">#DFE4EC</color>
