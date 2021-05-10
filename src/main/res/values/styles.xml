@@ -35,15 +35,15 @@
         <item name="cardUseCompatPadding">false</item>
     </style>
 
-    <style name="Theme.MobileBanking.JKB.MaterialAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="Theme.MobileBanking.MaterialAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay">
             @style/ShapeAppearanceOverlay.MaterialAlertDialog.Rounded
         </item>
         <item name="materialAlertDialogTitleTextStyle">
-            @style/Theme.MobileBanking.JKB.MaterialAlertDialog.Title
+            @style/Theme.MobileBanking.MaterialAlertDialog.Title
         </item>
         <item name="materialAlertDialogBodyTextStyle">
-            @style/Theme.MobileBanking.JKB.MaterialAlertDialog.Body
+            @style/Theme.MobileBanking.MaterialAlertDialog.Body
         </item>
         <item name="android:background">@drawable/dialog_bg</item>
         <item name="android:textColorPrimary">#ffffff</item>
@@ -61,7 +61,7 @@
         <item name="cornerSize">8dp</item>
     </style>
 
-    <style name="Theme.MobileBanking.JKB.MaterialAlertDialog.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+    <style name="Theme.MobileBanking.MaterialAlertDialog.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textColor">#ffffff</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">16sp</item>
@@ -71,7 +71,7 @@
         <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
 
-    <style name="Theme.MobileBanking.JKB.MaterialAlertDialog.Body" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+    <style name="Theme.MobileBanking.MaterialAlertDialog.Body" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
         <item name="android:textColor">#ffffff</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">14sp</item>
