@@ -31,4 +31,5 @@
     <string name="good_evening">مساء الخير</string>
     <string name="hello">مرحباً</string>
     <string name="connection_failed_error">تعذر الوصول الى الخادم الرجاء المحاولة لاحقا</string>
+    <string name="masa_welcoming_message">كيف يمكنني مساعدتك؟</string>
 </resources>

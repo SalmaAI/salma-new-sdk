@@ -63,7 +63,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
-        adapter.addItem(TextMessageUiModel("كيف يمكنني مساعدتك؟", MessageSender.Masa))
+        adapter.addItem(
+            TextMessageUiModel(
+                getString(R.string.masa_welcoming_message),
+                MessageSender.Masa
+            )
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
