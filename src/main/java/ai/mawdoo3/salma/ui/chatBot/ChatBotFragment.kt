@@ -7,10 +7,13 @@ import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
+import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
+import ai.mawdoo3.salma.utils.makeGone
+import ai.mawdoo3.salma.utils.makeVisible
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -60,7 +63,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
-        adapter.addItem(TextMessageUiModel("كيف يمكنني مساعدتك؟", MessageSender.Masa))
+        adapter.addItem(
+            TextMessageUiModel(
+                getString(R.string.masa_welcoming_message),
+                MessageSender.Masa
+            )
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
@@ -89,6 +97,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         }
         binding.tvHeader.text = welcomeMessage
         binding.imgHeader.setImageResource(welcomeImage)
+        if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
+            binding.chatBarView.makeGone()
+        } else if (MasaSdkInstance.chatBarType == ChatBarType.AUDIO) {
+            binding.chatBarView.binding.audioLayout.makeVisible()
+            binding.chatBarView.binding.textLayout.makeGone()
+        } else if (MasaSdkInstance.chatBarType == ChatBarType.TEXT_AND_AUDIO) {
+            binding.chatBarView.binding.textLayout.makeVisible()
+            binding.chatBarView.binding.audioLayout.makeGone()
+        }
         return attachView(binding.root)
     }
 
@@ -310,6 +327,10 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             )
         )
         scrollToBottom()
+    }
+
+    override fun showError(error: Int) {
+        showSnackbarMessage(error)
     }
 
     private fun scrollToBottom() {

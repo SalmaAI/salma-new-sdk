@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * created by Omar Qadomi on 3/17/21
  */
 class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
-    private lateinit var channel: ManagedChannel
+    private var channel: ManagedChannel? = null
     lateinit var binding: ChatBarLayoutBinding
     private var actionStatus = ChatBarStatus.Nothing
     private var listener: ChatBarListener? = null
@@ -42,6 +42,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     interface ChatBarListener {
         fun sendMessage(messageText: String)
         fun requestMicPermission()
+        fun showError(connectionFailedError: Int)
     }
 
 
@@ -51,10 +52,17 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     private fun init(context: Context?) {
         context?.let {
-            channel = GrpcConnector.connect(it)
-            GrpcConnector.registerVoiceRecognitionListener(this)
-            val mVoiceCallback: VoiceRecorder.Callback = getVoiceRecorderCallbacks(channel)
-            mVoiceRecorder = VoiceRecorder(mVoiceCallback)
+            try {
+                channel = GrpcConnector.connect(it)
+                GrpcConnector.registerVoiceRecognitionListener(this)
+                channel?.let { channel ->
+                    val mVoiceCallback: VoiceRecorder.Callback = getVoiceRecorderCallbacks(channel)
+                    mVoiceRecorder = VoiceRecorder(mVoiceCallback)
+                }
+            } catch (e: GrpcConnector.FailedChannelConnectionException) {
+
+            }
+
         }
         val inflater = LayoutInflater.from(context)
         binding = ChatBarLayoutBinding.inflate(inflater)
@@ -69,6 +77,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                 }
 
             }
+        }
+        binding.imgRecord.setOnClickListener {
+            checkPermissionAndStartListening()
         }
         binding.imgAction.setOnClickListener {
             if (actionStatus == ChatBarStatus.Listening
@@ -182,19 +193,25 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     fun startListening() {
-        Log.d("GRPC", "begin of start Listening")
-        CoroutineScope(Dispatchers.Main).launch {
-            actionStatus = ChatBarStatus.Listening
-            var mediaPlayer = MediaPlayer.create(context, R.raw.ring)
-            mediaPlayer.start() // no need to call prepare(); create() does that for you
-            binding.aviListening.makeVisible()
-            binding.aviSpeaking.makeGone()
-            binding.imgAction.makeGone()
-            binding.etMessage.makeGone()
-            binding.tvSpeak.makeVisible()
-            binding.tvGrpcText.makeGone()
+        if (channel != null) {
+            Log.d("GRPC", "begin of start Listening")
+            CoroutineScope(Dispatchers.Main).launch {
+                actionStatus = ChatBarStatus.Listening
+                var mediaPlayer = MediaPlayer.create(context, R.raw.ring)
+                mediaPlayer.start() // no need to call prepare(); create() does that for you
+                binding.aviListening.makeVisible()
+                binding.aviSpeaking.makeGone()
+                binding.imgAction.makeGone()
+                binding.etMessage.makeGone()
+                binding.tvSpeak.makeVisible()
+                binding.tvGrpcText.makeGone()
+                binding.aviRecord.makeVisible()
+                binding.imgRecord.makeGone()
+            }
+            GrpcConnector.startVoiceRecognition(channel!!)
+        } else {
+            listener?.showError(R.string.connection_failed_error)
         }
-        GrpcConnector.startVoiceRecognition(channel)
     }
 
     private fun stopListening() {
@@ -209,6 +226,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.etMessage.makeVisible()
             binding.tvGrpcText.setText("")
             binding.tvGrpcText.makeGone()
+            binding.aviRecord.makeGone()
+            binding.imgRecord.makeVisible()
             Log.d("GRPC", "end of Stop Listening")
         }
         mVoiceRecorder?.stop()

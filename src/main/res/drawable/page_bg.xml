@@ -1,9 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <gradient
-        android:angle="270"
-        android:centerColor="?attr/pageBackgroundSecondColor"
-        android:endColor="?attr/pageBackgroundThirdColor"
-        android:startColor="?attr/pageBackgroundFirstColor" />
-</shape>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="411dp"
+    android:height="782dp"
+    android:viewportWidth="411"
+    android:viewportHeight="782">
+    <path android:pathData="M0,0h411v782h-411z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="212.798"
+                android:endY="781.912"
+                android:startX="205"
+                android:startY="132.308"
+                android:type="linear">
+                <item
+                    android:color="#FF001534"
+                    android:offset="0.677969" />
+                <item
+                    android:color="#FF011F4E"
+                    android:offset="0.828125" />
+                <item
+                    android:color="#FF002E73"
+                    android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>
