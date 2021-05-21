@@ -13,21 +13,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/card_view_margin"
-        android:layout_marginEnd="@dimen/medium_margin">
+        android:layout_marginTop="@dimen/card_view_margin">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
+            app:layout_constraintGuide_percent="0.9" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/messageLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
+            android:layout_marginStart="@dimen/medium_margin"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
 
@@ -35,22 +36,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/outcoming_message_bg"
-                android:padding="@dimen/small_margin"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="@dimen/card_padding"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="5dp"
+                    android:lineSpacingExtra="@dimen/small_margin"
                     android:text="@{message.text}"
                     android:textColor="?attr/outComingMessageTextColor"
                     android:textSize="@dimen/card_text_size"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="شو اقرب فرع علي ? " />
+                    tools:text="شو اقرب فرع علي ؟ شو اقرب فرع علي ؟ شو اقرب فرع علي ؟ شو اقرب فرع علي ؟ شو اقرب فرع علي ؟ " />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:fontFamily="@font/font_regular"
+            android:text="@{message.time}"
+            android:textColor="?attr/messageTimeTextColor"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/messageLayout"
+            tools:text="10:22 AM" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

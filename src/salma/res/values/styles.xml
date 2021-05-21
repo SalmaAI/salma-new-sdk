@@ -33,7 +33,7 @@
         <item name="cardCornerRadius">@dimen/card_view_radius</item>
         <item name="cardElevation">@dimen/card_view_elevation</item>
         <item name="cardPreventCornerOverlap">true</item>
-        <item name="cardUseCompatPadding">false</item>
+        <item name="cardUseCompatPadding">true</item>
     </style>
 
     <style name="Theme.MobileBanking.MaterialAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">

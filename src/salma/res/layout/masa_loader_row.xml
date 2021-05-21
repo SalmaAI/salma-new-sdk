@@ -5,16 +5,22 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
         android:background="@null">
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/aviListening"
             style="@style/AVLoadingIndicatorView"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:background="@drawable/incoming_message_bg"
             android:visibility="visible"
-            app:indicatorColor="?attr/secondaryColor"
+            android:paddingStart="@dimen/card_padding"
+            android:paddingEnd="@dimen/card_padding"
+
+            app:indicatorColor="?attr/progressColor"
             app:indicatorName="BallPulseSyncIndicator" />
 
     </FrameLayout>

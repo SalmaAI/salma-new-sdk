@@ -64,6 +64,24 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+            MessageViewType.InComingBillMessageViewType.value -> {
+                return InComingBillMessageViewHolder(
+                    IncomingBillMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
+            MessageViewType.InComingImageMessageViewType.value -> {
+                return InComingImageMessageViewHolder(
+                    IncomingImageMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
             else -> {
                 TODO("Not yet implemented")
             }
@@ -85,6 +103,10 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             return MessageViewType.LocationMessageViewType.value
         } else if (list[position] is PermissionMessageUiModel) {
             return MessageViewType.PermissionMessageViewType.value
+        } else if (list[position] is BillsMessageUiModel) {
+            return MessageViewType.InComingBillMessageViewType.value
+        } else if (list[position] is ImageMessageUiModel) {
+            return MessageViewType.InComingImageMessageViewType.value
         } else {
             return 0
         }

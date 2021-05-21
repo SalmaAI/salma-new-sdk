@@ -27,8 +27,6 @@
     <string name="record_audio_permission_button_title">أذونات الوصول إلى المايكروفون</string>
     <string name="permission_denied_message">لتتمكن من اتمام هذه العملية الرجاء اعطاء الصلاحية</string>
     <string name="app_title"></string>
-    <string name="good_morning">"صباح الخير "</string>
-    <string name="good_evening">مساء الخير</string>
-    <string name="hello">مرحباً</string>
+    <string name="hello_message">مرحبا، %s! كيف بقدر أساعدك اليوم؟</string>
     <string name="masa_welcoming_message">أنا سلمى، مساعدتك الرقمية</string>
 </resources>

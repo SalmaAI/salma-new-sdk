@@ -7,6 +7,7 @@ import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.remote.RepoErrorResponse
 import ai.mawdoo3.salma.remote.RepoSuccessResponse
+import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.PhoneUtils
 import android.app.Application
 import android.util.Log
@@ -32,7 +33,12 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
     fun sendMessage(text: String, showMessage: Boolean = true) {
         if (showMessage) {
-            messageSent.postValue(TextMessageUiModel(text, MessageSender.User))
+            messageSent.postValue(
+                TextMessageUiModel(
+                    text, MessageSender.User,
+                    time = AppUtils.getCurrentTime()
+                )
+            )
         }
         viewModelScope.launch {
             showLoader.postValue(true)
@@ -60,14 +66,18 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                             if (!message.ttsId.isNullOrEmpty()) {
                                 messageAudiolist.add(message.ttsId)
                             }
-                            if (it is LocationMessageUiModel)
-                                locationMessages.add(it)
-                            else {
-                                responseMessages.add(it)
+                            it.forEach { messageUiModel ->
+                                //Aggregation all messages of LocationMessageUiModel in one list
+                                if (messageUiModel is LocationMessageUiModel)
+                                    locationMessages.add(messageUiModel)
+                                else {
+                                    responseMessages.add(messageUiModel)
+                                }
                             }
+
                         }
                     }
-                    if (locationMessages.isNotEmpty()) {
+                    if (locationMessages.isNotEmpty()) {//add locations messages to messages list
                         val locationsListUiModel = LocationsListUiModel(locationMessages)
                         responseMessages.add(locationsListUiModel)
                     }

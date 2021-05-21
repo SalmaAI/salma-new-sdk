@@ -5,9 +5,12 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 /**
  * created by Omar Qadomi on 3/17/21
  */
-data class QuickReplyMessageUiModel(
+data class BillsMessageUiModel(
     val title: String?,
-    val replies: List<MessageResponse.MessageContentResponse.Element>?,
+    val date: String?,
+    val image: String?,
+    val amount: String?,
+    val buttons: List<MessageResponse.MessageContentResponse.Element.ActionButton>?,
     val messageSender: MessageSender
 ) :
     MessageUiModel {

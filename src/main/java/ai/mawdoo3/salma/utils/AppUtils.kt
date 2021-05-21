@@ -124,6 +124,12 @@ object AppUtils {
         return dstBitmap
     }
 
+    fun makePhoneCall(phoneNumber: String, context: Context) {
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:0123456789")
+        context.startActivity(intent)
+    }
+
     fun convertDpToPixel(dp: Float, context: Context): Float {
         return dp * (context.resources
             .displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
@@ -177,6 +183,13 @@ object AppUtils {
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
+    }
+
+    fun getCurrentTime(): String {
+        val date = System.currentTimeMillis()
+        val spf = SimpleDateFormat("hh:mm a")
+        val time = spf.format(date).replace("ص", "صباحاً").replace("م", "مساءا")
+        return time
     }
 
     @SuppressLint("SimpleDateFormat")

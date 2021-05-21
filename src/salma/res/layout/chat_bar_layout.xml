@@ -23,6 +23,7 @@
         android:id="@+id/textLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_margin"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,12 +34,10 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="@dimen/small_margin"
-            android:background="@drawable/circle"
             android:padding="@dimen/small_margin"
             android:src="@drawable/ic_microphone"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.wang.avi.AVLoadingIndicatorView
@@ -51,20 +50,21 @@
             app:indicatorColor="?attr/secondaryColor"
             app:indicatorName="BallScaleMultipleIndicator"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvSpeak"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_marginStart="@dimen/medium_margin"
             android:text="@string/speak_im_listening"
             android:textColor="?attr/textFieldTextColor"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/img_action"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/img_action" />
+
+            app:layout_constraintBottom_toBottomOf="@+id/aviListening"
+            app:layout_constraintStart_toEndOf="@+id/aviListening"
+            app:layout_constraintTop_toTopOf="@+id/aviListening" />
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/aviSpeaking"
@@ -76,24 +76,30 @@
             app:indicatorColor="?attr/secondaryColor"
             app:indicatorName="LineScalePulseOutIndicator"
             app:layout_constraintBottom_toBottomOf="@+id/img_action"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/img_action" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:background="@null"
+            android:layout_marginStart="@dimen/medium_margin"
+
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:background="@drawable/edit_text_bg"
             android:hint="@string/message_text_hint"
+            android:padding="@dimen/small_margin"
+            android:paddingStart="@dimen/medium_margin"
+            android:paddingEnd="@dimen/medium_margin"
             android:textAlignment="viewStart"
             android:textColor="?attr/textFieldTextColor"
             android:textColorHint="?attr/textFieldHintTextColor"
             android:textCursorDrawable="@drawable/edit_text_cursor"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/img_action"
-            app:layout_constraintEnd_toStartOf="@+id/img_action"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_action"
+            app:layout_constraintTop_toTopOf="@+id/img_action" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

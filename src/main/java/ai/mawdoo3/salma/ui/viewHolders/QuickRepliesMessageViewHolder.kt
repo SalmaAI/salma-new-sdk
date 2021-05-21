@@ -36,7 +36,9 @@ class QuickRepliesMessageViewHolder(
                         }
                     }
                     binding.quickRepliesLayout.addView(quickReplyItem.root)
-                    totalRepliesChar += quickReplyElement.title.length
+                    quickReplyElement.title?.let {
+                        totalRepliesChar += quickReplyElement.title.length
+                    }
                     if (totalRepliesChar >= 100) {
                         quickReplyItem.tvMore.makeVisible()
                         quickReplyItem.tvMore.setOnClickListener {
@@ -51,7 +53,7 @@ class QuickRepliesMessageViewHolder(
     }
 
     private fun loadMoreOptions(
-        subList: List<MessageResponse.MessageContentResponse.QuickReplyElement>
+        subList: List<MessageResponse.MessageContentResponse.Element>
     ) {
         subList.forEach { quickReplyElement ->
             binding.quickRepliesLayout.addView(

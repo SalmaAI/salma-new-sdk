@@ -6,4 +6,6 @@ enum class MessageViewType(val value: Int) {
     QuickRepliesMessageViewType(3),
     LocationMessageViewType(4),
     PermissionMessageViewType(5),
+    InComingBillMessageViewType(6),
+    InComingImageMessageViewType(7),
 }

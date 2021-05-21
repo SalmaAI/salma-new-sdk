@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="message"
             type="ai.mawdoo3.salma.data.dataModel.TextMessageUiModel" />
@@ -19,36 +21,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
+            app:layout_constraintGuide_percent="0.1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_margin"
             android:layout_marginTop="@dimen/card_view_margin"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="@dimen/medium_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <FrameLayout
                 android:id="@+id/textLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/medium_margin"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <kr.co.prnd.readmore.ReadMoreTextView
                     android:id="@+id/tvMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
                     android:layout_marginTop="@dimen/medium_margin"
                     android:autoLink="phone|email|web"
                     android:background="@drawable/incoming_message_bg"
                     android:lineSpacingExtra="5dp"
                     android:linksClickable="true"
-                    android:padding="@dimen/small_margin"
-                    android:paddingEnd="@dimen/medium_margin"
+                    android:padding="@dimen/card_padding"
+                    android:paddingStart="@dimen/medium_margin"
                     android:text="@{message.text}"
                     android:textColor="?attr/inComingMessageTextColor"
                     android:textColorLink="?attr/accentColor"
@@ -59,21 +61,33 @@
                     app:readMoreColor="?attr/readMoreTextColor"
                     app:readMoreMaxLine="6"
                     app:readMoreText=" ...المزيد"
-                    tools:text="كيف يمكنني مساعدتك؟" />
+                    tools:text="كيف يمكنني مساعدتك؟ كيف يمكنني مساعدتك؟ كيف يمكنني مساعدتك؟ كيف يمكنني مساعدتك؟" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/shape_oval"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_logo"
+                    android:visibility="@{message.showLogo?View.VISIBLE:View.GONE}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textLayout" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/logo"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="-35dp"
-                android:background="@drawable/shape_oval"
-                android:padding="5dp"
-                android:src="@drawable/ic_logo"
-                app:layout_constraintStart_toEndOf="@+id/textLayout"
-                app:layout_constraintTop_toTopOf="@+id/textLayout" />
 
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:fontFamily="@font/font_regular"
+                android:text="@{message.time}"
+                android:textColor="?attr/messageTimeTextColor"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textLayout"
+                tools:text="10:22 AM" />
 
             <TextView
                 android:id="@+id/tvRate"

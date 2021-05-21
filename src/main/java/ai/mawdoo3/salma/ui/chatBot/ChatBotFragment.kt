@@ -1,5 +1,6 @@
 package ai.mawdoo3.salma.ui.chatBot
 
+import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.RateAnswerDialogListener
@@ -66,7 +67,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         adapter.addItem(
             TextMessageUiModel(
                 getString(R.string.masa_welcoming_message),
-                MessageSender.Masa
+                MessageSender.Masa,
+                time = AppUtils.getCurrentTime()
             )
         )
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -95,7 +97,10 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                 welcomeImage = R.drawable.header_night
             }
         }
-        binding.tvHeader.text = welcomeMessage
+        if (BuildConfig.FLAVOR == "jkb") {
+            binding.tvHeader.text = welcomeMessage
+        }
+        binding.name = MasaSdkInstance.username
         binding.imgHeader.setImageResource(welcomeImage)
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
@@ -144,7 +149,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             adapter.addItem(
                 TextMessageUiModel(
                     getString(R.string.use_my_location),
-                    MessageSender.User
+                    MessageSender.User,
+                    time = AppUtils.getCurrentTime()
                 )
             )
             scrollToBottom()
@@ -253,7 +259,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                             adapter.addItem(
                                 TextMessageUiModel(
                                     getString(R.string.get_location_failed_message),
-                                    MessageSender.Masa
+                                    MessageSender.Masa,
+                                    time = AppUtils.getCurrentTime()
                                 )
                             )
                         }
