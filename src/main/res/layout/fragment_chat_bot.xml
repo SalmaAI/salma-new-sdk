@@ -6,6 +6,10 @@
         <variable
             name="name"
             type="String" />
+
+        <variable
+            name="enableCollapse"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,6 +29,7 @@
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:elevation="0dp"
                 android:background="?attr/toolbarBackgroundColor"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -33,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:contentScrim="?attr/primaryColor"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                    app:enableCollapsingScroll="@{enableCollapse}">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
 

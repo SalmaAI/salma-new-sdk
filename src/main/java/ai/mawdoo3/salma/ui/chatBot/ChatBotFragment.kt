@@ -130,6 +130,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
             adapter.clear()
+            binding.enableCollapse = true
             binding.appBar.setExpanded(false)
 //            adapter.addItem(it)
 
