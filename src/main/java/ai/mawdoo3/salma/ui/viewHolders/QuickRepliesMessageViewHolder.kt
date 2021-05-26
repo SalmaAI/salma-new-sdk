@@ -31,7 +31,10 @@ class QuickRepliesMessageViewHolder(
                     ).apply {
                         this.quickReply = quickReplyElement
                         this.tvText.setOnClickListener {
-                            viewModel.sendMessage(quickReplyElement.quickReplyPayload)
+                            viewModel.sendMessage(
+                                text = quickReplyElement.title,
+                                payload = quickReplyElement.quickReplyPayload!!
+                            )
                             binding.root.makeGone()
                         }
                     }
@@ -64,7 +67,10 @@ class QuickRepliesMessageViewHolder(
                 ).apply {
                     this.quickReply = quickReplyElement
                     this.root.setOnClickListener {
-                        viewModel.sendMessage(quickReplyElement.quickReplyPayload)
+                        viewModel.sendMessage(
+                            text = quickReplyElement.title,
+                            payload = quickReplyElement.quickReplyPayload!!
+                        )
                     }
                 }.root
             )

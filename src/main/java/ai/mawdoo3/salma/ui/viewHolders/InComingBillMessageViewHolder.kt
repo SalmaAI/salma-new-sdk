@@ -23,6 +23,7 @@ class InComingBillMessageViewHolder(
             val billMessageItem = item as BillsMessageUiModel?
             this.message = billMessageItem
             this.linearButtons.removeAllViews()
+            var buttonIndex = 0
             billMessageItem?.buttons?.forEach { button ->
                 val actionButton = TextView(this.root.context)
                 actionButton.setText(button.title)
@@ -40,22 +41,30 @@ class InComingBillMessageViewHolder(
                 //set font family
                 val typeface = ResourcesCompat.getFont(this.root.context, R.font.font_medium)
                 actionButton.setTypeface(typeface)
-                actionButton.setTextColor(
-                    ContextCompat.getColor(
-                        this.root.context,
-                        R.color.masaPrimaryActionColor
-                    )
+                var textColor = ContextCompat.getColor(
+                    this.root.context,
+                    R.color.masaPrimaryActionColor
                 )
+                //make last button color as secondary
+                if (buttonIndex > 0 && buttonIndex == billMessageItem?.buttons.size - 1) {
+                    textColor = ContextCompat.getColor(
+                        this.root.context,
+                        R.color.masaSecondaryActionColor
+                    )
+                }
+                actionButton.setTextColor(textColor)
                 actionButton.setOnClickListener {
                     if (ButtonType.from(button.type) == ButtonType.PhoneNumber) {
                         viewModel.openDialUp.postValue(button.value)
                     } else if (ButtonType.from(button.type) == ButtonType.WebUrl) {
                         viewModel.openLink.postValue(button.value)
                     } else if (ButtonType.from(button.type) == ButtonType.PostBack) {
-                        viewModel.sendMessage(button.value)
+                        viewModel.sendMessage(text = button.title, payload = button.value)
                     }
                 }
+
                 this.linearButtons.addView(actionButton)
+                buttonIndex++
             }
 
 

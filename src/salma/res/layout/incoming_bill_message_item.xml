@@ -11,22 +11,19 @@
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/card_view_margin"
-        android:layout_marginEnd="@dimen/medium_margin">
 
         <com.google.android.material.card.MaterialCardView
 
             style="@style/Theme.Salma.CardView.InComingMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginEnd="@dimen/medium_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
@@ -86,13 +83,11 @@
                     android:id="@+id/tvAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/medium_margin"
-                    android:layout_marginEnd="@dimen/medium_margin"
                     android:text="@{message.amount}"
                     app:amountTextType="amount_1"
                     app:layout_constraintBottom_toBottomOf="@+id/linearButtons"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/linearButtons"
+                    android:layout_marginEnd="@dimen/medium_margin"
                     app:layout_constraintTop_toTopOf="@+id/linearButtons"
                     app:reduceAfterChar="."
                     tools:text="20.05 JD" />
@@ -100,5 +95,4 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

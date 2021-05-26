@@ -28,10 +28,17 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val showLoader = MutableLiveData<Boolean>()
     val rateAnswer = LiveEvent<String>()
     val getUserLocation = LiveEvent<Boolean>()
+    val openLink = LiveEvent<String>()
+    val openDialUp = LiveEvent<String>()
     val ttsAudioList = LiveEvent<List<String>>()
     val requestPermission = LiveEvent<Permission>()
 
-    fun sendMessage(text: String, showMessage: Boolean = true) {
+    /**
+     * text -> this value will be shown to user as message (required when showMessage=true)
+     * payload -> this value will be sent to server (won't show to user)
+     * showMessage -> this boolean determine whether to show sent message in list or just send it to server without show it to user
+     */
+    fun sendMessage(text: String?, payload: String, showMessage: Boolean = true) {
         if (showMessage) {
             messageSent.postValue(
                 TextMessageUiModel(
@@ -47,7 +54,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     PhoneUtils.getDeviceId(applicationContext),
-                    message = text,
+                    message = payload,
                     MasaSdkInstance.key
                 )
             )
@@ -68,9 +75,11 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                             }
                             it.forEach { messageUiModel ->
                                 //Aggregation all messages of LocationMessageUiModel in one list
-                                if (messageUiModel is LocationMessageUiModel)
+                                if (messageUiModel is LocationMessageUiModel) {
                                     locationMessages.add(messageUiModel)
-                                else {
+                                } else if (messageUiModel is DeeplinkMessageUiModel) {
+                                    openLink.value = messageUiModel.url
+                                } else {
                                     responseMessages.add(messageUiModel)
                                 }
                             }
@@ -91,7 +100,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 is RepoErrorResponse -> {
                     Log.d("SendMessage", "Response error")
                     showLoader.postValue(false)
-                    showErrorMessage.postValue("Something went wrong, please try again")
+                    onLoadFailure(result.error, true)
                 }
                 else -> {
 

@@ -10,7 +10,7 @@ data class BillsMessageUiModel(
     val date: String?,
     val image: String?,
     val amount: String?,
-    val buttons: List<MessageResponse.MessageContentResponse.Element.ActionButton>?,
+    val buttons: List<ButtonUiModel>?,
     val messageSender: MessageSender
 ) :
     MessageUiModel {

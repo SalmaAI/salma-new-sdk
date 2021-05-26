@@ -2,6 +2,7 @@ package ai.mawdoo3.salma.utils.views
 
 import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
 import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
@@ -38,6 +39,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private var mVoiceRecorder: VoiceRecorder? = null
     private var cancelCurrentRecord: Boolean = false
     private var audioList: ArrayList<String>? = null
+    private var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
 
     interface ChatBarListener {
         fun sendMessage(messageText: String)
@@ -60,7 +62,6 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                     mVoiceRecorder = VoiceRecorder(mVoiceCallback)
                 }
             } catch (e: GrpcConnector.FailedChannelConnectionException) {
-
             }
 
         }
@@ -78,9 +79,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
             }
         }
-        binding.imgRecord.setOnClickListener {
-            checkPermissionAndStartListening()
-        }
+
         binding.imgAction.setOnClickListener {
             if (actionStatus == ChatBarStatus.Listening
                 || actionStatus == ChatBarStatus.Speaking
@@ -116,6 +115,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             }
 
         })
+    }
+
+    fun setChatBarType(chatBarType: ChatBarType) {
+        this.chatBarType = chatBarType
+        if (chatBarType == ChatBarType.AUDIO) {
+            binding.etMessage.makeGone()
+        }
+
     }
 
     fun playAudioList(list: List<String>) {
@@ -183,8 +190,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         CoroutineScope(Dispatchers.Main).launch {
             binding.aviListening.makeGone()
             binding.aviSpeaking.makeVisible()
-            binding.imgAction.makeVisible()
-            binding.imgAction.setImageResource(R.drawable.ic_delete)
+            binding.imgAction.makeGone()
+//            binding.imgAction.makeVisible()
+//            binding.imgAction.setImageResource(R.drawable.ic_delete)
             binding.etMessage.makeGone()
             binding.tvSpeak.makeGone()
             binding.tvGrpcText.text = ""
@@ -205,11 +213,10 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                 binding.etMessage.makeGone()
                 binding.tvSpeak.makeVisible()
                 binding.tvGrpcText.makeGone()
-                binding.aviRecord.makeVisible()
-                binding.imgRecord.makeGone()
             }
             GrpcConnector.startVoiceRecognition(channel!!)
         } else {
+            Log.d("GRPC", "channel not initialized")
             listener?.showError(R.string.connection_failed_error)
         }
     }
@@ -223,11 +230,11 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.tvSpeak.makeGone()
             binding.imgAction.setImageResource(R.drawable.ic_microphone)
             binding.imgAction.makeVisible()
-            binding.etMessage.makeVisible()
+            if (chatBarType == ChatBarType.TEXT_AND_AUDIO) {
+                binding.etMessage.makeVisible()
+            }
             binding.tvGrpcText.setText("")
             binding.tvGrpcText.makeGone()
-            binding.aviRecord.makeGone()
-            binding.imgRecord.makeVisible()
             Log.d("GRPC", "end of Stop Listening")
         }
         mVoiceRecorder?.stop()
@@ -263,12 +270,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun getVoiceRecorderCallbacks(channel: ManagedChannel): VoiceRecorder.Callback {
         return object : VoiceRecorder.Callback() {
             override fun onVoiceStart() {
+                Log.d("GRPC", "onVoiceStart")
                 cancelCurrentRecord = false
                 startSpeaking()
 
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
+                Log.d("GRPC", "onVoice")
                 data?.apply {
                     val stringByte =
                         GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))?.build()

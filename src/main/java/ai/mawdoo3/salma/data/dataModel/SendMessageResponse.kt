@@ -31,7 +31,7 @@ data class MessageResponse(
             @Json(name = "image") val image: String?,
             @Json(name = "subTitle") val subTitle: String?,
             @Json(name = "buttons") val buttons: List<ActionButton>?,
-            @Json(name = "quickReplyPayload") val quickReplyPayload: String,
+            @Json(name = "quickReplyPayload") val quickReplyPayload: String?,
             @Json(name = "quickReplyType") val quickReplyType: String?
         ) {
             data class ActionButton(
@@ -47,42 +47,10 @@ data class MessageResponse(
             val messageType = MessageType.from(type)
             val messages = ArrayList<MessageUiModel>()
             if (messageType == MessageType.Text || messageType == MessageType.UnansweredText) {
-//                messages.add(
-//                    TextMessageUiModel(
-//                        messageContent.text, MessageSender.Masa,
-//                        time = AppUtils.getCurrentTime()
-//                    )
-//                )
-                val buttons = ArrayList<MessageContentResponse.Element.ActionButton>()
-                buttons.add(
-                    MessageContentResponse.Element.ActionButton(
-                        "web_url",
-                        "الموقع",
-                        "https://google.com"
-                    )
-                )
-                buttons.add(
-                    MessageContentResponse.Element.ActionButton(
-                        "postback",
-                        "ادفع",
-                        "PAYMENT_PAYLOAD"
-                    )
-                )
-                buttons.add(
-                    MessageContentResponse.Element.ActionButton(
-                        "phone_number",
-                        "اتصال",
-                        "+962791234567"
-                    )
-                )
                 messages.add(
-                    BillsMessageUiModel(
-                        title = "عمر خالد القدومي",
-                        image = "https://cdnimg.royanews.tv/imageserv/Size728Q100/news/20170111/112461.JPG",
-                        date = "15/4/2021",
-                        amount = "29.99JD",
-                        buttons = buttons,
-                        messageSender = MessageSender.Masa
+                    TextMessageUiModel(
+                        messageContent.text, MessageSender.Masa,
+                        time = AppUtils.getCurrentTime()
                     )
                 )
             } else if (messageType == MessageType.QuickReply || messageType == MessageType.UnansweredQuickReply) {
@@ -143,15 +111,19 @@ data class MessageResponse(
                 }
                 //add bills cards UI model to messages list
                 messageContent.elements?.forEach { element ->
-                    val date = element.subTitle?.split("\n")?.get(0)
-                    val amount = element.subTitle?.split("\n")?.get(1)
+                    val buttons = ArrayList<ButtonUiModel>()
+                    element.buttons?.forEach {
+                        buttons.add(ButtonUiModel(it.type, it.title, it.value))
+                    }
+                    val date = element.subTitle?.split("\\n\\n")?.get(0)
+                    val amount = element.subTitle?.split("\\n\\n")?.get(1)
                     messages.add(
                         BillsMessageUiModel(
                             title = element.title,
                             image = element.image,
                             date = date,
                             amount = amount,
-                            buttons = element.buttons,
+                            buttons = buttons,
                             messageSender = MessageSender.Masa
                         )
                     )
@@ -159,6 +131,14 @@ data class MessageResponse(
 
             } else if (messageType == MessageType.Image || messageType == MessageType.UnansweredImage) {
                 messages.add(ImageMessageUiModel(url = messageContent.url, MessageSender.Masa))
+            } else if (messageType == MessageType.DeepLink || messageType == MessageType.UnansweredDeepLink) {
+                messageContent.url?.let {
+                    messages.add(
+                        DeeplinkMessageUiModel(
+                            url = messageContent.url
+                        )
+                    )
+                }
             }
 
             return messages

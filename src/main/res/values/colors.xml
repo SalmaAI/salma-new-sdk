@@ -14,6 +14,8 @@
     <color name="masaOutComingMessageTextColor">#FFFFFF</color>
     <color name="masaProgressColor">#FFFFFF</color>
     <color name="masaMessageTimeTextColor">#ABB5C5</color>
+    <color name="masaPrimaryActionColor">#223CC8</color>
+    <color name="masaSecondaryActionColor">#D92E2B</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>

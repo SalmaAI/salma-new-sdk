@@ -14,7 +14,6 @@ import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -64,13 +63,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
-        adapter.addItem(
-            TextMessageUiModel(
-                getString(R.string.masa_welcoming_message),
-                MessageSender.Masa,
-                time = AppUtils.getCurrentTime()
-            )
-        )
+
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
@@ -99,17 +92,24 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         }
         if (BuildConfig.FLAVOR == "jkb") {
             binding.tvHeader.text = welcomeMessage
+            adapter.addItem(
+                TextMessageUiModel(
+                    getString(R.string.masa_welcoming_message),
+                    MessageSender.Masa,
+                    time = AppUtils.getCurrentTime()
+                )
+            )
         }
-        binding.name = MasaSdkInstance.username
+        if (MasaSdkInstance.username.isNullOrEmpty()) {
+            binding.name = ""
+        } else {
+            binding.name = MasaSdkInstance.username + "!"
+        }
         binding.imgHeader.setImageResource(welcomeImage)
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
-        } else if (MasaSdkInstance.chatBarType == ChatBarType.AUDIO) {
-            binding.chatBarView.binding.audioLayout.makeVisible()
-            binding.chatBarView.binding.textLayout.makeGone()
-        } else if (MasaSdkInstance.chatBarType == ChatBarType.TEXT_AND_AUDIO) {
-            binding.chatBarView.binding.textLayout.makeVisible()
-            binding.chatBarView.binding.audioLayout.makeGone()
+        } else {
+            binding.chatBarView.setChatBarType(MasaSdkInstance.chatBarType)
         }
         return attachView(binding.root)
     }
@@ -120,6 +120,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add Masa message")
             adapter.addItems(it)
+        })
+        viewModel.openLink.observe(viewLifecycleOwner, {
+            AppUtils.openLinkInTheBrowser(it, requireContext())
+        })
+        viewModel.openDialUp.observe(viewLifecycleOwner, {
+            AppUtils.makePhoneCall(it, requireContext())
         })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
@@ -252,8 +258,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                             val result: Location = task.result
                             "Location (success): ${result.latitude}, ${result.longitude}"
                             viewModel.sendMessage(
-                                result.latitude.toString() + "," + result.longitude.toString(),
-                                false
+                                text = "",
+                                payload = result.latitude.toString() + "," + result.longitude.toString(),
+                                showMessage = false
                             )
                         } else {
                             adapter.addItem(
@@ -322,7 +329,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
      */
     override fun sendMessage(messageText: String) {
         AppUtils.hideKeyboard(activity, binding.chatBarView)
-        viewModel.sendMessage(messageText)
+        viewModel.sendMessage(text = messageText, payload = messageText)
     }
 
     override fun requestMicPermission() {

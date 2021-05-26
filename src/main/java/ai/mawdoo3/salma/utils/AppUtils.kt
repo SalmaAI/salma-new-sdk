@@ -188,8 +188,9 @@ object AppUtils {
     fun getCurrentTime(): String {
         val date = System.currentTimeMillis()
         val spf = SimpleDateFormat("hh:mm a")
-        val time = spf.format(date).replace("ص", "صباحاً").replace("م", "مساءا")
-        return time
+        val time = spf.format(date)
+//            .replace("ص", "صباحاً").replace("م", "مساءا")
+        return replaceIndianNoWithArabicNo(time)
     }
 
     @SuppressLint("SimpleDateFormat")

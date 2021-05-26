@@ -24,6 +24,7 @@
             app:layout_constraintGuide_percent="0.1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/messageLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/card_view_margin"
@@ -84,7 +85,8 @@
                 android:fontFamily="@font/font_regular"
                 android:text="@{message.time}"
                 android:textColor="?attr/messageTimeTextColor"
-                android:textSize="14sp"
+                android:textSize="@dimen/message_time_text_size"
+                app:fontFamily="@font/font_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textLayout"
                 tools:text="10:22 AM" />
@@ -99,21 +101,24 @@
                 app:layout_constraintEnd_toEndOf="@+id/textLayout"
                 app:layout_constraintTop_toBottomOf="@+id/textLayout" />
 
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_margin"
-                android:background="@drawable/tv_border_white"
-                android:drawableStart="@drawable/ic_location"
-                android:drawablePadding="@dimen/small_margin"
-                android:fontFamily="@font/font_bold"
-                android:padding="@dimen/small_margin"
-                android:text="@string/use_my_location"
-                android:textColor="?attr/titleTextColor"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:background="@drawable/tv_border"
+            android:drawableStart="@drawable/ic_location"
+            android:drawablePadding="@dimen/small_margin"
+            android:fontFamily="@font/font_bold"
+            android:padding="@dimen/small_margin"
+            android:text="@string/use_my_location"
+            android:textColor="?attr/titleTextColor"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/messageLayout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

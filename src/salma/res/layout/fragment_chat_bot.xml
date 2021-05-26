@@ -64,6 +64,7 @@
                             android:textSize="@dimen/header_text_size"
                             app:fontFamily="@font/font_bold"
                             app:layout_constraintStart_toStartOf="parent"
+                            android:lineSpacingExtra="@dimen/small_margin"
                             app:layout_constraintTop_toBottomOf="@+id/imgHeader"
                             tools:text="مرحبا، omar! كيف بقدر أساعدك اليوم؟" />
 
