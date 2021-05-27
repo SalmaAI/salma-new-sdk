@@ -22,6 +22,7 @@ class QuickRepliesMessageViewHolder(
             this.message = item as QuickReplyMessageUiModel?
             binding.quickRepliesLayout.removeAllViews()
             var totalRepliesChar = 0
+            var quickReplyIndex = 0
             item?.replies?.let {
                 for (quickReplyElement in item.replies) {
                     var quickReplyItem = QuickReplyItemBinding.inflate(
@@ -42,14 +43,20 @@ class QuickRepliesMessageViewHolder(
                     quickReplyElement.title?.let {
                         totalRepliesChar += quickReplyElement.title.length
                     }
-                    if (totalRepliesChar >= 100) {
+                    if (totalRepliesChar >= 100 && item.replies.size > quickReplyIndex + 1) {
                         quickReplyItem.tvMore.makeVisible()
                         quickReplyItem.tvMore.setOnClickListener {
                             it.makeGone()
-                            loadMoreOptions(item.replies.subList(3, item.replies.size - 1))
+                            loadMoreOptions(
+                                item.replies.subList(
+                                    quickReplyIndex + 1,
+                                    item.replies.size - 1
+                                )
+                            )
                         }
                         break
                     }
+                    quickReplyIndex++
                 }
             }
         }

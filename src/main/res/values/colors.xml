@@ -14,8 +14,8 @@
     <color name="masaOutComingMessageTextColor">#FFFFFF</color>
     <color name="masaProgressColor">#FFFFFF</color>
     <color name="masaMessageTimeTextColor">#ABB5C5</color>
-    <color name="masaPrimaryActionColor">#223CC8</color>
-    <color name="masaSecondaryActionColor">#D92E2B</color>
+    <color name="masaPrimaryActionColor">#FFFFFF</color>
+    <color name="masaSecondaryActionColor">#BF294D</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>
@@ -26,8 +26,8 @@
     <color name="masaCardButtonTextColor">#FFFFFFFF</color>
     <color name="masaCardButtonIconColor">#0072BF</color>
 
-    <color name="masaAmount1TextColor">#000000</color>
-    <color name="masaAmount2TextColor">#000000</color>
+    <color name="masaAmount1TextColor">#FFFFFF</color>
+    <color name="masaAmount2TextColor">#FFFFFF</color>
     <color name="masaTitleTextColor">#FFFFFFFF</color>
     <color name="masaSubTitleTextColor">#577CB7</color>
     <color name="masaHeaderTextColor">#FFFFFFFF</color>

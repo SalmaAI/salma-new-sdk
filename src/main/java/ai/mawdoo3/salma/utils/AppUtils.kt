@@ -193,6 +193,16 @@ object AppUtils {
         return replaceIndianNoWithArabicNo(time)
     }
 
+    fun getCurrentTimeWithDay(): String {
+        val date = System.currentTimeMillis()
+        val spf = SimpleDateFormat("hh:mm a")
+        val time = spf.format(date)
+            .replace("ص", "صباحاً").replace("م", "مساءا")
+        val dayFormat = SimpleDateFormat("EEEE")
+        val day = dayFormat.format(date)
+        return "$day ${replaceIndianNoWithArabicNo(time)}"
+    }
+
     @SuppressLint("SimpleDateFormat")
     fun convertStringToDate(dateString: String): Date {
         try {

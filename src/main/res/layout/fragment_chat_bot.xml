@@ -29,9 +29,9 @@
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:elevation="0dp"
                 android:background="?attr/toolbarBackgroundColor"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:elevation="0dp">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/collapsingToolbar"
@@ -58,18 +58,38 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/small_margin"
-                            android:text="صباح الخير, عمر"
                             android:textColor="?attr/headerTextColor"
                             android:textSize="@dimen/header_text_size"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imgHeader" />
+                            app:layout_constraintTop_toBottomOf="@+id/imgHeader"
+                            app:showMessageBasedOnTime="@{true}"
+                            app:showWelcomingMessage="@{name}"
+
+                            tools:text="صباح الخير, عمر" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHeaderDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/small_margin"
+                            android:textColor="?attr/headerTextColor"
+                            android:textSize="@dimen/message_time_text_size"
+                            app:fontFamily="@font/font_light"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvHeader"
+                            app:showTime="@{true}"
+                            tools:text="الأربعاء 22:9 مساءً " />
+
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>

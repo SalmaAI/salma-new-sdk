@@ -30,6 +30,7 @@
     <string name="good_morning">"صباح الخير "</string>
     <string name="good_evening">مساء الخير</string>
     <string name="hello">مرحباً</string>
+    <string name="hello_message">مرحبا، %s\nكيف بقدر أساعدك اليوم؟</string>
     <string name="connection_failed_error">تعذر الوصول الى الخادم الرجاء المحاولة لاحقا</string>
     <string name="masa_welcoming_message">كيف يمكنني مساعدتك؟</string>
     <string name="something_went_wrong">حصل خطأ ما, الرجاء المحاولة لاحقا</string>

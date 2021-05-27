@@ -1,6 +1,9 @@
 package ai.mawdoo3.salma.binding
 
+import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.utils.AppUtils
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
@@ -9,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation
+import java.util.*
 
 class MyBindingAdapters {
     companion object {
@@ -69,6 +73,52 @@ class MyBindingAdapters {
             }
             collapsingToolbarLayout.layoutParams = lp
         }
+
+        @JvmStatic
+        @BindingAdapter("showTime")
+        fun AppCompatTextView.setDayAndTime(
+            showDay: Boolean
+        ) {
+            if (showDay) {
+                this.text = AppUtils.getCurrentTimeWithDay()
+            } else {
+                this.text = AppUtils.getCurrentTime()
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("showWelcomingMessage", "showMessageBasedOnTime")
+        fun AppCompatTextView.setWelcomingMessage(
+            name: String,
+            showMessageBasedOnTime: Boolean
+        ) {
+            var welcomeMessage = ""
+            if (showMessageBasedOnTime) {
+                val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                when (hours) {
+                    in 5..11 -> {
+                        welcomeMessage =
+                            "${this.context.getString(R.string.good_morning)}, $name"
+                    }
+                    in 12..17 -> {
+                        welcomeMessage =
+                            "${this.context.getString(R.string.good_evening)}, $name"
+                    }
+                    else -> {
+                        welcomeMessage = "${this.context.getString(R.string.hello)}, $name"
+                    }
+                }
+            } else {
+                var newName = ""
+                if (name.isNotEmpty()) {
+                    newName = "$name!"
+                }
+                welcomeMessage =
+                    String.format(this.context.getString(R.string.hello_message), newName)
+            }
+            this.text = welcomeMessage
+        }
     }
+
 
 }

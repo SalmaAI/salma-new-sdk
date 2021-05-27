@@ -73,25 +73,22 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             moveDuration = 0
             changeDuration = 0
         }
-        var welcomeMessage = ""
         var welcomeImage: Int
         val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         when (hours) {
             in 5..11 -> {
-                welcomeMessage = "${getString(R.string.good_morning)}, ${MasaSdkInstance.username}"
                 welcomeImage = R.drawable.header_morning
             }
             in 12..17 -> {
-                welcomeMessage = "${getString(R.string.good_evening)}, ${MasaSdkInstance.username}"
                 welcomeImage = R.drawable.header_evening
             }
             else -> {
-                welcomeMessage = "${getString(R.string.hello)}, ${MasaSdkInstance.username}"
                 welcomeImage = R.drawable.header_night
             }
         }
+        binding.imgHeader.setImageResource(welcomeImage)
+
         if (BuildConfig.FLAVOR == "jkb") {
-            binding.tvHeader.text = welcomeMessage
             adapter.addItem(
                 TextMessageUiModel(
                     getString(R.string.masa_welcoming_message),
@@ -103,9 +100,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         if (MasaSdkInstance.username.isNullOrEmpty()) {
             binding.name = ""
         } else {
-            binding.name = MasaSdkInstance.username + "!"
+            binding.name = MasaSdkInstance.username
         }
-        binding.imgHeader.setImageResource(welcomeImage)
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
         } else {

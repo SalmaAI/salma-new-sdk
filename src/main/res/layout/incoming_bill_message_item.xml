@@ -16,8 +16,9 @@
         style="@style/Theme.Salma.CardView.InComingMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium_margin"
-        android:layout_marginEnd="@dimen/medium_margin"
+        android:layout_marginStart="@dimen/card_view_margin"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/card_view_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -41,14 +42,16 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/medium_margin"
                 android:paddingEnd="@dimen/small_margin"
                 android:text="@{message.title}"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_text_size"
+                android:layout_marginEnd="@dimen/small_margin"
                 app:layout_constraintBottom_toTopOf="@+id/tvDetails"
+                app:layout_constraintEnd_toStartOf="@+id/tvAmount"
                 app:layout_constraintStart_toEndOf="@+id/imgBillIcon"
                 app:layout_constraintTop_toTopOf="@+id/imgBillIcon"
                 tools:text="فاتورة الكهرباء" />
@@ -72,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/medium_margin"
-                android:layout_marginBottom="@dimen/medium_margin"
+                android:layout_marginBottom="@dimen/small_margin"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/imgBillIcon"
@@ -85,9 +88,9 @@
                 android:layout_marginEnd="@dimen/medium_margin"
                 android:text="@{message.amount}"
                 app:amountTextType="amount_1"
-                app:layout_constraintBottom_toBottomOf="@+id/linearButtons"
+                app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/linearButtons"
+                app:layout_constraintTop_toTopOf="@+id/tvTitle"
                 app:reduceAfterChar="."
                 tools:text="20.05 JD" />
 

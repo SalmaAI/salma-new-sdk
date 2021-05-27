@@ -5,11 +5,13 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:background="@null">
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/aviListening"
             style="@style/AVLoadingIndicatorView"
+            android:layout_gravity="end"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="@dimen/small_margin"

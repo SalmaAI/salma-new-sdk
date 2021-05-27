@@ -54,7 +54,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            shrinkResources false
+            minifyEnabled false
             useProguard true
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -63,6 +64,7 @@ android {
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
         debug {
+            shrinkResources false
             minifyEnabled false
             useProguard false
             debuggable true
@@ -99,6 +101,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.preference:preference-ktx:1.1.1'
+
 
     //location services
     implementation 'com.google.android.gms:play-services-location:18.0.0'
@@ -160,9 +163,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    //read more textview
-    implementation 'kr.co.prnd:readmore-textview:1.0.0'
-//recycler animator
+
+    //recycler animator
     implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 
     //grpc
