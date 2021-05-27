@@ -53,6 +53,16 @@ data class MessageResponse(
                         time = AppUtils.getCurrentTime()
                     )
                 )
+            } else if (messageType == MessageType.NumberKeyPad) {
+                messages.add(
+                    TextMessageUiModel(
+                        messageContent.text, MessageSender.Masa,
+                        time = AppUtils.getCurrentTime()
+                    )
+                )
+                messages.add(
+                    KeyPadUiModel()
+                )
             } else if (messageType == MessageType.QuickReply || messageType == MessageType.UnansweredQuickReply) {
                 messages.add(
                     QuickReplyMessageUiModel(

@@ -12,7 +12,8 @@ enum class MessageType(val value: String) {
     Image("IMAGE"),
     UnansweredImage("UNANSWERED_IMAGE"),
     Carousel("CAROUSEL"),
-    UnansweredCarousel("UNANSWERED_CAROUSEL");
+    UnansweredCarousel("UNANSWERED_CAROUSEL"),
+    NumberKeyPad("NUMBER_KEY_PAD");
 
     companion object {
         fun from(type: String?): MessageType = values().find { it.value == type } ?: Text

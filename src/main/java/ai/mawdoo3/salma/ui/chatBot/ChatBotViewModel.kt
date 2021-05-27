@@ -29,6 +29,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val rateAnswer = LiveEvent<String>()
     val getUserLocation = LiveEvent<Boolean>()
     val openLink = LiveEvent<String>()
+    val openNumberKeyPad = LiveEvent<Boolean>()
     val openDialUp = LiveEvent<String>()
     val ttsAudioList = LiveEvent<List<String>>()
     val requestPermission = LiveEvent<Permission>()
@@ -79,6 +80,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                                     locationMessages.add(messageUiModel)
                                 } else if (messageUiModel is DeeplinkMessageUiModel) {
                                     openLink.value = messageUiModel.url
+                                } else if (messageUiModel is KeyPadUiModel) {
+                                    openNumberKeyPad.value = true
                                 } else {
                                     responseMessages.add(messageUiModel)
                                 }

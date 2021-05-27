@@ -20,6 +20,7 @@ import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
+
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     RateAnswerDialogListener {
@@ -73,6 +75,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             moveDuration = 0
             changeDuration = 0
         }
+        binding.recyclerView.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            binding.recyclerView.scrollToPosition(
+                adapter.itemCount - 1
+            )
+        })
+
         var welcomeImage: Int
         val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         when (hours) {
@@ -196,6 +204,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                 Uri.parse("http://maps.google.com/maps?daddr=$it")
             )
             startActivity(intent)
+        })
+        viewModel.openNumberKeyPad.observe(this, {
+            binding.chatBarView.showNumberKeyPad()
         })
 
     }
@@ -325,6 +336,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
      * this method will be called when user click send button
      */
     override fun sendMessage(messageText: String) {
+        binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
         AppUtils.hideKeyboard(activity, binding.chatBarView)
         viewModel.sendMessage(text = messageText, payload = messageText)
     }
