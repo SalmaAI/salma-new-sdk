@@ -13,7 +13,6 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
-import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -133,6 +132,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
+            binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
             adapter.clear()
             binding.enableCollapse = true
             binding.appBar.setExpanded(false)

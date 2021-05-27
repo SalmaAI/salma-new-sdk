@@ -8,8 +8,6 @@ import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
-import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
 import android.media.MediaPlayer
 import android.text.Editable
@@ -318,10 +316,6 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     fun showNumberKeyPad() {
         binding.etMessage.inputType = InputType.TYPE_CLASS_NUMBER;
         AppUtils.requestFocus(context, binding.etMessage)
-//        val inputMethodManager: InputMethodManager? =
-//            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-//        inputMethodManager?.currentInputMethodSubtype
-//        inputMethodManager?.showSoftInput(binding.etMessage, 0)
     }
 
     fun setInputType(inputType: Int) {
