@@ -44,8 +44,8 @@ class QuickRepliesMessageViewHolder(
                         totalRepliesChar += quickReplyElement.title.length
                     }
                     if (totalRepliesChar >= 100 && item.replies.size > quickReplyIndex + 1) {
-                        quickReplyItem.tvMore.makeVisible()
-                        quickReplyItem.tvMore.setOnClickListener {
+                        this.tvMore.makeVisible()
+                        this.tvMore.setOnClickListener {
                             it.makeGone()
                             loadMoreOptions(
                                 item.replies.subList(
