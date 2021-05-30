@@ -197,7 +197,7 @@ object AppUtils {
         val date = System.currentTimeMillis()
         val spf = SimpleDateFormat("hh:mm a")
         val time = spf.format(date)
-            .replace("ص", "صباحاً").replace("م", "مساءا")
+            .replace("ص", "صباحاً").replace("م", "مساءً")
         val dayFormat = SimpleDateFormat("EEEE")
         val day = dayFormat.format(date)
         return "$day ${replaceIndianNoWithArabicNo(time)}"

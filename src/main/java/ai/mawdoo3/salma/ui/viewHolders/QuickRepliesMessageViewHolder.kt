@@ -19,6 +19,7 @@ class QuickRepliesMessageViewHolder(
     override fun bind(position: Int, item: MessageUiModel?) {
         return bind<QuickRepliesMessageItemBinding> {
             binding.root.makeVisible()
+            this.tvMore.makeGone()
             this.message = item as QuickReplyMessageUiModel?
             binding.quickRepliesLayout.removeAllViews()
             var totalRepliesChar = 0
