@@ -273,9 +273,9 @@ object AppUtils {
     }
 
     fun hideKeyboard(activity: Activity?, view: View?) {
-        val imm: InputMethodManager =
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        val imm: InputMethodManager? =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     fun getFileSizeInMB(path: String): Double {

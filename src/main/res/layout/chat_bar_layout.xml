@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/small_margin"
-        android:textColor="?attr/secondaryColor"
+        android:textColor="?attr/headerTextColor"
         android:textSize="16sp"
         android:visibility="gone"
         app:fontFamily="@font/font_bold"
