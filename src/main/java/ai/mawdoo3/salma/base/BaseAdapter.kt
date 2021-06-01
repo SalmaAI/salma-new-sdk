@@ -47,10 +47,12 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         rvHandler.post {
             if (isLoading && currentState == EnumState.STATE_NORMAL) {
                 currentState = EnumState.STATE_LOADING
+                notifyItemChanged(list.size)
             } else if (!isLoading && currentState == EnumState.STATE_LOADING) {
                 currentState = EnumState.STATE_NORMAL
+                removeItem(list.size)
+                notifyItemRemoved(list.size)
             }
-            notifyItemChanged(list.size)
         }
     }
 

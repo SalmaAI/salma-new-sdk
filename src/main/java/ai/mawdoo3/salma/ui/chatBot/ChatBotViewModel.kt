@@ -7,6 +7,7 @@ import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.remote.RepoErrorResponse
 import ai.mawdoo3.salma.remote.RepoSuccessResponse
+import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.PhoneUtils
 import android.app.Application
 import android.util.Log
@@ -27,12 +28,25 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val showLoader = MutableLiveData<Boolean>()
     val rateAnswer = LiveEvent<String>()
     val getUserLocation = LiveEvent<Boolean>()
+    val openLink = LiveEvent<String>()
+    val openNumberKeyPad = LiveEvent<Boolean>()
+    val openDialUp = LiveEvent<String>()
     val ttsAudioList = LiveEvent<List<String>>()
     val requestPermission = LiveEvent<Permission>()
 
-    fun sendMessage(text: String, showMessage: Boolean = true) {
+    /**
+     * text -> this value will be shown to user as message (required when showMessage=true)
+     * payload -> this value will be sent to server (won't show to user)
+     * showMessage -> this boolean determine whether to show sent message in list or just send it to server without show it to user
+     */
+    fun sendMessage(text: String?, payload: String, showMessage: Boolean = true) {
         if (showMessage) {
-            messageSent.postValue(TextMessageUiModel(text, MessageSender.User))
+            messageSent.postValue(
+                TextMessageUiModel(
+                    text, MessageSender.User,
+                    time = AppUtils.getCurrentTime()
+                )
+            )
         }
         viewModelScope.launch {
             showLoader.postValue(true)
@@ -41,7 +55,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     PhoneUtils.getDeviceId(applicationContext),
-                    message = text,
+                    message = payload,
                     MasaSdkInstance.key
                 )
             )
@@ -60,28 +74,36 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                             if (!message.ttsId.isNullOrEmpty()) {
                                 messageAudiolist.add(message.ttsId)
                             }
-                            if (it is LocationMessageUiModel)
-                                locationMessages.add(it)
-                            else {
-                                responseMessages.add(it)
+                            it.forEach { messageUiModel ->
+                                //Aggregation all messages of LocationMessageUiModel in one list
+                                if (messageUiModel is LocationMessageUiModel) {
+                                    locationMessages.add(messageUiModel)
+                                } else if (messageUiModel is DeeplinkMessageUiModel) {
+                                    openLink.value = messageUiModel.url
+                                } else if (messageUiModel is KeyPadUiModel) {
+                                    openNumberKeyPad.value = true
+                                } else {
+                                    responseMessages.add(messageUiModel)
+                                }
                             }
+
                         }
                     }
-                    if (locationMessages.isNotEmpty()) {
+                    if (locationMessages.isNotEmpty()) {//add locations messages to messages list
                         val locationsListUiModel = LocationsListUiModel(locationMessages)
                         responseMessages.add(locationsListUiModel)
                     }
                     //send response to fragment
                     messageResponseList.postValue(responseMessages)
                     if (messageAudiolist.size > 0) {
-//                        ttsAudioList.postValue(messageAudiolist)
+                        ttsAudioList.postValue(messageAudiolist)
                     }
 
                 }
                 is RepoErrorResponse -> {
                     Log.d("SendMessage", "Response error")
                     showLoader.postValue(false)
-                    showErrorMessage.postValue("Something went wrong, please try again")
+                    onLoadFailure(result.error, true)
                 }
                 else -> {
 

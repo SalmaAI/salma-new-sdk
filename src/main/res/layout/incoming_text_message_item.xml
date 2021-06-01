@@ -19,16 +19,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
+            app:layout_constraintGuide_percent="0.1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/card_view_margin"
+            android:layout_marginTop="@dimen/large_margin"
 
-            android:layout_marginTop="@dimen/card_view_margin"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="@dimen/card_view_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.card.MaterialCardView
@@ -36,7 +36,7 @@
                 style="@style/Theme.Salma.CardView.InComingMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,13 +44,15 @@
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/small_margin">
 
-                    <kr.co.prnd.readmore.ReadMoreTextView
+                    <TextView
+
                         android:id="@+id/tvMessage"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:autoLink="phone|email|web"
                         android:lineSpacingExtra="5dp"
                         android:linksClickable="true"
+                        android:maxLines="3"
                         android:text="@{message.text}"
                         android:textColor="?attr/inComingMessageTextColor"
                         android:textColorLink="?attr/accentColor"
@@ -58,10 +60,17 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:readMoreColor="?attr/readMoreTextColor"
-                        app:readMoreMaxLine="6"
-                        app:readMoreText=" ...المزيد"
                         tools:text="كيف يمكنني مساعدتك؟" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="...المزيد"
+                        android:textColor="?attr/readMoreTextColor"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -88,7 +97,7 @@
                 android:text="@string/use_my_location"
                 android:textColor="?attr/titleTextColor"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvRate" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

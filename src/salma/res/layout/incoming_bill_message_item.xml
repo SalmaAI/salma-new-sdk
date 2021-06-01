@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="message"
+            type="ai.mawdoo3.salma.data.dataModel.BillsMessageUiModel" />
+    </data>
+
+
+
+        <com.google.android.material.card.MaterialCardView
+
+            style="@style/Theme.Salma.CardView.InComingMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginEnd="@dimen/medium_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBillIcon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="@dimen/medium_margin"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/image_bg"
+                    android:padding="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:loadImage="@{message.image}"
+                    tools:src="@tools:sample/avatars" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.title}"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="@dimen/card_text_size"
+                    app:layout_constraintBottom_toTopOf="@+id/tvDetails"
+                    app:layout_constraintStart_toEndOf="@+id/imgBillIcon"
+                    app:layout_constraintTop_toTopOf="@+id/imgBillIcon"
+                    tools:text="فاتورة الكهرباء" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.date}"
+                    android:textColor="?attr/subTitleTextColor"
+                    android:textSize="@dimen/card_subtitle_text_size"
+                    app:layout_constraintBottom_toBottomOf="@+id/imgBillIcon"
+                    app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                    tools:text="20/12/2020 Amman " />
+
+                <LinearLayout
+                    android:id="@+id/linearButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imgBillIcon"
+                    app:layout_constraintTop_toBottomOf="@+id/imgBillIcon" />
+
+                <ai.mawdoo3.salma.utils.views.MasaAmountTextView
+                    android:id="@+id/tvAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{message.amount}"
+                    app:amountTextType="amount_1"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearButtons"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    app:layout_constraintTop_toTopOf="@+id/linearButtons"
+                    app:reduceAfterChar="."
+                    tools:text="20.05 JD" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+</layout>

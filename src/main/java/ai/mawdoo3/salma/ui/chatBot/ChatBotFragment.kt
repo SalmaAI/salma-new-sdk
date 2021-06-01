@@ -1,5 +1,6 @@
 package ai.mawdoo3.salma.ui.chatBot
 
+import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.RateAnswerDialogListener
@@ -13,13 +14,13 @@ import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
+
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     RateAnswerDialogListener {
@@ -63,12 +65,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
-        adapter.addItem(
-            TextMessageUiModel(
-                getString(R.string.masa_welcoming_message),
-                MessageSender.Masa
-            )
-        )
+
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
@@ -78,33 +75,45 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             moveDuration = 0
             changeDuration = 0
         }
-        var welcomeMessage = ""
+        binding.recyclerView.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            binding.recyclerView.scrollToPosition(
+                adapter.itemCount - 1
+            )
+        })
+
         var welcomeImage: Int
         val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         when (hours) {
             in 5..11 -> {
-                welcomeMessage = "${getString(R.string.good_morning)}, ${MasaSdkInstance.username}"
                 welcomeImage = R.drawable.header_morning
             }
             in 12..17 -> {
-                welcomeMessage = "${getString(R.string.good_evening)}, ${MasaSdkInstance.username}"
                 welcomeImage = R.drawable.header_evening
             }
             else -> {
-                welcomeMessage = "${getString(R.string.hello)}, ${MasaSdkInstance.username}"
                 welcomeImage = R.drawable.header_night
             }
         }
-        binding.tvHeader.text = welcomeMessage
         binding.imgHeader.setImageResource(welcomeImage)
+
+        if (BuildConfig.FLAVOR == "jkb") {
+            adapter.addItem(
+                TextMessageUiModel(
+                    getString(R.string.masa_welcoming_message),
+                    MessageSender.Masa,
+                    time = AppUtils.getCurrentTime()
+                )
+            )
+        }
+        if (MasaSdkInstance.username.isNullOrEmpty()) {
+            binding.name = ""
+        } else {
+            binding.name = MasaSdkInstance.username
+        }
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
-        } else if (MasaSdkInstance.chatBarType == ChatBarType.AUDIO) {
-            binding.chatBarView.binding.audioLayout.makeVisible()
-            binding.chatBarView.binding.textLayout.makeGone()
-        } else if (MasaSdkInstance.chatBarType == ChatBarType.TEXT_AND_AUDIO) {
-            binding.chatBarView.binding.textLayout.makeVisible()
-            binding.chatBarView.binding.audioLayout.makeGone()
+        } else {
+            binding.chatBarView.setChatBarType(MasaSdkInstance.chatBarType)
         }
         return attachView(binding.root)
     }
@@ -116,9 +125,17 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             Log.d("SendMessage", "Add Masa message")
             adapter.addItems(it)
         })
+        viewModel.openLink.observe(viewLifecycleOwner, {
+            AppUtils.openLinkInTheBrowser(it, requireContext())
+        })
+        viewModel.openDialUp.observe(viewLifecycleOwner, {
+            AppUtils.makePhoneCall(it, requireContext())
+        })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
+            binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
             adapter.clear()
+            binding.enableCollapse = true
             binding.appBar.setExpanded(false)
 //            adapter.addItem(it)
 
@@ -128,7 +145,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 //            scrollToBottom()
         })
         viewModel.ttsAudioList.observe(viewLifecycleOwner, {
-//            binding.chatBarView.playAudioList(it)
+            binding.chatBarView.playAudioList(it)
         })
         viewModel.showLoader.observe(viewLifecycleOwner, {
             adapter.loading(it)
@@ -144,7 +161,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             adapter.addItem(
                 TextMessageUiModel(
                     getString(R.string.use_my_location),
-                    MessageSender.User
+                    MessageSender.User,
+                    time = AppUtils.getCurrentTime()
                 )
             )
             scrollToBottom()
@@ -187,6 +205,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                 Uri.parse("http://maps.google.com/maps?daddr=$it")
             )
             startActivity(intent)
+        })
+        viewModel.openNumberKeyPad.observe(this, {
+            binding.chatBarView.showNumberKeyPad()
         })
 
     }
@@ -246,14 +267,16 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                             val result: Location = task.result
                             "Location (success): ${result.latitude}, ${result.longitude}"
                             viewModel.sendMessage(
-                                result.latitude.toString() + "," + result.longitude.toString(),
-                                false
+                                text = "",
+                                payload = result.latitude.toString() + "," + result.longitude.toString(),
+                                showMessage = false
                             )
                         } else {
                             adapter.addItem(
                                 TextMessageUiModel(
                                     getString(R.string.get_location_failed_message),
-                                    MessageSender.Masa
+                                    MessageSender.Masa,
+                                    time = AppUtils.getCurrentTime()
                                 )
                             )
                         }
@@ -314,8 +337,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
      * this method will be called when user click send button
      */
     override fun sendMessage(messageText: String) {
+        binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
         AppUtils.hideKeyboard(activity, binding.chatBarView)
-        viewModel.sendMessage(messageText)
+        viewModel.sendMessage(text = messageText, payload = messageText)
     }
 
     override fun requestMicPermission() {

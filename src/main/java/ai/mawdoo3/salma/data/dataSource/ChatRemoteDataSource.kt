@@ -21,7 +21,7 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 .addFormDataPart("message", sendMessageRequest.message)
                 .build()
 
-            val result = endpoints.sendMessageNew(
+            val result = endpoints.sendMessage(
                 MasaSdkInstance.botId,
                 MasaSdkInstance.botChannelId,
                 body.part(0),

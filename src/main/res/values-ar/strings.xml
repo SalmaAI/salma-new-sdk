@@ -10,7 +10,7 @@
     <string name="go_to_settings">الذهاب الى الإعدادات</string>
     <string name="cancel">الغاء</string>
     <string name="permission_denied_title">لا يوجد صلاحية</string>
-    <string name="quick_replies_more">المزيد</string>
+    <string name="quick_replies_more">+ المزيد</string>
     <string name="directions">الاتجاهات</string>
     <string name="call">اتصال</string>
     <string name="rate_dialog_title">كيف كانت الإجابة ؟</string>
@@ -30,6 +30,8 @@
     <string name="good_morning">"صباح الخير "</string>
     <string name="good_evening">مساء الخير</string>
     <string name="hello">مرحباً</string>
+    <string name="hello_message">مرحبا، %s\nكيف بقدر أساعدك اليوم؟</string>
     <string name="connection_failed_error">تعذر الوصول الى الخادم الرجاء المحاولة لاحقا</string>
     <string name="masa_welcoming_message">كيف يمكنني مساعدتك؟</string>
+    <string name="something_went_wrong">حصل خطأ ما, الرجاء المحاولة لاحقا</string>
 </resources>

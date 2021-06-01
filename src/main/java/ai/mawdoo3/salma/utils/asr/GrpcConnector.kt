@@ -37,6 +37,7 @@ object GrpcConnector {
             return channel
         } catch (e: Throwable) {
             throw FailedChannelConnectionException("Cannot Connect to Server " + e.message)
+            Log.d("GRPC", "Connection failed")
         }
     }
 

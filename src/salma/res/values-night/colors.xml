@@ -12,12 +12,13 @@
     <color name="masaReadMoreTextColor">#223CC8</color>
     <color name="masaInComingMessageTextColor">#000000</color>
     <color name="masaOutComingMessageTextColor">#FFFFFF</color>
+    <color name="masaProgressColor">#000000</color>
 
     <!-- Text filed colors-->
-    <color name="masaTextFieldHintTextColor">#577CB7</color>
+    <color name="masaTextFieldHintTextColor">#77869E</color>
     <color name="masaTextFieldTextColor">#FFFFFFFF</color>
     <color name="masaTextFieldBackgroundColor">#FFFFFFFF</color>
-    <color name="masaTextFieldCursorColor">#FFFFFFFF</color>
+    <color name="masaTextFieldCursorColor">#4BA2EA</color>
     <color name="masaCardButtonBackgroundColor">#001B44</color>
     <color name="masaCardButtonTextColor">#FFFFFFFF</color>
     <color name="masaCardButtonIconColor">#0072BF</color>
@@ -27,5 +28,8 @@
     <color name="masaSubTitleTextColor">#577CB7</color>
     <color name="masaHeaderTextColor">#FFFFFFFF</color>
     <color name="black_overlay">#80000000</color>
+    <color name="masaMessageTimeTextColor">#ABB5C5</color>
+    <color name="masaPrimaryActionColor">#223CC8</color>
+    <color name="masaSecondaryActionColor">#D92E2B</color>
 
 </resources>

@@ -1,12 +1,18 @@
 package ai.mawdoo3.salma.binding
 
+import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.utils.AppUtils
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation
+import java.util.*
 
 class MyBindingAdapters {
     companion object {
@@ -31,26 +37,88 @@ class MyBindingAdapters {
 
             model?.let {
                 Glide.with(context)
-                .load(model)
-                .placeholder(placeHolder)
-                .error(placeHolder)
-                .fallback(placeHolder)
-                .transform(
-                    if (isCircle && strokeWidth > 0) {
-                        CropCircleWithBorderTransformation(strokeWidth.toInt(), strokeColor)
-                    } else if (isCircle) {
-                        CircleCrop()
-                    } else {
-                        MultiTransformation(
-                            FitCenter()
-                        )
-                    }
+                    .load(model)
+                    .placeholder(placeHolder)
+                    .error(placeHolder)
+                    .fallback(placeHolder)
+                    .transform(
+                        if (isCircle && strokeWidth > 0) {
+                            CropCircleWithBorderTransformation(strokeWidth.toInt(), strokeColor)
+                        } else if (isCircle) {
+                            CircleCrop()
+                        } else {
+                            MultiTransformation(
+                                FitCenter()
+                            )
+                        }
 
-                )
-                .into(this)
+                    )
+                    .into(this)
+            }
+
         }
 
+        @JvmStatic
+        @BindingAdapter("app:enableCollapsingScroll")
+        fun setCollapsingToolbarLayoutScrollEnabled(
+            collapsingToolbarLayout: CollapsingToolbarLayout,
+            enabled: Boolean?
+        ) {
+            val lp = collapsingToolbarLayout.layoutParams as AppBarLayout.LayoutParams
+            if (enabled != null && enabled == true) {
+                lp.scrollFlags =
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+            } else {
+                lp.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+            }
+            collapsingToolbarLayout.layoutParams = lp
+        }
+
+        @JvmStatic
+        @BindingAdapter("showTime")
+        fun AppCompatTextView.setDayAndTime(
+            showDay: Boolean
+        ) {
+            if (showDay) {
+                this.text = AppUtils.getCurrentTimeWithDay()
+            } else {
+                this.text = AppUtils.getCurrentTime()
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("showWelcomingMessage", "showMessageBasedOnTime")
+        fun AppCompatTextView.setWelcomingMessage(
+            name: String,
+            showMessageBasedOnTime: Boolean
+        ) {
+            var welcomeMessage = ""
+            if (showMessageBasedOnTime) {
+                val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                when (hours) {
+                    in 5..11 -> {
+                        welcomeMessage =
+                            "${this.context.getString(R.string.good_morning)}, $name"
+                    }
+                    in 12..17 -> {
+                        welcomeMessage =
+                            "${this.context.getString(R.string.good_evening)}, $name"
+                    }
+                    else -> {
+                        welcomeMessage = "${this.context.getString(R.string.hello)}, $name"
+                    }
+                }
+            } else {
+                var newName = ""
+                if (name.isNotEmpty()) {
+                    newName = "$name!"
+                }
+                welcomeMessage =
+                    String.format(this.context.getString(R.string.hello_message), newName)
+            }
+            this.text = welcomeMessage
+        }
     }
-    }
+
 
 }

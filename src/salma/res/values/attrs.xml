@@ -16,6 +16,8 @@
     <attr name="cardButtonIconColor" format="color" />
     <attr name="dialogBackgroundColor" format="color" />
     <attr name="readMoreTextColor" format="color" />
+    <attr name="progressColor" format="color" />
+    <attr name="messageTimeTextColor" format="color" />
 
     <!-- Text filed colors-->
     <attr name="textFieldHintTextColor" format="color" />
@@ -27,6 +29,9 @@
     <attr name="titleTextColor" format="color" />
     <attr name="subTitleTextColor" format="color" />
     <attr name="headerTextColor" format="color" />
+    <attr name="amount1TextColor" format="color" />
+    <attr name="amount2TextColor" format="color" />
+
 
     <declare-styleable name="FlowLayout">
         <attr name="flFlow" format="boolean" />

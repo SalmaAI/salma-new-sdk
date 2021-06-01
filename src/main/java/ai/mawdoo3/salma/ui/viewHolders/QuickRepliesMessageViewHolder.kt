@@ -19,9 +19,11 @@ class QuickRepliesMessageViewHolder(
     override fun bind(position: Int, item: MessageUiModel?) {
         return bind<QuickRepliesMessageItemBinding> {
             binding.root.makeVisible()
+            this.tvMore.makeGone()
             this.message = item as QuickReplyMessageUiModel?
             binding.quickRepliesLayout.removeAllViews()
             var totalRepliesChar = 0
+            var quickReplyIndex = 0
             item?.replies?.let {
                 for (quickReplyElement in item.replies) {
                     var quickReplyItem = QuickReplyItemBinding.inflate(
@@ -31,27 +33,38 @@ class QuickRepliesMessageViewHolder(
                     ).apply {
                         this.quickReply = quickReplyElement
                         this.tvText.setOnClickListener {
-                            viewModel.sendMessage(quickReplyElement.quickReplyPayload)
+                            viewModel.sendMessage(
+                                text = quickReplyElement.title,
+                                payload = quickReplyElement.quickReplyPayload!!
+                            )
                             binding.root.makeGone()
                         }
                     }
                     binding.quickRepliesLayout.addView(quickReplyItem.root)
-                    totalRepliesChar += quickReplyElement.title.length
-                    if (totalRepliesChar >= 100) {
-                        quickReplyItem.tvMore.makeVisible()
-                        quickReplyItem.tvMore.setOnClickListener {
+                    quickReplyElement.title?.let {
+                        totalRepliesChar += quickReplyElement.title.length
+                    }
+                    if (totalRepliesChar >= 100 && item.replies.size > quickReplyIndex + 1) {
+                        this.tvMore.makeVisible()
+                        this.tvMore.setOnClickListener {
                             it.makeGone()
-                            loadMoreOptions(item.replies.subList(3, item.replies.size - 1))
+                            loadMoreOptions(
+                                item.replies.subList(
+                                    quickReplyIndex + 1,
+                                    item.replies.size - 1
+                                )
+                            )
                         }
                         break
                     }
+                    quickReplyIndex++
                 }
             }
         }
     }
 
     private fun loadMoreOptions(
-        subList: List<MessageResponse.MessageContentResponse.QuickReplyElement>
+        subList: List<MessageResponse.MessageContentResponse.Element>
     ) {
         subList.forEach { quickReplyElement ->
             binding.quickRepliesLayout.addView(
@@ -62,7 +75,10 @@ class QuickRepliesMessageViewHolder(
                 ).apply {
                     this.quickReply = quickReplyElement
                     this.root.setOnClickListener {
-                        viewModel.sendMessage(quickReplyElement.quickReplyPayload)
+                        viewModel.sendMessage(
+                            text = quickReplyElement.title,
+                            payload = quickReplyElement.quickReplyPayload!!
+                        )
                     }
                 }.root
             )

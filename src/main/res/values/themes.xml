@@ -15,6 +15,8 @@
         <item name="inComingMessageBackgroundColor">@color/masaInComingMessageBackgroundColor</item>
         <item name="inComingMessageTextColor">@color/masaInComingMessageTextColor</item>
         <item name="outComingMessageTextColor">@color/masaOutComingMessageTextColor</item>
+        <item name="messageTimeTextColor">@color/masaMessageTimeTextColor</item>
+
         <!-- Text filed colors-->
         <item name="textFieldHintTextColor">@color/masaTextFieldHintTextColor</item>
         <item name="textFieldTextColor">@color/masaTextFieldTextColor</item>
@@ -24,12 +26,15 @@
         <item name="subTitleTextColor">@color/masaSubTitleTextColor</item>
         <item name="titleTextColor">@color/masaTitleTextColor</item>
         <item name="headerTextColor">@color/masaHeaderTextColor</item>
+        <item name="amount1TextColor">@color/masaAmount1TextColor</item>
+        <item name="amount2TextColor">@color/masaAmount2TextColor</item>
 
         <item name="cardButtonBackgroundColor">@color/masaCardButtonBackgroundColor</item>
         <item name="cardButtonIconColor">@color/masaCardButtonIconColor</item>
         <item name="cardButtonTextColor">@color/masaCardButtonTextColor</item>
         <item name="dialogBackgroundColor">@color/masaDialogBackgroundColor</item>
         <item name="readMoreTextColor">@color/masaReadMoreTextColor</item>
+        <item name="progressColor">@color/masaProgressColor</item>
 
         <!-- Customize your theme here. -->
 

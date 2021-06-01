@@ -36,7 +36,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="فرع المدينة المنورة" />
+                tools:text="فرع شارع الملك حسين بن طلال الزرقاء" />
 
             <TextView
                 android:id="@+id/tvAddress"
@@ -62,7 +62,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintStart_toStartOf="@+id/linearLayout"
                 app:layout_constraintTop_toBottomOf="@+id/tvAddress"
-                tools:text="الأحد - الخميس 9:00 am - 3:00 pm" />
+                tools:text="من الأحد الى الخميس من الساعة الثامنة صباحا حتى الساعة الثالة عصرا" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
