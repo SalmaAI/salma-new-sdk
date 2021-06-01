@@ -145,7 +145,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 //            scrollToBottom()
         })
         viewModel.ttsAudioList.observe(viewLifecycleOwner, {
-//            binding.chatBarView.playAudioList(it)
+            binding.chatBarView.playAudioList(it)
         })
         viewModel.showLoader.observe(viewLifecycleOwner, {
             adapter.loading(it)

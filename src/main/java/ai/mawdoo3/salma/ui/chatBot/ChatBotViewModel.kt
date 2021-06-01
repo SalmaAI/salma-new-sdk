@@ -96,7 +96,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     //send response to fragment
                     messageResponseList.postValue(responseMessages)
                     if (messageAudiolist.size > 0) {
-//                        ttsAudioList.postValue(messageAudiolist)
+                        ttsAudioList.postValue(messageAudiolist)
                     }
 
                 }
