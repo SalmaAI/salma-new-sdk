@@ -60,7 +60,7 @@ android {
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
-            buildConfigField("String", "TTS_URL", '"https://yjvhekp74bjkgexwxspeebfb47tqjc.staging.ingress.mawdu.com/tts-api-v4-1-3"')
+            buildConfigField("String", "TTS_URL", '"https://yjvhekp74bjkgexwxspeebfb47tqjc.staging.ingress.mawdu.com/tts-api-v4-1-3/tts?key=%1$s&diacritize_text=true&override_diacritics=true&streaming=true&as_attachment=false&tempo=0&encoding=mp3&bitrate=16000"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
         debug {
@@ -69,7 +69,7 @@ android {
             useProguard false
             debuggable true
             buildConfigField("String", "ASR_URL", '"asr-nemo-v1-2-0-grpc.yjvhekp74bjkgex.staging.ingress.mawdu.com"')
-            buildConfigField("String", "TTS_URL", '"https://yjvhekp74bjkgexwxspeebfb47tqjc.staging.ingress.mawdu.com/tts-api-v4-1-3"')
+            buildConfigField("String", "TTS_URL", '"https://yjvhekp74bjkgexwxspeebfb47tqjc.staging.ingress.mawdu.com/tts-api-v4-1-3/tts?key=%1$s&diacritize_text=true&override_diacritics=true&streaming=true&as_attachment=false&tempo=0&encoding=mp3&bitrate=16000"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
     }
