@@ -4,12 +4,9 @@ import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
-import ai.mawdoo3.salma.utils.AppUtils
-import ai.mawdoo3.salma.utils.TTSStreamHelper
+import ai.mawdoo3.salma.utils.*
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
-import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
 import android.media.MediaPlayer
 import android.text.Editable
@@ -234,6 +231,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.imgAction.makeVisible()
             if (chatBarType == ChatBarType.TEXT_AND_AUDIO) {
                 binding.etMessage.makeVisible()
+                binding.etMessage.requestFocus()
             }
             binding.tvGrpcText.setText("")
             binding.tvGrpcText.makeGone()
@@ -252,7 +250,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.aviSpeaking.makeVisible()
             binding.imgAction.makeGone()
 //            binding.imgAction.setImageResource(R.drawable.ic_volume_mute)
-            binding.etMessage.makeGone()
+            binding.etMessage.makeInvisible()
             binding.tvSpeak.makeGone()
             binding.tvGrpcText.makeGone()
         }
