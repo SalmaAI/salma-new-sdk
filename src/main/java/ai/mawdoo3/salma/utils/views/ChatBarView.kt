@@ -250,8 +250,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             actionStatus = ChatBarStatus.PlayingAudio
             binding.aviListening.makeGone()
             binding.aviSpeaking.makeVisible()
-            binding.imgAction.makeVisible()
-            binding.imgAction.setImageResource(R.drawable.ic_volume_mute)
+            binding.imgAction.makeGone()
+//            binding.imgAction.setImageResource(R.drawable.ic_volume_mute)
             binding.etMessage.makeGone()
             binding.tvSpeak.makeGone()
             binding.tvGrpcText.makeGone()
