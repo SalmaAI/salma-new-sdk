@@ -303,8 +303,8 @@ object AppUtils {
                     && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
         } else {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val activeNetwork: NetworkInfo = cm.activeNetworkInfo
-            result = activeNetwork.isConnected
+            val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+            result = activeNetwork?.isConnected?:false
         }
 
         return result
