@@ -17,7 +17,7 @@ import java.io.InputStream
  * Created by iSaleem on 3/22/21
  */
 
-const val CERT_NAME = "asr-nemo-v1-3-0-grpc-cert.crt"
+const val CERT_NAME = "asr-nemo-v1-3-1-grpc-cert.crt"
 
 object GrpcConnector {
 
