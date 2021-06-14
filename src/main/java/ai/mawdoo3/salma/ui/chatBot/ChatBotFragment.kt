@@ -97,6 +97,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding.imgHeader.setImageResource(welcomeImage)
 
         if (BuildConfig.FLAVOR == "jkb") {
+            /*
             adapter.addItem(
                 TextMessageUiModel(
                     getString(R.string.masa_welcoming_message),
@@ -104,6 +105,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                     time = AppUtils.getCurrentTime()
                 )
             )
+
+             */
+            viewModel.sendMessage("","القائمة الرئيسية",false)
         }
         if (MasaSdkInstance.username.isNullOrEmpty()) {
             binding.name = ""

@@ -114,6 +114,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             }
 
         })
+
     }
 
     fun setChatBarType(chatBarType: ChatBarType) {
@@ -140,6 +141,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.etMessage.text?.clear()
         }
     }
+
 
     private fun sendGRPCMessage(text: String) {
         Log.d("GRPC", "Stop record")
@@ -204,8 +206,10 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             Log.d("GRPC", "begin of start Listening")
             CoroutineScope(Dispatchers.Main).launch {
                 actionStatus = ChatBarStatus.Listening
+                /*
                 var mediaPlayer = MediaPlayer.create(context, R.raw.ring)
                 mediaPlayer.start() // no need to call prepare(); create() does that for you
+                 */
                 binding.aviListening.makeVisible()
                 binding.aviSpeaking.makeGone()
                 binding.imgAction.makeGone()
