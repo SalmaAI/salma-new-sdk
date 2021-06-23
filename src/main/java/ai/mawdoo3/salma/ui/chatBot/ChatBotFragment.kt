@@ -1,6 +1,5 @@
 package ai.mawdoo3.salma.ui.chatBot
 
-import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.RateAnswerDialogListener
@@ -96,19 +95,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         }
         binding.imgHeader.setImageResource(welcomeImage)
 
-        if (BuildConfig.FLAVOR == "jkb") {
-            /*
-            adapter.addItem(
-                TextMessageUiModel(
-                    getString(R.string.masa_welcoming_message),
-                    MessageSender.Masa,
-                    time = AppUtils.getCurrentTime()
-                )
-            )
 
-             */
-            viewModel.sendMessage("","القائمة الرئيسية",false)
-        }
+        viewModel.sendMessage("", "القائمة الرئيسية", false)
+
         if (MasaSdkInstance.username.isNullOrEmpty()) {
             binding.name = ""
         } else {
