@@ -19,6 +19,7 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 .addFormDataPart("secretKey", sendMessageRequest.secretKey)
                 .addFormDataPart("userId", sendMessageRequest.userId)
                 .addFormDataPart("message", sendMessageRequest.message)
+                .addFormDataPart("mobileJWT","sendMessageRequest")
                 .build()
 
             val result = endpoints.sendMessage(
@@ -26,7 +27,8 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 MasaSdkInstance.botChannelId,
                 body.part(0),
                 body.part(1),
-                body.part(2)
+                body.part(2),
+                body.part(3)
             )
             RepoResponse.create(result)
         } catch (e: Exception) {
