@@ -3,12 +3,14 @@ package ai.mawdoo3.salma.utils;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
@@ -91,7 +93,7 @@ public class TTSStreamHelper {
         void onCompletedListener();
     }
 
-    private void initializePlayer(String url) {
+    private void initializePlayer(String ttsId) {
         if (context.get() != null) {
 
 
@@ -100,67 +102,30 @@ public class TTSStreamHelper {
                             .build();
 
 
-            player.setPlayWhenReady(playWhenReady);
-            player.seekTo(currentWindow, playbackPosition);
             player.setPlayWhenReady(true);
-            Uri uri = Uri.parse(url);
-            MediaSource mediaSource = buildMediaSource(uri);
-            player.prepare(mediaSource, true, false);
+            MediaItem mediaItem = MediaItem.fromUri("https://demo.salma-app.com/tts-api-v4-1-3/tts?key="+ttsId+"&diacritize_text=false&override_diacritics=false&streaming=true&as_attachment=false&tempo=0&encoding=mp3&bitrate=16000");
+            player.setMediaItem(mediaItem);
+            player.prepare();
+
             player.addListener(new Player.EventListener() {
                 @Override
-                public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
-                }
-
-                @Override
-                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-                }
-
-                @Override
-                public void onLoadingChanged(boolean isLoading) {
-                }
-
-                @Override
-                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                    if (playbackState == Player.STATE_ENDED) {
-                        for (int i = 0; i < streamListeners.size(); i++)
-                            streamListeners.get(i).onCompletedListener();
-                    }
-                }
-
-                @Override
-                public void onRepeatModeChanged(int repeatMode) {
-
-                }
-
-                @Override
-                public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-                }
-
-                @Override
                 public void onPlayerError(ExoPlaybackException error) {
-
                     for (int i = 0; i < streamListeners.size(); i++)
                         streamListeners.get(i).onCompletedListener();
                 }
 
                 @Override
-                public void onPositionDiscontinuity(int reason) {
-
-                }
-
-                @Override
-                public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-                }
-
-                @Override
-                public void onSeekProcessed() {
-
+                public void onPlaybackStateChanged(int state) {
+                    if (state == Player.STATE_ENDED) {
+                        for (int i = 0; i < streamListeners.size(); i++)
+                            streamListeners.get(i).onCompletedListener();
+                    }
                 }
             });
+
+
+
+
         } else
             for (int i = 0; i < streamListeners.size(); i++)
                 streamListeners.get(i).onCompletedListener();

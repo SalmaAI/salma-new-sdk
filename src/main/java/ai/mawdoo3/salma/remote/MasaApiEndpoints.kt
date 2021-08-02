@@ -18,7 +18,8 @@ interface MasaApiEndpoints {
         @Path("botChannelId") botChannelId: String,
         @Part userId: MultipartBody.Part,
         @Part message: MultipartBody.Part,
-        @Part secretKey: MultipartBody.Part
-    ): Response<SendMessageResponse>
+        @Part secretKey: MultipartBody.Part,
+        @Part mobileJWT: MultipartBody.Part
+        ): Response<SendMessageResponse>
 
 }

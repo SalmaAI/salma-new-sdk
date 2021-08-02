@@ -247,7 +247,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun playAudio(ttsID: String) {
         mVoiceRecorder?.stop()
         val url = String.format(BuildConfig.TTS_URL, ttsID)
-        TTSStreamHelper.getInstance(this.context).startStreaming(url)
+        TTSStreamHelper.getInstance(this.context).startStreaming(ttsID)
         CoroutineScope(Dispatchers.Main).launch {
             actionStatus = ChatBarStatus.PlayingAudio
             binding.aviListening.makeGone()
