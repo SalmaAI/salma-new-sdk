@@ -13,6 +13,7 @@
     <color name="masaInComingMessageTextColor">#000000</color>
     <color name="masaOutComingMessageTextColor">#FFFFFF</color>
     <color name="masaProgressColor">#000000</color>
+    <color name="masaCurrencyFieldBorderColor">#DFE4EC</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#77869E</color>

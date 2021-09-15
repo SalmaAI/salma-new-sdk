@@ -13,7 +13,11 @@ enum class MessageType(val value: String) {
     UnansweredImage("UNANSWERED_IMAGE"),
     Carousel("CAROUSEL"),
     UnansweredCarousel("UNANSWERED_CAROUSEL"),
-    NumberKeyPad("NUMBER_KEY_PAD");
+    NumberKeyPad("NUMBER_KEY_PAD"),
+    InformationalCard("INFORMATIONAL_CARD"),
+    UnansweredInformationalCard("UNANSWERED_INFORMATIONAL_CARD"),
+    PropertiesCard("PROPERTIES_CARD"),
+    UnansweredPropertiesCard("UNANSWERED_PROPERTIES_CARD");
 
     companion object {
         fun from(type: String?): MessageType = values().find { it.value == type } ?: Text

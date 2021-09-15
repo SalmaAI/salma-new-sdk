@@ -2,6 +2,7 @@ package ai.mawdoo3.salma.data.dataModel
 
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.data.enums.MessageType
+import ai.mawdoo3.salma.data.enums.PropertyType
 import ai.mawdoo3.salma.utils.AppUtils
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -24,6 +25,7 @@ data class MessageResponse(
         @Json(name = "text") val text: String?,
         @Json(name = "url") val url: String?,
         @Json(name = "elements") val elements: List<Element>?,
+        @Json(name = "properties") val properties: List<Property>?,
         @Json(name = "attachmentId") val attachmentId: String?
     ) {
         data class Element(
@@ -40,6 +42,12 @@ data class MessageResponse(
                 @Json(name = "value") val value: String
             )
         }
+
+        data class Property(
+            @Json(name = "type") val type: String?,
+            @Json(name = "name") val name: String?,
+            @Json(name = "value") val value: String?
+        )
     }
 
     inner class Factory {
@@ -53,6 +61,13 @@ data class MessageResponse(
                         time = AppUtils.getCurrentTime()
                     )
                 )
+                val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
+                currencyMessageUiModel.fromCurrency = Currency("JOD", "دينار أردني", "")
+                currencyMessageUiModel.toCurrency = Currency("USD", "دولار أمريكي", "")
+                currencyMessageUiModel.fromValue = "1"
+                currencyMessageUiModel.toValue = "0.71"
+                currencyMessageUiModel.exchangeRate = "١ دينار أردني تساوي ١.٢٧ يورو"
+                messages.add(currencyMessageUiModel)
             } else if (messageType == MessageType.NumberKeyPad) {
                 messages.add(
                     TextMessageUiModel(
@@ -149,6 +164,42 @@ data class MessageResponse(
                         )
                     )
                 }
+            } else if (messageType == MessageType.InformationalCard || messageType == MessageType.UnansweredInformationalCard) {
+
+            } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
+                messageContent.properties?.forEach { property ->
+                    when (PropertyType.from(property.type)) {
+                        PropertyType.CurrencyFrom -> {
+                            currencyMessageUiModel.fromCurrency =
+                                Currency(property.name!!, property.value!!, "")
+                        }
+                        PropertyType.CurrencyTo -> {
+                            currencyMessageUiModel.toCurrency =
+                                Currency(property.name!!, property.value!!, "")
+                        }
+                        PropertyType.CurrencyFromValue -> {
+                            currencyMessageUiModel.fromValue = property.value.toString()
+                        }
+                        PropertyType.CurrencyToValue -> {
+                            currencyMessageUiModel.toValue = property.value.toString()
+                        }
+                        PropertyType.CurrencyExchangeRate -> {
+                            currencyMessageUiModel.exchangeRate = property.value.toString()
+                        }
+                    }
+                }
+                messages.add(currencyMessageUiModel)
             }
 
             return messages
