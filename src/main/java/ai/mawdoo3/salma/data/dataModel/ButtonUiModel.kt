@@ -7,5 +7,5 @@ data class ButtonUiModel(
     val type: String,
     val title: String,
     val value: String,
-
-    )
+    val function: String?
+)

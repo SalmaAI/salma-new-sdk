@@ -32,14 +32,17 @@ data class MessageResponse(
             @Json(name = "title") val title: String?,
             @Json(name = "image") val image: String?,
             @Json(name = "subTitle") val subTitle: String?,
+            @Json(name = "optionalInfo") val optionalInfo: String?,
             @Json(name = "buttons") val buttons: List<ActionButton>?,
+            @Json(name = "globalButton") val globalButton: ActionButton?,
             @Json(name = "quickReplyPayload") val quickReplyPayload: String?,
             @Json(name = "quickReplyType") val quickReplyType: String?
         ) {
             data class ActionButton(
                 @Json(name = "type") val type: String,
                 @Json(name = "title") val title: String,
-                @Json(name = "value") val value: String
+                @Json(name = "value") val value: String,
+                @Json(name = "function") val function: String?
             )
         }
 
@@ -61,13 +64,39 @@ data class MessageResponse(
                         time = AppUtils.getCurrentTime()
                     )
                 )
-                val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
-                currencyMessageUiModel.fromCurrency = Currency("JOD", "دينار أردني", "")
-                currencyMessageUiModel.toCurrency = Currency("USD", "دولار أمريكي", "")
-                currencyMessageUiModel.fromValue = "1"
-                currencyMessageUiModel.toValue = "0.71"
-                currencyMessageUiModel.exchangeRate = "١ دينار أردني تساوي ١.٢٧ يورو"
-                messages.add(currencyMessageUiModel)
+//                val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
+//                currencyMessageUiModel.fromCurrency = Currency("JOD", "دينار أردني", "")
+//                currencyMessageUiModel.toCurrency = Currency("USD", "دولار أمريكي", "")
+//                currencyMessageUiModel.fromValue = "1"
+//                currencyMessageUiModel.toValue = "0.71"
+//                currencyMessageUiModel.exchangeRate = "١ دينار أردني تساوي ١.٢٧ يورو"
+//                messages.add(currencyMessageUiModel)
+//                val buttons = ArrayList<ButtonUiModel>()
+//                buttons.add(
+//                    ButtonUiModel(
+//                        "perform_function",
+//                        "تحويل بين الحسابات ",
+//                        "http://www.masabanking.com/accounts",
+//                        "deep_link"
+//                    )
+//                )
+//                buttons.add(
+//                    ButtonUiModel(
+//                        "perform_function",
+//                        "اخر الحركات ",
+//                        "http://www.masabanking.com/accounts",
+//                        "deep_link"
+//                    )
+//                )
+//
+//                val informationalMessage = InformationalMessageUiModel(
+//                    "حساب توفير",
+//                    "1000/2000/3000/4000",
+//                    null,
+//                    ButtonUiModel("perform_function", "share", "share content", "share"),
+//                    buttons, MessageSender.Masa
+//                )
+//                messages.add(informationalMessage)
             } else if (messageType == MessageType.NumberKeyPad) {
                 messages.add(
                     TextMessageUiModel(
@@ -138,7 +167,7 @@ data class MessageResponse(
                 messageContent.elements?.forEach { element ->
                     val buttons = ArrayList<ButtonUiModel>()
                     element.buttons?.forEach {
-                        buttons.add(ButtonUiModel(it.type, it.title, it.value))
+                        buttons.add(ButtonUiModel(it.type, it.title, it.value, it.function))
                     }
                     val date = element.subTitle?.split("\\n\\n")?.get(0)
                     val amount = element.subTitle?.split("\\n\\n")?.get(1)
@@ -165,7 +194,34 @@ data class MessageResponse(
                     )
                 }
             } else if (messageType == MessageType.InformationalCard || messageType == MessageType.UnansweredInformationalCard) {
-
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                messageContent.elements?.forEach { element ->
+                    var globalButton: ButtonUiModel? = null
+                    element.globalButton?.let {
+                        globalButton = ButtonUiModel(it.type, it.title, it.value, it.function)
+                    }
+                    val buttons = ArrayList<ButtonUiModel>()
+                    element.buttons?.forEach {
+                        buttons.add(ButtonUiModel(it.type, it.title, it.value, it.function))
+                    }
+                    val informationalMessage = InformationalMessageUiModel(
+                        element.title,
+                        element.subTitle,
+                        element.optionalInfo,
+                        globalButton,
+                        buttons, MessageSender.Masa
+                    )
+                    messages.add(informationalMessage)
+                }
             } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {
                 //if there is text for content add text message before cards
                 messageContent.text?.let {

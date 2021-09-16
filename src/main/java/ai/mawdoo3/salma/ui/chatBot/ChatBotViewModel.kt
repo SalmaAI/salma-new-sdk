@@ -32,6 +32,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val openNumberKeyPad = LiveEvent<Boolean>()
     val openDialUp = LiveEvent<String>()
     val ttsAudioList = LiveEvent<List<String>>()
+    val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
 
     /**
@@ -48,6 +49,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 )
             )
         }
+        stopTTS.value = true
         viewModelScope.launch {
             showLoader.postValue(true)
             Log.d("SendMessage", "delay request 1000 millisecond")

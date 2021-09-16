@@ -8,7 +8,6 @@ import ai.mawdoo3.salma.utils.*
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
 import android.content.Context
-import android.media.MediaPlayer
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -73,12 +72,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                     playAudio(it[0])
                     it.removeAt(0)
                 } else {
-                    stopListening()
+                    stopPlayingAudio()
                 }
 
             }
         }
-
+        binding.aviSpeaking.setOnClickListener {
+            stopPlayingAudio()
+        }
         binding.imgAction.setOnClickListener {
             if (actionStatus == ChatBarStatus.Listening
                 || actionStatus == ChatBarStatus.Speaking
@@ -86,9 +87,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                 cancelCurrentRecord = true
                 stopListening()
             } else if (actionStatus == ChatBarStatus.PlayingAudio) {
-                TTSStreamHelper.getInstance(this.context).stopStream()
-                audioList?.clear()
-                stopListening()
+                stopPlayingAudio()
             } else if (binding.etMessage.text.isNullOrEmpty()) {
                 checkPermissionAndStartListening()
             } else {
@@ -260,6 +259,19 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         }
     }
 
+    fun stopPlayingAudio() {
+        audioList?.clear()
+        TTSStreamHelper.getInstance(this.context).stopStream()
+        actionStatus = ChatBarStatus.Nothing
+        binding.aviSpeaking.makeGone()
+        binding.imgAction.setImageResource(R.drawable.ic_microphone)
+        binding.imgAction.makeVisible()
+        if (chatBarType == ChatBarType.TEXT_AND_AUDIO) {
+            binding.etMessage.makeVisible()
+            binding.etMessage.requestFocus()
+        }
+
+    }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         binding.root.layout(

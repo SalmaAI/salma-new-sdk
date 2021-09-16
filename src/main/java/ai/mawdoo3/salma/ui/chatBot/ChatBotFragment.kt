@@ -64,7 +64,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
-
+        binding.enableCollapse = true
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
@@ -124,11 +124,14 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.openDialUp.observe(viewLifecycleOwner, {
             AppUtils.makePhoneCall(it, requireContext())
         })
+        viewModel.stopTTS.observe(viewLifecycleOwner, {
+            binding.chatBarView.stopPlayingAudio()
+        })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
             binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
             adapter.clear()
-            binding.enableCollapse = true
+//            binding.enableCollapse = true
             binding.appBar.setExpanded(false)
 //            adapter.addItem(it)
 
@@ -203,6 +206,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             binding.chatBarView.showNumberKeyPad()
         })
 
+    }
+
+    override fun onDestroyView() {
+        binding.chatBarView.stopPlayingAudio()
+        super.onDestroyView()
     }
 
     private fun makeCall() {

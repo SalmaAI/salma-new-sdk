@@ -9,4 +9,5 @@ enum class MessageViewType(val value: Int) {
     InComingBillMessageViewType(6),
     InComingImageMessageViewType(7),
     CurrencyConvertorMessageViewType(8),
+    InformationalMessageViewType(9),
 }

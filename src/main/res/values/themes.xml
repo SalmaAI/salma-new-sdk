@@ -16,6 +16,7 @@
         <item name="inComingMessageTextColor">@color/masaInComingMessageTextColor</item>
         <item name="outComingMessageTextColor">@color/masaOutComingMessageTextColor</item>
         <item name="messageTimeTextColor">@color/masaMessageTimeTextColor</item>
+        <item name="currencyFieldBorderColor">@color/masaCurrencyFieldBorderColor</item>
 
         <!-- Text filed colors-->
         <item name="textFieldHintTextColor">@color/masaTextFieldHintTextColor</item>

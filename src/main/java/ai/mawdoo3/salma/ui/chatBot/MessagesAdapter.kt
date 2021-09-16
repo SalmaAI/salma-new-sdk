@@ -91,6 +91,15 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+            MessageViewType.InformationalMessageViewType.value -> {
+                return InComingInformationalMessageViewHolder(
+                    InformationalMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
             else -> {
                 TODO("Not yet implemented")
             }
@@ -118,6 +127,8 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             return MessageViewType.InComingImageMessageViewType.value
         } else if (list[position] is CurrencyMessageUiModel) {
             return MessageViewType.CurrencyConvertorMessageViewType.value
+        } else if (list[position] is InformationalMessageUiModel) {
+            return MessageViewType.InformationalMessageViewType.value
         } else {
             return 0
         }

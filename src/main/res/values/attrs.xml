@@ -17,6 +17,7 @@
     <attr name="dialogBackgroundColor" format="color" />
     <attr name="readMoreTextColor" format="color" />
     <attr name="messageTimeTextColor" format="color" />
+    <attr name="currencyFieldBorderColor" format="color" />
 
     <!-- Text filed colors-->
     <attr name="textFieldHintTextColor" format="color" />
