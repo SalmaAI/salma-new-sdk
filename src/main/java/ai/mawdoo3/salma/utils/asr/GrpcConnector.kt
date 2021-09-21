@@ -17,7 +17,7 @@ import java.io.InputStream
  * Created by iSaleem on 3/22/21
  */
 
-const val CERT_NAME = "asr-beta.crt"
+const val CERT_NAME = "asr-alpha.crt"
 
 object GrpcConnector {
 
@@ -65,6 +65,7 @@ object GrpcConnector {
             }
 
             override fun onError(t: Throwable?) {
+                Log.d("GRPC", t!!.localizedMessage)
             }
 
             override fun onCompleted() {

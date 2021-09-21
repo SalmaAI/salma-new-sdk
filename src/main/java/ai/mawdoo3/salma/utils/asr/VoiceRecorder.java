@@ -41,6 +41,7 @@ public class VoiceRecorder {
     private static final int AMPLITUDE_THRESHOLD = 1500;
     private static final int SPEECH_TIMEOUT_MILLIS = 2000;
     private static final int MAX_SPEECH_LENGTH_MILLIS = 30 * 1000;
+    private boolean isHearingVoice = false;
 
     public static abstract class Callback {
 
@@ -76,14 +77,22 @@ public class VoiceRecorder {
 
     private final Object mLock = new Object();
 
-    /** The timestamp of the last time that voice is heard. */
+    /**
+     * The timestamp of the last time that voice is heard.
+     */
     private long mLastVoiceHeardMillis = Long.MAX_VALUE;
 
-    /** The timestamp when the current voice is started. */
+    /**
+     * The timestamp when the current voice is started.
+     */
     private long mVoiceStartedMillis;
 
     public VoiceRecorder(Callback callback) {
         mCallback = callback;
+    }
+
+    public void updateHearingStatus(boolean isHearing) {
+        isHearingVoice = isHearing;
     }
 
     /**
@@ -183,7 +192,7 @@ public class VoiceRecorder {
                     }
                     final int size = mAudioRecord.read(mBuffer, 0, mBuffer.length);
                     final long now = System.currentTimeMillis();
-                    if (isHearingVoice(mBuffer, size)) {
+                    if (isHearingVoice) {
                         if (mLastVoiceHeardMillis == Long.MAX_VALUE) {
                             mVoiceStartedMillis = now;
                             mCallback.onVoiceStart();

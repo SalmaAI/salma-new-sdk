@@ -16,6 +16,7 @@ object MasaSdkInstance {
     var botId: String = "1"
     var botChannelId: String = "1"
     var key: String = "1"
+    var jwtToken: String = ""
     var username: String? = ""
     var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
 
@@ -40,7 +41,7 @@ object MasaSdkInstance {
         botId: String,
         botChannelId: String,
         key: String,
-        username: String = ""
+        username: String = "",
     ) {
         loadKoinModules(
             listOf(

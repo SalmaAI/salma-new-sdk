@@ -39,7 +39,6 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private var sessionId: String = ""
     private var mVoiceRecorder: VoiceRecorder? = null
     private var cancelCurrentRecord: Boolean = false
-    private var stopOnVoice: Boolean = false
     private var audioList: ArrayList<String>? = null
     private var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
 
@@ -82,6 +81,12 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
             }
         }
+
+        binding.speakLayout.aviSpeaking.setOnClickListener {
+            resetLayoutState()
+            startNewGrpcSession()
+        }
+
         binding.audioLayout.imgMute.setOnClickListener {
             resetLayoutState()
         }
@@ -124,8 +129,10 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     fun playAudioList(list: List<String>) {
         audioList = ArrayList(list)
-        playAudio(audioList!![0])
-        this.audioList!!.removeAt(0)
+        if (!audioList.isNullOrEmpty()) {
+            playAudio(audioList!![0])
+            this.audioList!!.removeAt(0)
+        }
     }
 
     fun setActionsListener(listener: ChatBarListener) {
@@ -140,10 +147,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
 
     private fun sendGRPCMessage(text: String) {
-        Log.d("GRPC", "Stop record")
         CoroutineScope(Dispatchers.Main).launch {
-            listener?.sendMessage(text)
             Log.d("GRPC", "Send message ->" + text)
+            listener?.sendMessage(text)
         }
     }
 
@@ -181,7 +187,6 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun startSpeaking() {
-        Log.d("GRPC", "begin of start speaking")
         actionStatus = ChatBarStatus.Speaking
         CoroutineScope(Dispatchers.Main).launch {
             binding.inputLayout.root.makeGone()
@@ -194,15 +199,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     fun startListening() {
         if (channel != null) {
-            Log.d("GRPC", "begin of start Listening")
             CoroutineScope(Dispatchers.Main).launch {
+                mVoiceRecorder?.updateHearingStatus(true)
                 actionStatus = ChatBarStatus.Listening
-                stopOnVoice = false
-                mVoiceRecorder?.start()
                 binding.inputLayout.root.makeGone()
                 binding.listenLayout.root.makeVisible()
                 binding.audioLayout.root.makeGone()
                 binding.speakLayout.root.makeGone()
+                mVoiceRecorder?.start()
             }
         } else {
             Log.d("GRPC", "channel not initialized")
@@ -231,11 +235,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.audioLayout.root.makeGone()
             binding.speakLayout.root.makeGone()
         }
-        stopOnVoice = true
         audioList?.clear()
         TTSStreamHelper.getInstance(this.context).stopStream()
-        mVoiceRecorder?.stop()
+    }
+
+    private fun startNewGrpcSession() {
+        Log.d("GRPC", "Start initialize new session")
         GrpcConnector.startVoiceRecognition(channel!!)
+        mVoiceRecorder?.stop()
     }
 
 
@@ -254,12 +261,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             override fun onVoiceStart() {
                 Log.d("GRPC", "onVoiceStart")
                 cancelCurrentRecord = false
-                startSpeaking()
-
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
-                if (!stopOnVoice) {
                     Log.d("GRPC", "onVoice " + data)
                     data?.apply {
                         val stringByte =
@@ -267,27 +271,29 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                                 ?.build()
                         GrpcConnector.sendVoice(channel, sessionId, stringByte)
                     }
-                }
+
             }
 
             override fun onVoiceEnd() {
                 Log.d("GRPC", "onVoiceEnd")
-                resetLayoutState()
             }
         }
     }
 
     override fun onTranscriptionReceived(text: String) {
+        startSpeaking()
         binding.speakLayout.tvGrpcText.text = text
         Log.d("GRPC", "Received text ->" + text)
     }
 
     override fun onFinalTranscriptionReceived(text: String) {
         Log.d("GRPC", "Final text ->" + text)
+        mVoiceRecorder?.updateHearingStatus(false)
         if (text.isNotEmpty() && !cancelCurrentRecord) {
             sendGRPCMessage(text)
         }
         resetLayoutState()
+        startNewGrpcSession()
     }
 
     override fun onSessionIdReceived(sessionId: String) {

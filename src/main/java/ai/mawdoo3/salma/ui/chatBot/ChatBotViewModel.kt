@@ -58,7 +58,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 SendMessageRequest(
                     PhoneUtils.getDeviceId(applicationContext),
                     message = payload,
-                    MasaSdkInstance.key
+                    MasaSdkInstance.key,
+                    MasaSdkInstance.jwtToken
                 )
             )
 

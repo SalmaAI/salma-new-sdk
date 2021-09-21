@@ -96,7 +96,10 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add Masa message")
+            Log.d("GRPC", "Message response")
+            binding.recyclerView.smoothScrollToPosition(0)
             adapter.addItems(it)
+            binding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
         })
         viewModel.openLink.observe(viewLifecycleOwner, {
             AppUtils.openLinkInTheBrowser(it, requireContext())
@@ -109,6 +112,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
+            Log.d("GRPC", "Message sent")
             binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
             adapter.clear()
             binding.recyclerView.postDelayed({
