@@ -5,6 +5,7 @@ import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.RateAnswerDialogListener
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
+import ai.mawdoo3.salma.data.dataModel.HeaderUiModel
 import ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.data.enums.ChatBarType
@@ -39,7 +40,6 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.util.*
 
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
@@ -64,7 +64,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
-        binding.enableCollapse = true
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
@@ -80,29 +79,10 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             )
         })
 
-        var welcomeImage: Int
-        val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        when (hours) {
-            in 5..11 -> {
-                welcomeImage = R.drawable.header_morning
-            }
-            in 12..17 -> {
-                welcomeImage = R.drawable.header_evening
-            }
-            else -> {
-                welcomeImage = R.drawable.header_night
-            }
-        }
-        binding.imgHeader.setImageResource(welcomeImage)
-
+        adapter.addItem(HeaderUiModel(sender = MessageSender.Masa, name = MasaSdkInstance.username))
 
         viewModel.sendMessage("", "القائمة الرئيسية", false)
 
-        if (MasaSdkInstance.username.isNullOrEmpty()) {
-            binding.name = ""
-        } else {
-            binding.name = MasaSdkInstance.username
-        }
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
         } else {
@@ -125,20 +105,16 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             AppUtils.makePhoneCall(it, requireContext())
         })
         viewModel.stopTTS.observe(viewLifecycleOwner, {
-            binding.chatBarView.stopPlayingAudio()
+            binding.chatBarView.resetLayoutState()
         })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
             binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
             adapter.clear()
-//            binding.enableCollapse = true
-            binding.appBar.setExpanded(false)
-//            adapter.addItem(it)
-
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
             }, 500)
-//            scrollToBottom()
+
         })
         viewModel.ttsAudioList.observe(viewLifecycleOwner, {
             binding.chatBarView.playAudioList(it)
@@ -154,13 +130,13 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
         })
         viewModel.getUserLocation.observe(viewLifecycleOwner, {
-            adapter.addItem(
-                TextMessageUiModel(
-                    getString(R.string.use_my_location),
-                    MessageSender.User,
-                    time = AppUtils.getCurrentTime()
-                )
-            )
+//            adapter.addItem(
+//                TextMessageUiModel(
+//                    getString(R.string.use_my_location),
+//                    MessageSender.User,
+//                    time = AppUtils.getCurrentTime()
+//                )
+//            )
             scrollToBottom()
             checkLocationPermission()
         })
@@ -209,7 +185,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     override fun onDestroyView() {
-        binding.chatBarView.stopPlayingAudio()
+        binding.chatBarView.resetLayoutState()
         super.onDestroyView()
     }
 

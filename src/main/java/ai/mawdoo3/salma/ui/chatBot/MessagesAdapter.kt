@@ -19,6 +19,15 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
 
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<MessageUiModel> {
         when (viewType) {
+            MessageViewType.HeaderMessageViewType.value -> {
+                return HeaderMessageViewHolder(
+                    HeaderMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             MessageViewType.OutComingTextMessageViewType.value -> {
                 return OutComingTextMessageViewHolder(
                     OutcomingTextMessageItemBinding.inflate(
@@ -115,6 +124,8 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             } else {
                 return MessageViewType.InComingTextMessageViewType.value
             }
+        } else if (list[position] is HeaderUiModel) {
+            return MessageViewType.HeaderMessageViewType.value
         } else if (list[position] is QuickReplyMessageUiModel) {
             return MessageViewType.QuickRepliesMessageViewType.value
         } else if (list[position] is LocationsListUiModel) {

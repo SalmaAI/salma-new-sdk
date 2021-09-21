@@ -10,4 +10,5 @@ enum class MessageViewType(val value: Int) {
     InComingImageMessageViewType(7),
     CurrencyConvertorMessageViewType(8),
     InformationalMessageViewType(9),
+    HeaderMessageViewType(10),
 }
