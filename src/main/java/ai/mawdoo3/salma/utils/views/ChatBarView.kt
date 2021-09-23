@@ -195,7 +195,6 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.listenLayout.root.makeInvisible()
             binding.audioLayout.root.makeInvisible()
             binding.speakLayout.root.makeVisible()
-            binding.speakLayout.tvGrpcText.text = ""
         }
     }
 
@@ -235,6 +234,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             binding.listenLayout.root.makeInvisible()
             binding.audioLayout.root.makeInvisible()
             binding.speakLayout.root.makeInvisible()
+            binding.speakLayout.tvGrpcText.text = ""
         }
         audioList?.clear()
         TTSStreamHelper.getInstance(this.context).stopStream()

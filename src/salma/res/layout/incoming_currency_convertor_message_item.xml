@@ -209,6 +209,7 @@
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginBottom="@dimen/medium_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:paddingEnd="@dimen/small_margin"
                 android:text='@{message.exchangeRate}'
                 android:textColor="?attr/titleTextColor"
@@ -217,33 +218,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toAmountLayout"
                 tools:text="١ دينار أردني تساوي ١.٢٧ يورو" />
-
-            <View
-                android:id="@+id/separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="@dimen/medium_margin"
-                android:layout_marginTop="@dimen/small_margin"
-                android:layout_marginEnd="@dimen/medium_margin"
-                android:background="?attr/currencyFieldBorderColor"
-                app:layout_constraintTop_toBottomOf="@+id/tvExchangeRate" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_margin"
-                android:layout_marginTop="@dimen/small_margin"
-                android:layout_marginEnd="@dimen/medium_margin"
-                android:layout_marginBottom="@dimen/medium_margin"
-                android:drawableEnd="@drawable/ic_open_link"
-                android:text="currencyconverterapi.com"
-                android:textAlignment="viewStart"
-                android:textColor="?attr/subTitleTextColor"
-                app:fontFamily="@font/font_medium"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/separator" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

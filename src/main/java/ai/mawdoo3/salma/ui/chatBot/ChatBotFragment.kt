@@ -73,11 +73,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             moveDuration = 0
             changeDuration = 0
         }
-        binding.recyclerView.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            binding.recyclerView.scrollToPosition(
-                adapter.itemCount - 1
-            )
-        })
 
         adapter.addItem(HeaderUiModel(sender = MessageSender.Masa, name = MasaSdkInstance.username))
 
@@ -97,9 +92,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add Masa message")
             Log.d("GRPC", "Message response")
-            binding.recyclerView.smoothScrollToPosition(0)
             adapter.addItems(it)
-            binding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
         })
         viewModel.openLink.observe(viewLifecycleOwner, {
             AppUtils.openLinkInTheBrowser(it, requireContext())
@@ -117,7 +110,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             adapter.clear()
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
-            }, 500)
+            }, 300)
 
         })
         viewModel.ttsAudioList.observe(viewLifecycleOwner, {
