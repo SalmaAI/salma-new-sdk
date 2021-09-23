@@ -83,7 +83,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                                 if (messageUiModel is LocationMessageUiModel) {
                                     locationMessages.add(messageUiModel)
                                 } else if (messageUiModel is DeeplinkMessageUiModel) {
-                                    openLink.value = "http://www.masabanking.com/bills?action=add"
+                                    openLink.value = messageUiModel.url
                                 } else if (messageUiModel is KeyPadUiModel) {
                                     openNumberKeyPad.value = true
                                 } else {

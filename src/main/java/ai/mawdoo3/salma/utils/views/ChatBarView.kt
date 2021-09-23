@@ -4,9 +4,12 @@ import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
-import ai.mawdoo3.salma.utils.*
+import ai.mawdoo3.salma.utils.AppUtils
+import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
+import ai.mawdoo3.salma.utils.makeInvisible
+import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
 import android.text.Editable
 import android.text.InputType
@@ -214,9 +217,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun playAudio(ttsItem: TtsItem) {
-//        mVoiceRecorder?.stop()
         TTSStreamHelper.getInstance(this.context).startStreaming(ttsItem.ttsId, ttsItem.isDynamic)
         CoroutineScope(Dispatchers.Main).launch {
+            mVoiceRecorder?.stop()
             actionStatus = ChatBarStatus.PlayingAudio
             binding.inputLayout.root.makeInvisible()
             binding.listenLayout.root.makeInvisible()
@@ -312,5 +315,11 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     fun setInputType(inputType: Int) {
         binding.inputLayout.etMessage.inputType = inputType
+    }
+
+    fun destroyView() {
+        mVoiceRecorder?.stop()
+        audioList?.clear()
+        TTSStreamHelper.getInstance(this.context).stopStream()
     }
 }

@@ -86,9 +86,9 @@ public class TTSStreamHelper {
         if (context.get() != null) {
             String ttsParams;
             if (ttsDynamic)
-                ttsParams = "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=wav&normalize_text=true&transfer=false&tempo=0";
+                ttsParams = "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=wav&normalize_text=true&transfer=false&tempo=-1";
             else {
-                ttsParams = "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=wav&transfer=false&tempo=0";
+                ttsParams = "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=wav&transfer=false&tempo=-1";
             }
 
             player = new SimpleExoPlayer.Builder(context.get()).build();

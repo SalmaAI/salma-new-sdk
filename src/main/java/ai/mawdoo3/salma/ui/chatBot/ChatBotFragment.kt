@@ -189,7 +189,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     override fun onDestroyView() {
-        binding.chatBarView.resetLayoutState()
+        binding.chatBarView.destroyView()
         super.onDestroyView()
     }
 

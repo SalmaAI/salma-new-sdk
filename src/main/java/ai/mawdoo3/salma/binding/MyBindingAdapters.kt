@@ -89,28 +89,29 @@ class MyBindingAdapters {
         @JvmStatic
         @BindingAdapter("showWelcomingMessage", "showMessageBasedOnTime")
         fun AppCompatTextView.setWelcomingMessage(
-            name: String,
+            name: String?,
             showMessageBasedOnTime: Boolean
         ) {
             var welcomeMessage = ""
             if (showMessageBasedOnTime) {
                 val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-                when (hours) {
+                welcomeMessage = when (hours) {
                     in 5..11 -> {
-                        welcomeMessage =
-                            "${this.context.getString(R.string.good_morning)}, $name"
+                        this.context.getString(R.string.good_morning)
                     }
                     in 12..17 -> {
-                        welcomeMessage =
-                            "${this.context.getString(R.string.good_evening)}, $name"
+                        this.context.getString(R.string.good_morning)
                     }
                     else -> {
-                        welcomeMessage = "${this.context.getString(R.string.hello)}, $name"
+                        this.context.getString(R.string.hello)
                     }
+                }
+                if (!name.isNullOrEmpty()) {
+                    welcomeMessage += "{ $name}"
                 }
             } else {
                 var newName = ""
-                if (name.isNotEmpty()) {
+                if (!name.isNullOrEmpty()) {
                     newName = "$name!"
                 }
                 welcomeMessage =
