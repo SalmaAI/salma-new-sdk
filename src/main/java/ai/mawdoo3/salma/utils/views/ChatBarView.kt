@@ -1,15 +1,12 @@
 package ai.mawdoo3.salma.utils.views
 
-import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
-import ai.mawdoo3.salma.utils.AppUtils
-import ai.mawdoo3.salma.utils.TTSStreamHelper
+import ai.mawdoo3.salma.utils.*
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
-import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
 import android.text.Editable
 import android.text.InputType
@@ -39,7 +36,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private var sessionId: String = ""
     private var mVoiceRecorder: VoiceRecorder? = null
     private var cancelCurrentRecord: Boolean = false
-    private var audioList: ArrayList<String>? = null
+    private var audioList: ArrayList<TtsItem>? = null
     private var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
 
     interface ChatBarListener {
@@ -83,6 +80,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         }
 
         binding.speakLayout.aviSpeaking.setOnClickListener {
+            mVoiceRecorder?.stop()
             resetLayoutState()
             startNewGrpcSession()
         }
@@ -97,8 +95,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                 sendMessage()
             }
         }
-        binding.listenLayout.aviListening.setOnClickListener {
+        binding.listenLayout.root.setOnClickListener {
             resetLayoutState()
+            mVoiceRecorder?.stop()
         }
         binding.inputLayout.etMessage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -122,12 +121,12 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     fun setChatBarType(chatBarType: ChatBarType) {
         this.chatBarType = chatBarType
         if (chatBarType == ChatBarType.AUDIO) {
-            binding.inputLayout.etMessage.makeGone()
+            binding.inputLayout.etMessage.makeInvisible()
         }
 
     }
 
-    fun playAudioList(list: List<String>) {
+    fun playAudioList(list: List<TtsItem>) {
         audioList = ArrayList(list)
         if (!audioList.isNullOrEmpty()) {
             playAudio(audioList!![0])
@@ -189,9 +188,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun startSpeaking() {
         actionStatus = ChatBarStatus.Speaking
         CoroutineScope(Dispatchers.Main).launch {
-            binding.inputLayout.root.makeGone()
-            binding.listenLayout.root.makeGone()
-            binding.audioLayout.root.makeGone()
+            binding.inputLayout.root.makeInvisible()
+            binding.listenLayout.root.makeInvisible()
+            binding.audioLayout.root.makeInvisible()
             binding.speakLayout.root.makeVisible()
             binding.speakLayout.tvGrpcText.text = ""
         }
@@ -202,10 +201,10 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             CoroutineScope(Dispatchers.Main).launch {
                 mVoiceRecorder?.updateHearingStatus(true)
                 actionStatus = ChatBarStatus.Listening
-                binding.inputLayout.root.makeGone()
+                binding.inputLayout.root.makeInvisible()
                 binding.listenLayout.root.makeVisible()
-                binding.audioLayout.root.makeGone()
-                binding.speakLayout.root.makeGone()
+                binding.audioLayout.root.makeInvisible()
+                binding.speakLayout.root.makeInvisible()
                 mVoiceRecorder?.start()
             }
         } else {
@@ -214,16 +213,15 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         }
     }
 
-    private fun playAudio(ttsID: String) {
-        mVoiceRecorder?.stop()
-        val url = String.format(BuildConfig.TTS_URL, ttsID)
-        TTSStreamHelper.getInstance(this.context).startStreaming(ttsID)
+    private fun playAudio(ttsItem: TtsItem) {
+//        mVoiceRecorder?.stop()
+        TTSStreamHelper.getInstance(this.context).startStreaming(ttsItem.ttsId, ttsItem.isDynamic)
         CoroutineScope(Dispatchers.Main).launch {
             actionStatus = ChatBarStatus.PlayingAudio
-            binding.inputLayout.root.makeGone()
-            binding.listenLayout.root.makeGone()
+            binding.inputLayout.root.makeInvisible()
+            binding.listenLayout.root.makeInvisible()
             binding.audioLayout.root.makeVisible()
-            binding.speakLayout.root.makeGone()
+            binding.speakLayout.root.makeInvisible()
         }
     }
 
@@ -231,9 +229,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         CoroutineScope(Dispatchers.Main).launch {
             actionStatus = ChatBarStatus.Nothing
             binding.inputLayout.root.makeVisible()
-            binding.listenLayout.root.makeGone()
-            binding.audioLayout.root.makeGone()
-            binding.speakLayout.root.makeGone()
+            binding.listenLayout.root.makeInvisible()
+            binding.audioLayout.root.makeInvisible()
+            binding.speakLayout.root.makeInvisible()
         }
         audioList?.clear()
         TTSStreamHelper.getInstance(this.context).stopStream()
@@ -242,7 +240,6 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun startNewGrpcSession() {
         Log.d("GRPC", "Start initialize new session")
         GrpcConnector.startVoiceRecognition(channel!!)
-        mVoiceRecorder?.stop()
     }
 
 
@@ -289,6 +286,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     override fun onFinalTranscriptionReceived(text: String) {
         Log.d("GRPC", "Final text ->" + text)
         mVoiceRecorder?.updateHearingStatus(false)
+        CoroutineScope(Dispatchers.IO).launch {
+            mVoiceRecorder?.stop()
+        }
         if (text.isNotEmpty() && !cancelCurrentRecord) {
             sendGRPCMessage(text)
         }

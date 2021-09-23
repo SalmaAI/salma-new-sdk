@@ -18,6 +18,7 @@ package ai.mawdoo3.salma.utils.asr;/*
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.util.Log;
 
 
 /**
@@ -101,6 +102,7 @@ public class VoiceRecorder {
      * <p>The caller is responsible for calling {@link #stop()} later.</p>
      */
     public void start() {
+        Log.d("GRPC", "Start recorder");
         // Stop recording if it is currently ongoing.
         stop();
         // Try to create a new recording session.
@@ -120,8 +122,11 @@ public class VoiceRecorder {
      */
     public void stop() {
         synchronized (mLock) {
+
+
             dismiss();
             if (mThread != null) {
+                Log.d("GRPC", "Stop recorder");
                 mThread.interrupt();
                 mThread = null;
             }
@@ -203,7 +208,7 @@ public class VoiceRecorder {
                             end();
                         }
                     } else if (mLastVoiceHeardMillis != Long.MAX_VALUE) {
-                        mCallback.onVoice(mBuffer, size);
+//                        mCallback.onVoice(mBuffer, size);
                         if (now - mLastVoiceHeardMillis > SPEECH_TIMEOUT_MILLIS) {
                             end();
                         }

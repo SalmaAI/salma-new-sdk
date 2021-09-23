@@ -11,6 +11,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_margin="@dimen/small_margin"
+        android:visibility="invisible"
         app:indicatorColor="?attr/secondaryColor"
         app:indicatorName="BallScaleMultipleIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,11 +22,23 @@
         android:id="@+id/tvSpeak"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/medium_margin"
         android:text="@string/speak_im_listening"
         android:textColor="?attr/textFieldTextColor"
         app:layout_constraintBottom_toBottomOf="@+id/aviListening"
-        app:layout_constraintStart_toEndOf="@+id/aviListening"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/aviListening" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/medium_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSpeak"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/progress_listen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

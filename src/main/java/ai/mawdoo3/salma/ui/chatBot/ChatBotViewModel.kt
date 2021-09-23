@@ -2,6 +2,7 @@ package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.base.BaseViewModel
+import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.MessageSender
@@ -31,7 +32,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val openLink = LiveEvent<String>()
     val openNumberKeyPad = LiveEvent<Boolean>()
     val openDialUp = LiveEvent<String>()
-    val ttsAudioList = LiveEvent<List<String>>()
+    val ttsAudioList = LiveEvent<List<TtsItem>>()
     val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
 
@@ -70,19 +71,19 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
                     val responseMessages = ArrayList<MessageUiModel>()
                     val locationMessages = ArrayList<LocationMessageUiModel>()
-                    val messageAudiolist = ArrayList<String>()
+                    val messageAudiolist = ArrayList<TtsItem>()
                     val messagesResponse = result.body
                     for (message in messagesResponse.messages) {
                         message.Factory().create()?.let {
                             if (!message.ttsId.isNullOrEmpty()) {
-                                messageAudiolist.add(message.ttsId)
+                                messageAudiolist.add(TtsItem(message.ttsId, message.ttsDynamic))
                             }
                             it.forEach { messageUiModel ->
                                 //Aggregation all messages of LocationMessageUiModel in one list
                                 if (messageUiModel is LocationMessageUiModel) {
                                     locationMessages.add(messageUiModel)
                                 } else if (messageUiModel is DeeplinkMessageUiModel) {
-                                    openLink.value = messageUiModel.url
+                                    openLink.value = "http://www.masabanking.com/bills?action=add"
                                 } else if (messageUiModel is KeyPadUiModel) {
                                     openNumberKeyPad.value = true
                                 } else {
