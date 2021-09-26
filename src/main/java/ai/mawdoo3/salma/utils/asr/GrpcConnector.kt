@@ -17,7 +17,7 @@ import java.io.InputStream
  * Created by iSaleem on 3/22/21
  */
 
-const val CERT_NAME = "asr-alpha.crt"
+const val CERT_NAME = "asr-beta.crt"
 
 object GrpcConnector {
 
