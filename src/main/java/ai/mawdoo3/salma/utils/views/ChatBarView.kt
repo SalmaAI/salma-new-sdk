@@ -142,11 +142,11 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun sendMessage() {
-        listener?.sendMessage(binding.inputLayout.etMessage.text.toString())
-        binding.inputLayout.etMessage.text?.clear()
-
+        if (binding.inputLayout.etMessage.text?.trim()?.isNotEmpty() == true) {
+            listener?.sendMessage(binding.inputLayout.etMessage.text.toString())
+            binding.inputLayout.etMessage.text?.clear()
+        }
     }
-
 
     private fun sendGRPCMessage(text: String) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -264,13 +264,13 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
-                    Log.d("GRPC", "onVoice " + data)
-                    data?.apply {
-                        val stringByte =
-                            GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
-                                ?.build()
-                        GrpcConnector.sendVoice(channel, sessionId, stringByte)
-                    }
+                Log.d("GRPC", "onVoice " + data)
+                data?.apply {
+                    val stringByte =
+                        GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
+                            ?.build()
+                    GrpcConnector.sendVoice(channel, sessionId, stringByte)
+                }
 
             }
 
