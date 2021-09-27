@@ -104,7 +104,7 @@ public class VoiceRecorder {
     public void start() {
         Log.d("GRPC", "Start recorder");
         // Stop recording if it is currently ongoing.
-        stop();
+//        stop();
         // Try to create a new recording session.
         mAudioRecord = createAudioRecord();
         if (mAudioRecord == null) {
@@ -121,9 +121,7 @@ public class VoiceRecorder {
      * Stops recording audio.
      */
     public void stop() {
-        synchronized (mLock) {
-
-
+//        synchronized (mLock) {
             dismiss();
             if (mThread != null) {
                 Log.d("GRPC", "Stop recorder");
@@ -135,8 +133,8 @@ public class VoiceRecorder {
                 mAudioRecord.release();
                 mAudioRecord = null;
             }
-            mBuffer = null;
-        }
+//            mBuffer = null;
+//        }
     }
 
     /**
@@ -169,15 +167,15 @@ public class VoiceRecorder {
      */
     private AudioRecord createAudioRecord() {
         //for (int sampleRate : SAMPLE_RATE_CANDIDATES) {
-            //final int sizeInBytes = AudioRecord.getMinBufferSize(16000, CHANNEL, ENCODING);
-            final AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                    SAMPLE_RATE, CHANNEL, ENCODING, BUFFER_SIZE_IN_BYTES);
-            if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
-                mBuffer = new byte[BUFFER_SIZE_IN_BYTES];
-                return audioRecord;
-            } else {
-                audioRecord.release();
-            }
+        //final int sizeInBytes = AudioRecord.getMinBufferSize(16000, CHANNEL, ENCODING);
+        final AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                SAMPLE_RATE, CHANNEL, ENCODING, BUFFER_SIZE_IN_BYTES);
+        if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+            mBuffer = new byte[BUFFER_SIZE_IN_BYTES];
+            return audioRecord;
+        } else {
+            audioRecord.release();
+        }
         //}
         return null;
     }
