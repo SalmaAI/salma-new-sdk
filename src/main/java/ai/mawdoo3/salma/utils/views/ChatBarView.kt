@@ -318,8 +318,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     fun destroyView() {
+        resetLayoutState()
         mVoiceRecorder?.stop()
-        audioList?.clear()
-        TTSStreamHelper.getInstance(this.context).stopStream()
     }
 }

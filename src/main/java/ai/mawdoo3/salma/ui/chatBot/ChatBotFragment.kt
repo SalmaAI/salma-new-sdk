@@ -25,8 +25,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.GrantResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
@@ -89,10 +91,20 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val callback = object : OnBackPressedCallback(true /* enabled by default */) {
+            override fun handleOnBackPressed() {
+                if (!adapter.isLoading()) {
+                    adapter.clear()
+                    viewModel.sendMessage("", "القائمة الرئيسية", false)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback);
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add Masa message")
             Log.d("GRPC", "Message response")
             adapter.addItems(it)
+            scrollToBottom()
         })
         viewModel.openLink.observe(viewLifecycleOwner, {
             AppUtils.openLinkInTheBrowser(it, requireContext())
@@ -181,8 +193,13 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
     }
 
-    override fun onDestroyView() {
+    override fun onPause() {
         binding.chatBarView.destroyView()
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
+//        binding.chatBarView.destroyView()
         super.onDestroyView()
     }
 
@@ -216,7 +233,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                 )
                 adapter.loading(false)
                 scrollToBottom()
-            }, 1000)
+            }, 500)
         }
 
     }
@@ -332,13 +349,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     private fun scrollToBottom() {
-//        binding.appBar.setExpanded(false)
-//        binding.recyclerView.postDelayed(Runnable {
-//            binding.recyclerView.layoutManager?.smoothScrollToPosition(
-//                binding.recyclerView,
-//                RecyclerView.State(), adapter.getListCount() - 1
-//            );
-//        }, 500)
+        binding.recyclerView.postDelayed(Runnable {
+            binding.recyclerView.layoutManager?.smoothScrollToPosition(
+                binding.recyclerView,
+                RecyclerView.State(), adapter.getListCount() - 1
+            );
+        }, 500)
 
     }
 
