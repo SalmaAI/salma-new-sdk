@@ -41,7 +41,7 @@ object MasaSdkInstance {
         botId: String,
         botChannelId: String,
         key: String,
-        username: String = "",
+        username: String = ""
     ) {
         loadKoinModules(
             listOf(

@@ -302,9 +302,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     override fun onSessionIdReceived(sessionId: String) {
         Log.d("GRPC", "sessionId ->" + sessionId)
         // start voice recorder
-
         this.sessionId = sessionId
-//        mVoiceRecorder?.start()
     }
 
     fun showNumberKeyPad() {

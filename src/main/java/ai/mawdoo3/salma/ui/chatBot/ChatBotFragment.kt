@@ -139,13 +139,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
         })
         viewModel.getUserLocation.observe(viewLifecycleOwner, {
-//            adapter.addItem(
-//                TextMessageUiModel(
-//                    getString(R.string.use_my_location),
-//                    MessageSender.User,
-//                    time = AppUtils.getCurrentTime()
-//                )
-//            )
             scrollToBottom()
             checkLocationPermission()
         })
@@ -199,7 +192,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     override fun onDestroyView() {
-//        binding.chatBarView.destroyView()
         super.onDestroyView()
     }
 
