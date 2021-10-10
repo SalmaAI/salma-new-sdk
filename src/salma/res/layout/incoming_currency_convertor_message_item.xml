@@ -34,7 +34,7 @@
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/medium_margin"
                 android:paddingEnd="@dimen/small_margin"
-                android:text='@{message.fromValue +" "+ message.fromCurrency.description+" تساوي "}'
+                android:text='@{message.fromValue +" "+ message.fromCurrency.description+" "+ @string/equals}'
                 android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_text_size"
                 app:fontFamily="@font/font_regular"

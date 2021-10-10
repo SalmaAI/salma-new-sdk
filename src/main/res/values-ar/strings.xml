@@ -36,4 +36,6 @@
     <string name="something_went_wrong">حصل خطأ ما, الرجاء المحاولة لاحقا</string>
     <string name="choose_share_method">اختر وسيلة المشركة</string>
     <string name="text_copied">تم نسخ النص</string>
+    <string name="equals">تساوي</string>
+
 </resources>
