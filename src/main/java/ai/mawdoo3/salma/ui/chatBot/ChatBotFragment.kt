@@ -5,6 +5,7 @@ import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.RateAnswerDialogListener
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
+import ai.mawdoo3.salma.data.dataModel.HeaderUiModel
 import ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.data.enums.ChatBarType
@@ -24,8 +25,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.GrantResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
@@ -39,7 +42,6 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.util.*
 
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
@@ -64,7 +66,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         adapter.clear()
-
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
@@ -74,35 +75,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             moveDuration = 0
             changeDuration = 0
         }
-        binding.recyclerView.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            binding.recyclerView.scrollToPosition(
-                adapter.itemCount - 1
-            )
-        })
 
-        var welcomeImage: Int
-        val hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        when (hours) {
-            in 5..11 -> {
-                welcomeImage = R.drawable.header_morning
-            }
-            in 12..17 -> {
-                welcomeImage = R.drawable.header_evening
-            }
-            else -> {
-                welcomeImage = R.drawable.header_night
-            }
-        }
-        binding.imgHeader.setImageResource(welcomeImage)
-
+        adapter.addItem(HeaderUiModel(sender = MessageSender.Masa, name = MasaSdkInstance.username))
 
         viewModel.sendMessage("", "القائمة الرئيسية", false)
 
-        if (MasaSdkInstance.username.isNullOrEmpty()) {
-            binding.name = ""
-        } else {
-            binding.name = MasaSdkInstance.username
-        }
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
         } else {
@@ -114,9 +91,20 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val callback = object : OnBackPressedCallback(true /* enabled by default */) {
+            override fun handleOnBackPressed() {
+                if (!adapter.isLoading()) {
+                    adapter.clear()
+                    viewModel.sendMessage("", "القائمة الرئيسية", false)
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback);
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add Masa message")
+            Log.d("GRPC", "Message response")
             adapter.addItems(it)
+            scrollToBottom()
         })
         viewModel.openLink.observe(viewLifecycleOwner, {
             AppUtils.openLinkInTheBrowser(it, requireContext())
@@ -124,18 +112,18 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.openDialUp.observe(viewLifecycleOwner, {
             AppUtils.makePhoneCall(it, requireContext())
         })
+        viewModel.stopTTS.observe(viewLifecycleOwner, {
+            binding.chatBarView.resetLayoutState()
+        })
         viewModel.messageSent.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add user message")
+            Log.d("GRPC", "Message sent")
             binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
             adapter.clear()
-            binding.enableCollapse = true
-            binding.appBar.setExpanded(false)
-//            adapter.addItem(it)
-
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
-            }, 500)
-//            scrollToBottom()
+            }, 300)
+
         })
         viewModel.ttsAudioList.observe(viewLifecycleOwner, {
             binding.chatBarView.playAudioList(it)
@@ -151,13 +139,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
         })
         viewModel.getUserLocation.observe(viewLifecycleOwner, {
-            adapter.addItem(
-                TextMessageUiModel(
-                    getString(R.string.use_my_location),
-                    MessageSender.User,
-                    time = AppUtils.getCurrentTime()
-                )
-            )
             scrollToBottom()
             checkLocationPermission()
         })
@@ -205,6 +186,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
     }
 
+    override fun onPause() {
+        binding.chatBarView.destroyView()
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
     private fun makeCall() {
         val intent = Intent(Intent.ACTION_CALL)
         intent.data = Uri.parse("tel:" + phone)
@@ -235,7 +225,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                 )
                 adapter.loading(false)
                 scrollToBottom()
-            }, 1000)
+            }, 500)
         }
 
     }
@@ -351,13 +341,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
     }
 
     private fun scrollToBottom() {
-//        binding.appBar.setExpanded(false)
-//        binding.recyclerView.postDelayed(Runnable {
-//            binding.recyclerView.layoutManager?.smoothScrollToPosition(
-//                binding.recyclerView,
-//                RecyclerView.State(), adapter.getListCount() - 1
-//            );
-//        }, 500)
+        binding.recyclerView.postDelayed(Runnable {
+            binding.recyclerView.layoutManager?.smoothScrollToPosition(
+                binding.recyclerView,
+                RecyclerView.State(), adapter.getListCount() - 1
+            );
+        }, 500)
 
     }
 

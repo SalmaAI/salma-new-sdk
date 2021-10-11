@@ -16,6 +16,7 @@
     <color name="masaMessageTimeTextColor">#ABB5C5</color>
     <color name="masaPrimaryActionColor">#FFFFFF</color>
     <color name="masaSecondaryActionColor">#BF294D</color>
+    <color name="masaCurrencyFieldBorderColor">#DFE4EC</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>

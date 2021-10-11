@@ -19,7 +19,7 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 .addFormDataPart("secretKey", sendMessageRequest.secretKey)
                 .addFormDataPart("userId", sendMessageRequest.userId)
                 .addFormDataPart("message", sendMessageRequest.message)
-                .addFormDataPart("mobileJWT","sendMessageRequest")
+                .addFormDataPart("mobileJWT", sendMessageRequest.JWT)
                 .build()
 
             val result = endpoints.sendMessage(

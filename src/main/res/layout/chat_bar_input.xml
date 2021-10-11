@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img_action"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="@dimen/small_margin"
+        android:background="@drawable/circle"
+        android:padding="@dimen/small_margin"
+        android:src="@drawable/ic_microphone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_margin"
+        android:background="@null"
+        android:hint="@string/message_text_hint"
+        android:paddingStart="@dimen/small_margin"
+        android:textAlignment="viewStart"
+        android:textColor="?attr/textFieldTextColor"
+        android:textColorHint="?attr/textFieldHintTextColor"
+        android:textCursorDrawable="@drawable/edit_text_cursor"
+        android:textSize="@dimen/edittext_text_size"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/img_action"
+        app:layout_constraintEnd_toStartOf="@+id/img_action"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img_action" />
+</androidx.constraintlayout.widget.ConstraintLayout>

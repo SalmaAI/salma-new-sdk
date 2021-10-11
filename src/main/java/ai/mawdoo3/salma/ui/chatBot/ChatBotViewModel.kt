@@ -2,6 +2,7 @@ package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.base.BaseViewModel
+import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.MessageSender
@@ -31,7 +32,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val openLink = LiveEvent<String>()
     val openNumberKeyPad = LiveEvent<Boolean>()
     val openDialUp = LiveEvent<String>()
-    val ttsAudioList = LiveEvent<List<String>>()
+    val ttsAudioList = LiveEvent<List<TtsItem>>()
+    val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
 
     /**
@@ -41,22 +43,24 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
      */
     fun sendMessage(text: String?, payload: String, showMessage: Boolean = true) {
         if (showMessage) {
-            messageSent.postValue(
+            messageSent.value =
                 TextMessageUiModel(
                     text, MessageSender.User,
                     time = AppUtils.getCurrentTime()
                 )
-            )
+
         }
+        stopTTS.value = true
         viewModelScope.launch {
-            showLoader.postValue(true)
+            showLoader.value = true
             Log.d("SendMessage", "delay request 1000 millisecond")
             delay(1000)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     PhoneUtils.getDeviceId(applicationContext),
                     message = payload,
-                    MasaSdkInstance.key
+                    MasaSdkInstance.key,
+                    MasaSdkInstance.jwtToken
                 )
             )
 
@@ -67,12 +71,12 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
                     val responseMessages = ArrayList<MessageUiModel>()
                     val locationMessages = ArrayList<LocationMessageUiModel>()
-                    val messageAudiolist = ArrayList<String>()
+                    val messageAudiolist = ArrayList<TtsItem>()
                     val messagesResponse = result.body
                     for (message in messagesResponse.messages) {
                         message.Factory().create()?.let {
                             if (!message.ttsId.isNullOrEmpty()) {
-                                messageAudiolist.add(message.ttsId)
+                                messageAudiolist.add(TtsItem(message.ttsId, message.ttsDynamic))
                             }
                             it.forEach { messageUiModel ->
                                 //Aggregation all messages of LocationMessageUiModel in one list
@@ -94,15 +98,15 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                         responseMessages.add(locationsListUiModel)
                     }
                     //send response to fragment
-                    messageResponseList.postValue(responseMessages)
+                    messageResponseList.value = responseMessages
                     if (messageAudiolist.size > 0) {
-                        ttsAudioList.postValue(messageAudiolist)
+                        ttsAudioList.value = messageAudiolist
                     }
 
                 }
                 is RepoErrorResponse -> {
                     Log.d("SendMessage", "Response error")
-                    showLoader.postValue(false)
+                    showLoader.value = false
                     onLoadFailure(result.error, true)
                 }
                 else -> {
