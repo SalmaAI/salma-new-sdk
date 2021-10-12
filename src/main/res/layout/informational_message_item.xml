@@ -95,7 +95,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tvSubTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvSubTitle"
-                tools:src="@drawable/ic_share" />
+                tools:src="@drawable/ic_action_share" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

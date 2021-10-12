@@ -91,7 +91,7 @@ class InComingInformationalMessageViewHolder(
                 when (button.function) {
                     ButtonFunction.Share.value,
                     ButtonFunction.CopyAndShare.value -> {
-                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_share))
+                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_action_share))
                     }
                     ButtonFunction.Deeplink.value -> {
                         this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_open_link))
