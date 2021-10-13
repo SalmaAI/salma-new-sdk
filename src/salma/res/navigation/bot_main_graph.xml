@@ -20,13 +20,9 @@
         android:name="ai.mawdoo3.salma.ui.RateAnswerDialogFragment"
         android:label="RateAnswerDialogFragment"
         tools:layout="@layout/rate_answer_dialog">
-
         <argument
             android:name="answerID"
             app:argType="string" />
-        <argument
-            android:name="listener"
-            app:argType="ai.mawdoo3.salma.RateAnswerDialogListener" />
     </dialog>
 
 </navigation>

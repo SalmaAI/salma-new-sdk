@@ -1,6 +1,5 @@
 package ai.mawdoo3.salma.ui
 
-import ai.mawdoo3.salma.RateAnswerDialogListener
 import ai.mawdoo3.salma.databinding.RateAnswerDialogBinding
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ class RateAnswerDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: RateAnswerDialogBinding
     private val args: RateAnswerDialogFragmentArgs by navArgs()
-    private lateinit var listener: RateAnswerDialogListener
     private lateinit var answerId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +27,6 @@ class RateAnswerDialogFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = RateAnswerDialogBinding.inflate(inflater, container, false)
-        listener = args.listener
         answerId = args.answerID
         return binding.root
 
@@ -38,11 +35,11 @@ class RateAnswerDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.imgGood.setOnClickListener {
-            listener.rateAnswer(answerId, true)
+//            listener.rateAnswer(answerId, true)
             dismiss()
         }
         binding.imgBad.setOnClickListener {
-            listener.rateAnswer(answerId, false)
+//            listener.rateAnswer(answerId, false)
             dismiss()
         }
 

@@ -2,7 +2,6 @@ package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.R
-import ai.mawdoo3.salma.RateAnswerDialogListener
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.dataModel.HeaderUiModel
@@ -44,8 +43,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 
-class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
-    RateAnswerDialogListener {
+class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     private var phone = ""
     private val viewModel: ChatBotViewModel by viewModel()
@@ -134,7 +132,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.rateAnswer.observe(viewLifecycleOwner, {
 
             findNavController().navigate(
-                ChatBotFragmentDirections.actionChatBotFragmentToRateAnswerDialogFragment(it, this)
+                ChatBotFragmentDirections.actionChatBotFragmentToRateAnswerDialogFragment(it)
             )
 
         })
@@ -350,7 +348,4 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
 
     }
 
-    override fun rateAnswer(answerId: String, isGood: Boolean) {
-
-    }
 }

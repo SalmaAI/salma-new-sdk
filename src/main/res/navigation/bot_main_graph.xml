@@ -24,9 +24,6 @@
         <argument
             android:name="answerID"
             app:argType="string" />
-        <argument
-            android:name="listener"
-            app:argType="ai.mawdoo3.salma.RateAnswerDialogListener" />
     </dialog>
 
 </navigation>
