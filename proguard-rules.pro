@@ -21,7 +21,6 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class * extends androidx.fragment.app.Fragment{}
--keep class ai.mawdoo3.salma.RateAnswerDialogListener
 -keep class com.banking.core.transfers.data.*
 
 
@@ -84,3 +83,6 @@
 -dontnote org.chromium.**
 
 -keep class ai.mawdoo3.salma.utils.asr.*
+-keep class ai.mawdoo3.salma.data.*
+-keep class ai.mawdoo3.salma.data.dataModel.*
+-keepnames @kotlin.Metadata class ai.mawdoo3.salma.data.* #I used the real package name
