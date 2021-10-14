@@ -100,7 +100,7 @@ class MyBindingAdapters {
                         this.context.getString(R.string.good_morning)
                     }
                     in 12..17 -> {
-                        this.context.getString(R.string.good_morning)
+                        this.context.getString(R.string.good_evening)
                     }
                     else -> {
                         this.context.getString(R.string.hello)
