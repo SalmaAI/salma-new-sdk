@@ -21,13 +21,18 @@ class InComingTextMessageViewHolder(
             this.message = item as TextMessageUiModel?
             binding.tvMessage.maxLines = Message_DEFAULT_LINES_SHOWN
             item?.text.also { description ->
+                constraintView.makeVisible()
                 binding.tvMessage.text = item?.text
-                binding.tvMessage.getTextLineCount(description!!) {
-                    if (it > Message_DEFAULT_LINES_SHOWN)
-                        binding.tvMore.makeVisible()
-                    else
-                        binding.tvMore.makeGone()
+                if (description != null) {
+                    binding.tvMessage.getTextLineCount(description) {
+                        if (it > Message_DEFAULT_LINES_SHOWN)
+                            binding.tvMore.makeVisible()
+                        else
+                            binding.tvMore.makeGone()
+                    }
                 }
+            }?: run {
+                constraintView.makeGone()
             }
             binding.tvMore.setOnClickListener {
                 binding.tvMessage.maxLines = Int.MAX_VALUE

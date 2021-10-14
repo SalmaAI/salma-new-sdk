@@ -29,6 +29,7 @@ data class MessageResponse(
         @Json(name = "properties") val properties: List<Property>?,
         @Json(name = "attachmentId") val attachmentId: String?
     ) {
+        @JsonClass(generateAdapter = true)
         data class Element(
             @Json(name = "title") val title: String?,
             @Json(name = "image") val image: String?,
@@ -39,6 +40,7 @@ data class MessageResponse(
             @Json(name = "quickReplyPayload") val quickReplyPayload: String?,
             @Json(name = "quickReplyType") val quickReplyType: String?
         ) {
+            @JsonClass(generateAdapter = true)
             data class ActionButton(
                 @Json(name = "type") val type: String,
                 @Json(name = "title") val title: String,
@@ -47,6 +49,7 @@ data class MessageResponse(
             )
         }
 
+        @JsonClass(generateAdapter = true)
         data class Property(
             @Json(name = "type") val type: String?,
             @Json(name = "name") val name: String?,
