@@ -2,6 +2,7 @@ package ai.mawdoo3.salma.data.dataModel
 
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.data.enums.MessageType
+import ai.mawdoo3.salma.data.enums.PropertyType
 import ai.mawdoo3.salma.utils.AppUtils
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -17,6 +18,7 @@ data class SendMessageResponse(
 data class MessageResponse(
     @Json(name = "messageType") val type: String,
     @Json(name = "ttsId") val ttsId: String?,
+    @Json(name = "ttsDynamic") val ttsDynamic: Boolean,
     @Json(name = "content") val messageContent: MessageContentResponse
 ) {
     @JsonClass(generateAdapter = true)
@@ -24,22 +26,35 @@ data class MessageResponse(
         @Json(name = "text") val text: String?,
         @Json(name = "url") val url: String?,
         @Json(name = "elements") val elements: List<Element>?,
+        @Json(name = "properties") val properties: List<Property>?,
         @Json(name = "attachmentId") val attachmentId: String?
     ) {
+        @JsonClass(generateAdapter = true)
         data class Element(
             @Json(name = "title") val title: String?,
             @Json(name = "image") val image: String?,
             @Json(name = "subTitle") val subTitle: String?,
+            @Json(name = "optionalInfo") val optionalInfo: String?,
             @Json(name = "buttons") val buttons: List<ActionButton>?,
+            @Json(name = "globalButton") val globalButton: ActionButton?,
             @Json(name = "quickReplyPayload") val quickReplyPayload: String?,
             @Json(name = "quickReplyType") val quickReplyType: String?
         ) {
+            @JsonClass(generateAdapter = true)
             data class ActionButton(
                 @Json(name = "type") val type: String,
                 @Json(name = "title") val title: String,
-                @Json(name = "value") val value: String
+                @Json(name = "value") val value: String?,
+                @Json(name = "function") val function: String?
             )
         }
+
+        @JsonClass(generateAdapter = true)
+        data class Property(
+            @Json(name = "type") val type: String?,
+            @Json(name = "name") val name: String?,
+            @Json(name = "value") val value: String?
+        )
     }
 
     inner class Factory {
@@ -123,7 +138,7 @@ data class MessageResponse(
                 messageContent.elements?.forEach { element ->
                     val buttons = ArrayList<ButtonUiModel>()
                     element.buttons?.forEach {
-                        buttons.add(ButtonUiModel(it.type, it.title, it.value))
+                        buttons.add(ButtonUiModel(it.type, it.title, it.value ?: "", it.function))
                     }
                     val date = element.subTitle?.split("\\n\\n")?.get(0)
                     val amount = element.subTitle?.split("\\n\\n")?.get(1)
@@ -149,6 +164,60 @@ data class MessageResponse(
                         )
                     )
                 }
+            } else if (messageType == MessageType.InformationalCard || messageType == MessageType.UnansweredInformationalCard) {
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                messageContent.elements?.forEach { element ->
+                    var globalButton: ButtonUiModel? = null
+                    element.globalButton?.let {
+                        globalButton = ButtonUiModel(it.type, it.title, it.value ?: "", it.function)
+                    }
+                    val buttons = ArrayList<ButtonUiModel>()
+                    element.buttons?.forEach {
+                        buttons.add(ButtonUiModel(it.type, it.title, it.value ?: "", it.function))
+                    }
+                    val informationalMessage = InformationalMessageUiModel(
+                        element.title,
+                        element.subTitle,
+                        element.optionalInfo,
+                        globalButton,
+                        buttons, MessageSender.Masa
+                    )
+                    messages.add(informationalMessage)
+                }
+            } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {
+                val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
+                messageContent.properties?.forEach { property ->
+                    when (PropertyType.from(property.type)) {
+                        PropertyType.CurrencyFrom -> {
+                            currencyMessageUiModel.fromCurrency =
+                                Currency(property.name!!, property.value!!, "")
+                        }
+                        PropertyType.CurrencyTo -> {
+                            currencyMessageUiModel.toCurrency =
+                                Currency(property.name!!, property.value!!, "")
+                        }
+                        PropertyType.CurrencyFromValue -> {
+                            currencyMessageUiModel.fromValue = property.value.toString()
+                        }
+                        PropertyType.CurrencyToValue -> {
+                            currencyMessageUiModel.toValue = property.value.toString()
+                        }
+
+                    }
+                }
+                messageContent.text?.let { exchangeRate ->
+                    currencyMessageUiModel.exchangeRate = exchangeRate
+                }
+                messages.add(currencyMessageUiModel)
             }
 
             return messages

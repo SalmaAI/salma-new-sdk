@@ -6,6 +6,8 @@ import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.base.BaseFragment
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,6 +28,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
@@ -270,6 +273,27 @@ object AppUtils {
     fun openLinkInTheBrowser(url: String, context: Context) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(browserIntent)
+    }
+
+    fun copyToClipboard(text: String, context: Context) {
+        val clipboard: ClipboardManager? =
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+        val clip = ClipData.newPlainText(text, text)
+        Toast.makeText(context, context.getString(R.string.text_copied), Toast.LENGTH_SHORT).show()
+        clipboard?.setPrimaryClip(clip)
+    }
+
+    fun openShareIntent(text: String, context: Context) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+        intent.putExtra(Intent.EXTRA_TEXT, text)
+        context.startActivity(
+            Intent.createChooser(
+                intent,
+                context.getString(R.string.choose_share_method)
+            )
+        )
     }
 
     fun hideKeyboard(activity: Activity?, view: View?) {

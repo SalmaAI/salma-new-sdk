@@ -12,7 +12,7 @@
     <string name="permission_denied_title">لا يوجد صلاحية</string>
     <string name="quick_replies_more">+ المزيد</string>
     <string name="directions">الاتجاهات</string>
-    <string name="call">  اتصال  </string>
+    <string name="btn_call">  اتصال  </string>
     <string name="rate_dialog_title">كيف كانت الإجابة ؟</string>
     <string name="rate_dialog_bad">بحاجة إلى تحسين</string>
     <string name="rate_dialog_good">جيدة</string>

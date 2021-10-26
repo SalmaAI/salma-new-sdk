@@ -26,7 +26,7 @@ class InComingBillMessageViewHolder(
             var buttonIndex = 0
             billMessageItem?.buttons?.forEach { button ->
                 val actionButton = TextView(this.root.context)
-                actionButton.setText(button.title)
+                actionButton.text = button.title
                 val params = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -54,12 +54,16 @@ class InComingBillMessageViewHolder(
                 }
                 actionButton.setTextColor(textColor)
                 actionButton.setOnClickListener {
-                    if (ButtonType.from(button.type) == ButtonType.PhoneNumber) {
-                        viewModel.openDialUp.postValue(button.value)
-                    } else if (ButtonType.from(button.type) == ButtonType.WebUrl) {
-                        viewModel.openLink.postValue(button.value)
-                    } else if (ButtonType.from(button.type) == ButtonType.PostBack) {
-                        viewModel.sendMessage(text = button.title, payload = button.value)
+                    when {
+                        ButtonType.from(button.type) == ButtonType.PhoneNumber -> {
+                            viewModel.openDialUp.postValue(button.value)
+                        }
+                        ButtonType.from(button.type) == ButtonType.WebUrl -> {
+                            viewModel.openLink.postValue(button.value)
+                        }
+                        ButtonType.from(button.type) == ButtonType.PostBack -> {
+                            viewModel.sendMessage(text = button.title, payload = button.value)
+                        }
                     }
                 }
 

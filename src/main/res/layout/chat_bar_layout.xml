@@ -1,145 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="60dp"
     android:background="?attr/pageBackgroundColor">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvGrpcText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/small_margin"
-        android:textColor="?attr/headerTextColor"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:fontFamily="@font/font_bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="ما هي مزايا القرض الشخصي" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/textLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
+    <include
+        android:id="@+id/inputLayout"
+        layout="@layout/chat_bar_input"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGrpcText">
+        android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/img_action"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_margin="@dimen/small_margin"
-            android:background="@drawable/circle"
-            android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_microphone"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <include
+        android:id="@+id/listenLayout"
+        layout="@layout/chat_bar_listening"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/aviListening"
-            style="@style/AVLoadingIndicatorView"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_margin="@dimen/small_margin"
-            android:visibility="gone"
-            app:indicatorColor="?attr/secondaryColor"
-            app:indicatorName="BallScaleMultipleIndicator"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <include
+        android:id="@+id/speakLayout"
+        layout="@layout/chat_bar_speaking"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvSpeak"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/small_margin"
-            android:text="@string/speak_im_listening"
-            android:textColor="?attr/textFieldTextColor"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/img_action"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/img_action" />
-
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/aviSpeaking"
-            style="@style/AVLoadingIndicatorView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:visibility="gone"
-            app:indicatorColor="?attr/secondaryColor"
-            app:indicatorName="LineScalePulseOutIndicator"
-            app:layout_constraintBottom_toBottomOf="@+id/img_action"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/img_action" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/etMessage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:paddingStart="@dimen/small_margin"
-            android:background="@null"
-            android:hint="@string/message_text_hint"
-            android:textSize="@dimen/edittext_text_size"
-            android:textAlignment="viewStart"
-            android:textColor="?attr/textFieldTextColor"
-            android:textColorHint="?attr/textFieldHintTextColor"
-            android:textCursorDrawable="@drawable/edit_text_cursor"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/img_action"
-            app:layout_constraintEnd_toStartOf="@+id/img_action"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include
         android:id="@+id/audioLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium_margin"
-        android:layout_marginBottom="@dimen/small_margin"
-        android:background="@drawable/circle"
-        android:visibility="gone"
+        layout="@layout/chat_bar_playing_audio"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGrpcText">
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/imgRecord"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_margin="@dimen/small_margin"
-            android:adjustViewBounds="true"
-            android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_microphone"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/aviRecord"
-            style="@style/AVLoadingIndicatorView"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_margin="@dimen/small_margin"
-            android:visibility="gone"
-            app:indicatorColor="@android:color/white"
-            app:indicatorName="LineScalePulseOutIndicator"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

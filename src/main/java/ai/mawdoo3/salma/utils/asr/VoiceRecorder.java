@@ -18,6 +18,7 @@ package ai.mawdoo3.salma.utils.asr;/*
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.util.Log;
 
 
 /**
@@ -41,6 +42,7 @@ public class VoiceRecorder {
     private static final int AMPLITUDE_THRESHOLD = 1500;
     private static final int SPEECH_TIMEOUT_MILLIS = 2000;
     private static final int MAX_SPEECH_LENGTH_MILLIS = 30 * 1000;
+    private boolean isHearingVoice = false;
 
     public static abstract class Callback {
 
@@ -76,14 +78,22 @@ public class VoiceRecorder {
 
     private final Object mLock = new Object();
 
-    /** The timestamp of the last time that voice is heard. */
+    /**
+     * The timestamp of the last time that voice is heard.
+     */
     private long mLastVoiceHeardMillis = Long.MAX_VALUE;
 
-    /** The timestamp when the current voice is started. */
+    /**
+     * The timestamp when the current voice is started.
+     */
     private long mVoiceStartedMillis;
 
     public VoiceRecorder(Callback callback) {
         mCallback = callback;
+    }
+
+    public void updateHearingStatus(boolean isHearing) {
+        isHearingVoice = isHearing;
     }
 
     /**
@@ -92,8 +102,8 @@ public class VoiceRecorder {
      * <p>The caller is responsible for calling {@link #stop()} later.</p>
      */
     public void start() {
+        Log.d("GRPC", "Start recorder");
         // Stop recording if it is currently ongoing.
-        stop();
         // Try to create a new recording session.
         mAudioRecord = createAudioRecord();
         if (mAudioRecord == null) {
@@ -110,9 +120,9 @@ public class VoiceRecorder {
      * Stops recording audio.
      */
     public void stop() {
-        synchronized (mLock) {
             dismiss();
             if (mThread != null) {
+                Log.d("GRPC", "Stop recorder");
                 mThread.interrupt();
                 mThread = null;
             }
@@ -121,8 +131,6 @@ public class VoiceRecorder {
                 mAudioRecord.release();
                 mAudioRecord = null;
             }
-            mBuffer = null;
-        }
     }
 
     /**
@@ -154,17 +162,14 @@ public class VoiceRecorder {
      * permissions?).
      */
     private AudioRecord createAudioRecord() {
-        //for (int sampleRate : SAMPLE_RATE_CANDIDATES) {
-            //final int sizeInBytes = AudioRecord.getMinBufferSize(16000, CHANNEL, ENCODING);
-            final AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                    SAMPLE_RATE, CHANNEL, ENCODING, BUFFER_SIZE_IN_BYTES);
-            if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
-                mBuffer = new byte[BUFFER_SIZE_IN_BYTES];
-                return audioRecord;
-            } else {
-                audioRecord.release();
-            }
-        //}
+        final AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                SAMPLE_RATE, CHANNEL, ENCODING, BUFFER_SIZE_IN_BYTES);
+        if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+            mBuffer = new byte[BUFFER_SIZE_IN_BYTES];
+            return audioRecord;
+        } else {
+            audioRecord.release();
+        }
         return null;
     }
 
@@ -183,7 +188,7 @@ public class VoiceRecorder {
                     }
                     final int size = mAudioRecord.read(mBuffer, 0, mBuffer.length);
                     final long now = System.currentTimeMillis();
-                    if (isHearingVoice(mBuffer, size)) {
+                    if (isHearingVoice) {
                         if (mLastVoiceHeardMillis == Long.MAX_VALUE) {
                             mVoiceStartedMillis = now;
                             mCallback.onVoiceStart();
@@ -194,7 +199,6 @@ public class VoiceRecorder {
                             end();
                         }
                     } else if (mLastVoiceHeardMillis != Long.MAX_VALUE) {
-                        mCallback.onVoice(mBuffer, size);
                         if (now - mLastVoiceHeardMillis > SPEECH_TIMEOUT_MILLIS) {
                             end();
                         }

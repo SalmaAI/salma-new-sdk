@@ -8,4 +8,7 @@ enum class MessageViewType(val value: Int) {
     PermissionMessageViewType(5),
     InComingBillMessageViewType(6),
     InComingImageMessageViewType(7),
+    CurrencyConvertorMessageViewType(8),
+    InformationalMessageViewType(9),
+    HeaderMessageViewType(10),
 }

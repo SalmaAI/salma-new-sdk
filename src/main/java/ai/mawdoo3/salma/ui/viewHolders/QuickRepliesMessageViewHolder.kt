@@ -51,7 +51,7 @@ class QuickRepliesMessageViewHolder(
                             loadMoreOptions(
                                 item.replies.subList(
                                     quickReplyIndex + 1,
-                                    item.replies.size - 1
+                                    item.replies.size
                                 )
                             )
                         }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="message"
+            type="ai.mawdoo3.salma.data.dataModel.InformationalMessageUiModel" />
+    </data>
+
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Theme.Salma.CardView.InComingMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_margin"
+                android:text="@{message.title}"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="الحساب الجاري" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:fontFamily="@font/font_regular"
+                android:text="@{message.subTitle}"
+                android:textColor="?attr/subTitleTextColor"
+                android:textSize="@dimen/card_subtitle_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                tools:text="20/12/2020 Amman " />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvOptionalInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:fontFamily="@font/font_regular"
+                android:text="@{message.optionalInfo}"
+                android:textColor="?attr/subTitleTextColor"
+                android:textSize="@dimen/card_subtitle_text_size"
+                android:visibility="@{message.optionalInfo==null||message.optionalInfo.empty?View.GONE:View.VISIBLE, default=gone}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
+                tools:text="20/12/2020 Amman " />
+
+            <LinearLayout
+                android:id="@+id/linearButtons"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:gravity="start"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvOptionalInfo" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgGlobalButton"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:adjustViewBounds="true"
+                android:tint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/tvSubTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvSubTitle"
+                tools:src="@drawable/ic_action_share" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

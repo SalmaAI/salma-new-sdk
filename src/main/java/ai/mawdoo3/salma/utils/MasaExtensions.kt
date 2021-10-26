@@ -29,15 +29,19 @@ import java.lang.ref.WeakReference
 
 
 fun TextView.getTextLineCount(text: String, lineCount: (Int) -> (Unit)) {
-    val params: PrecomputedTextCompat.Params = TextViewCompat.getTextMetricsParams(this)
     val ref: WeakReference<TextView> = WeakReference(this)
+    val params: PrecomputedTextCompat.Params = TextViewCompat.getTextMetricsParams(this)
 
     GlobalScope.launch(Dispatchers.Default) {
         val text = PrecomputedTextCompat.create(text, params)
         GlobalScope.launch(Dispatchers.Main) {
             ref.get()?.let { textView ->
-                TextViewCompat.setPrecomputedText(textView, text)
-                lineCount.invoke(textView.lineCount)
+                try {
+                    TextViewCompat.setPrecomputedText(textView, text)
+                    lineCount.invoke(textView.lineCount)
+                } catch (e: Exception) {
+
+                }
             }
         }
     }

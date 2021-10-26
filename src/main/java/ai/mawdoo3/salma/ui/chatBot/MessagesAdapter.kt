@@ -19,6 +19,15 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
 
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<MessageUiModel> {
         when (viewType) {
+            MessageViewType.HeaderMessageViewType.value -> {
+                return HeaderMessageViewHolder(
+                    HeaderMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             MessageViewType.OutComingTextMessageViewType.value -> {
                 return OutComingTextMessageViewHolder(
                     OutcomingTextMessageItemBinding.inflate(
@@ -82,6 +91,24 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+            MessageViewType.CurrencyConvertorMessageViewType.value -> {
+                return CurrencyConvertorMessageViewHolder(
+                    IncomingCurrencyConvertorMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
+            MessageViewType.InformationalMessageViewType.value -> {
+                return InComingInformationalMessageViewHolder(
+                    InformationalMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
             else -> {
                 TODO("Not yet implemented")
             }
@@ -97,6 +124,8 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             } else {
                 return MessageViewType.InComingTextMessageViewType.value
             }
+        } else if (list[position] is HeaderUiModel) {
+            return MessageViewType.HeaderMessageViewType.value
         } else if (list[position] is QuickReplyMessageUiModel) {
             return MessageViewType.QuickRepliesMessageViewType.value
         } else if (list[position] is LocationsListUiModel) {
@@ -107,6 +136,10 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             return MessageViewType.InComingBillMessageViewType.value
         } else if (list[position] is ImageMessageUiModel) {
             return MessageViewType.InComingImageMessageViewType.value
+        } else if (list[position] is CurrencyMessageUiModel) {
+            return MessageViewType.CurrencyConvertorMessageViewType.value
+        } else if (list[position] is InformationalMessageUiModel) {
+            return MessageViewType.InformationalMessageViewType.value
         } else {
             return 0
         }

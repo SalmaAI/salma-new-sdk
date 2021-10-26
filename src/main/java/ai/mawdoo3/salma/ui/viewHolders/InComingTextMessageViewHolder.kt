@@ -21,19 +21,24 @@ class InComingTextMessageViewHolder(
             this.message = item as TextMessageUiModel?
             binding.tvMessage.maxLines = Message_DEFAULT_LINES_SHOWN
             item?.text.also { description ->
-                binding.tvMessage.getTextLineCount(description!!) {
-                    if (it > Message_DEFAULT_LINES_SHOWN)
-                        binding.tvMore.makeVisible()
-                    else
-                        binding.tvMore.makeGone()
+                binding.constraintView.makeVisible()
+                binding.tvMessage.text = item?.text
+                if (description != null) {
+                    binding.tvMessage.getTextLineCount(description) {
+                        if (it > Message_DEFAULT_LINES_SHOWN)
+                            binding.tvMore.makeVisible()
+                        else
+                            binding.tvMore.makeGone()
+                    }
                 }
+            }?: run {
+                binding.constraintView.makeGone()
             }
             binding.tvMore.setOnClickListener {
                 binding.tvMessage.maxLines = Int.MAX_VALUE
                 binding.tvMore.makeGone()
             }
 
-            binding.tvMessage.text = item?.text
             item?.text?.let {
                 if (it.contains("يرجى ارسال موقعك") || it.contains("ابعتلي موقعك")) {
                     binding.tvLocation.makeVisible()

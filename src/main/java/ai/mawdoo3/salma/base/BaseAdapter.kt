@@ -56,6 +56,10 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
+    fun isLoading(): Boolean {
+        return currentState == EnumState.STATE_LOADING
+    }
+
     fun addItem(item: M) {
         rvHandler.post {
             list.add(item)

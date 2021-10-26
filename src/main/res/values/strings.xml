@@ -34,4 +34,7 @@
     <string name="connection_failed_error">The server could not be reached. Please try again later</string>
     <string name="masa_welcoming_message">how can i help you?</string>
     <string name="something_went_wrong">Something went wrong, please try again later</string>
+    <string name="choose_share_method">Choose share method</string>
+    <string name="text_copied">text copied</string>
+    <string name="equals">equals</string>
 </resources>

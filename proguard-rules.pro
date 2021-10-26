@@ -20,67 +20,69 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class * extends androidx.fragment.app.Fragment{}
--keep class ai.mawdoo3.salma.RateAnswerDialogListener
--keep class com.banking.core.transfers.data.*
-
-
--keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
--keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
--keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
--keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
-
--keepclassmembernames class kotlinx.* {
-   volatile <fields>;
-}
-
--keep class * implements com.google.gson.TypeAdapter
--keep class * extends com.google.gson.TypeAdapter
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
-
-# Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
-# EnclosingMethod is required to use InnerClasses.
--keepattributes Signature, InnerClasses, EnclosingMethod
-
-# Retrofit does reflection on method and parameter annotations.
--keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
-
-# Retain service method parameters when optimizing.
--keepclassmembers,allowshrinking,allowobfuscation interface * {
- @retrofit2.http.* <methods>;
-}
-
-# Ignore annotation used for build tooling.
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
-# Ignore JSR 305 annotations for embedding nullability information.
--dontwarn javax.annotation.**
-
-# Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
--dontwarn kotlin.Unit
-
-# Top-level functions that can only be used by Kotlin.
--dontwarn retrofit2.KotlinExtensions
--dontwarn retrofit2.KotlinExtensions$*
-
-# With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
-# and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
--if interface * { @retrofit2.http.* <methods>; }
--keep,allowobfuscation interface <1>
-
--keep class com.wang.avi.** { *; }
--keep class com.wang.avi.indicators.** { *; }
-
--keepclassmembers class io.grpc.okhttp.OkHttpChannelBuilder {
-  io.grpc.okhttp.OkHttpChannelBuilder forTarget(java.lang.String);
-  io.grpc.okhttp.OkHttpChannelBuilder scheduledExecutorService(java.util.concurrent.ScheduledExecutorService);
-  io.grpc.okhttp.OkHttpChannelBuilder sslSocketFactory(javax.net.ssl.SSLSocketFactory);
-  io.grpc.okhttp.OkHttpChannelBuilder transportExecutor(java.util.concurrent.Executor);
-}
-
--dontwarn org.chromium.**
--dontnote org.chromium.**
-
--keep class ai.mawdoo3.salma.utils.asr.*
+#-keep class * extends androidx.fragment.app.Fragment{}
+#-keep class com.banking.core.transfers.data.*
+#
+#
+#-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+#-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+#-keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
+#-keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
+#
+#-keepclassmembernames class kotlinx.* {
+#   volatile <fields>;
+#}
+#
+#-keep class * implements com.google.gson.TypeAdapter
+#-keep class * extends com.google.gson.TypeAdapter
+#-keep class * implements com.google.gson.TypeAdapterFactory
+#-keep class * implements com.google.gson.JsonSerializer
+#-keep class * implements com.google.gson.JsonDeserializer
+#
+## Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
+## EnclosingMethod is required to use InnerClasses.
+#-keepattributes Signature, InnerClasses, EnclosingMethod
+#
+## Retrofit does reflection on method and parameter annotations.
+#-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+#
+## Retain service method parameters when optimizing.
+#-keepclassmembers,allowshrinking,allowobfuscation interface * {
+# @retrofit2.http.* <methods>;
+#}
+#
+## Ignore annotation used for build tooling.
+#-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+#
+## Ignore JSR 305 annotations for embedding nullability information.
+#-dontwarn javax.annotation.**
+#
+## Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
+#-dontwarn kotlin.Unit
+#
+## Top-level functions that can only be used by Kotlin.
+#-dontwarn retrofit2.KotlinExtensions
+#-dontwarn retrofit2.KotlinExtensions$*
+#
+## With R8 full mode, it sees no subtypes of Retrofit interfaces since they are created with a Proxy
+## and replaces all potential values with null. Explicitly keeping the interfaces prevents this.
+#-if interface * { @retrofit2.http.* <methods>; }
+#-keep,allowobfuscation interface <1>
+#
+#-keep class com.wang.avi.** { *; }
+#-keep class com.wang.avi.indicators.** { *; }
+#
+#-keepclassmembers class io.grpc.okhttp.OkHttpChannelBuilder {
+#  io.grpc.okhttp.OkHttpChannelBuilder forTarget(java.lang.String);
+#  io.grpc.okhttp.OkHttpChannelBuilder scheduledExecutorService(java.util.concurrent.ScheduledExecutorService);
+#  io.grpc.okhttp.OkHttpChannelBuilder sslSocketFactory(javax.net.ssl.SSLSocketFactory);
+#  io.grpc.okhttp.OkHttpChannelBuilder transportExecutor(java.util.concurrent.Executor);
+#}
+#
+#-dontwarn org.chromium.**
+#-dontnote org.chromium.**
+#
+#-keep class ai.mawdoo3.salma.utils.asr.*
+#-keep class ai.mawdoo3.salma.data.*
+#-keep class ai.mawdoo3.salma.data.dataModel.*
+#-keepnames @kotlin.Metadata class ai.mawdoo3.salma.data.* #I used the real package name

@@ -17,7 +17,7 @@ import java.io.InputStream
  * Created by iSaleem on 3/22/21
  */
 
-const val CERT_NAME = "asr-nemo-v1-2-14-grpc-cert.crt"
+const val CERT_NAME = "asr-beta.crt"
 
 object GrpcConnector {
 
@@ -65,6 +65,7 @@ object GrpcConnector {
             }
 
             override fun onError(t: Throwable?) {
+                Log.d("GRPC", t!!.localizedMessage)
             }
 
             override fun onCompleted() {
@@ -96,7 +97,7 @@ object GrpcConnector {
                 }
 
                 override fun onError(t: Throwable?) {
-                    Log.d("transcribe", t?.message.toString())
+                    Log.d("GRPC", "Error -> " + t?.message.toString())
                 }
 
                 override fun onCompleted() {
@@ -106,6 +107,8 @@ object GrpcConnector {
         val asrSpearBuilder: Asr.speak.Builder = Asr.speak.newBuilder()
         asrSpearBuilder.sampleRate = Int32Value.of(VoiceRecorder.SAMPLE_RATE)
         asrSpearBuilder.audioBytes = voice
+//        Log.d("GRPC", "sid -> " + sessionId)
+
         asrSpearBuilder.sid = StringValue.of(sessionId)
         streamObserverSpeakChunk?.onNext(asrSpearBuilder.build())
     }
