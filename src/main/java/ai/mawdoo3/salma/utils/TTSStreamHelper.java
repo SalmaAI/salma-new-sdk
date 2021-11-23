@@ -94,7 +94,10 @@ public class TTSStreamHelper {
             player = new SimpleExoPlayer.Builder(context.get()).build();
 
             player.setPlayWhenReady(true);
-            MediaItem mediaItem = MediaItem.fromUri(BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams);
+            MediaItem mediaItem = new MediaItem.Builder()
+                    .setUri(BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams)
+                    .build();
+
             player.setMediaItem(mediaItem);
             player.prepare();
             Log.d("TTS", BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams);
