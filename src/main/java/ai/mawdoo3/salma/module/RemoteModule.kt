@@ -1,7 +1,10 @@
-package ai.mawdoo3.salma.remote
+package ai.mawdoo3.salma.module
 
 
 import ai.mawdoo3.salma.BuildConfig
+import ai.mawdoo3.salma.remote.AppAuthenticator
+import ai.mawdoo3.salma.remote.AuthorizationInterceptor
+import ai.mawdoo3.salma.remote.MasaApiEndpoints
 import ai.mawdoo3.salma.utils.DefaultIfNullFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

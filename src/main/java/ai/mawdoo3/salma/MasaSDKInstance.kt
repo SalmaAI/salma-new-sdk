@@ -2,7 +2,7 @@ package ai.mawdoo3.salma
 
 import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.module.ChatModule
-import ai.mawdoo3.salma.remote.remoteModule
+import ai.mawdoo3.salma.module.remoteModule
 import ai.mawdoo3.salma.ui.BotMainActivity
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher

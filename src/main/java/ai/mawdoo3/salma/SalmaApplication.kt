@@ -2,7 +2,7 @@ package ai.mawdoo3.salma
 
 import ai.mawdoo3.salma.module.ChatModule
 import ai.mawdoo3.salma.module.appModule
-import ai.mawdoo3.salma.remote.remoteModule
+import ai.mawdoo3.salma.module.remoteModule
 import android.content.Context
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
