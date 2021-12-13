@@ -38,7 +38,8 @@ data class MessageResponse(
             @Json(name = "buttons") val buttons: List<ActionButton>?,
             @Json(name = "globalButton") val globalButton: ActionButton?,
             @Json(name = "quickReplyPayload") val quickReplyPayload: String?,
-            @Json(name = "quickReplyType") val quickReplyType: String?
+            @Json(name = "quickReplyType") val quickReplyType: String?,
+            @Json(name = "payload") val payload: String?
         ) {
             @JsonClass(generateAdapter = true)
             data class ActionButton(
@@ -218,6 +219,23 @@ data class MessageResponse(
                     currencyMessageUiModel.exchangeRate = exchangeRate
                 }
                 messages.add(currencyMessageUiModel)
+            } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredCarousel) {
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                //create items list UI model
+                val items = ArrayList<ListItem>()
+                messageContent.elements?.forEach { element ->
+                    items.add(ListItem(element.title, element.payload))
+                }
+                messages.add(ItemsListUiModel(items = items))
             }
 
             return messages

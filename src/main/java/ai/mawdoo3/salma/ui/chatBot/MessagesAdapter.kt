@@ -109,6 +109,15 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+            MessageViewType.DropDownMessageViewType.value -> {
+                return DropDownMessageViewHolder(
+                    DropdownMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
             else -> {
                 TODO("Not yet implemented")
             }
@@ -140,6 +149,8 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             return MessageViewType.CurrencyConvertorMessageViewType.value
         } else if (list[position] is InformationalMessageUiModel) {
             return MessageViewType.InformationalMessageViewType.value
+        } else if (list[position] is ItemsListUiModel) {
+            return MessageViewType.DropDownMessageViewType.value
         } else {
             return 0
         }

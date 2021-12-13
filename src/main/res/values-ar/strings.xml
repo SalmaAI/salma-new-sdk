@@ -37,5 +37,6 @@
     <string name="choose_share_method">اختر وسيلة المشركة</string>
     <string name="text_copied">تم نسخ النص</string>
     <string name="equals">تساوي</string>
+    <string name="search">بحث</string>
 
 </resources>

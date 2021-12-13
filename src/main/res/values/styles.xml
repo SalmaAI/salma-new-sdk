@@ -99,4 +99,14 @@
         <item name="android:layout_width">wrap_content</item>
 
     </style>
+
+    <style name="Theme.BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Theme.BottomSheetDialog.AppModalStyle
+        </item>
+    </style>
+
+    <style name="Theme.BottomSheetDialog.AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_bg</item>
+    </style>
+
 </resources>

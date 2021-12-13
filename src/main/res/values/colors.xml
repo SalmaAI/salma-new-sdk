@@ -5,6 +5,7 @@
     <color name="masaSecondaryColor">#FFD100</color>
     <color name="masaAccentColor">#0072BF</color>
     <color name="masaPageBackgroundColor">#011535</color>
+    <color name="masaBottomSheetBackgroundColor">#132B52</color>
     <color name="masaToolbarBackgroundColor">#011535</color>
     <color name="masaOutComingMessageBackgroundColor">#0081D9</color>
     <color name="masaInComingMessageBackgroundColor">#0A417C</color>
@@ -17,6 +18,7 @@
     <color name="masaPrimaryActionColor">#FFFFFF</color>
     <color name="masaSecondaryActionColor">#BF294D</color>
     <color name="masaCurrencyFieldBorderColor">#DFE4EC</color>
+    <color name="masaSeparatorColor">#1AFFFFFF</color>
 
     <!-- Text filed colors-->
     <color name="masaTextFieldHintTextColor">#577CB7</color>
@@ -30,7 +32,7 @@
     <color name="masaAmount1TextColor">#FFFFFF</color>
     <color name="masaAmount2TextColor">#FFFFFF</color>
     <color name="masaTitleTextColor">#FFFFFFFF</color>
-    <color name="masaSubTitleTextColor">#577CB7</color>
+    <color name="masaSubTitleTextColor">#FFFFFF</color>
     <color name="masaHeaderTextColor">#FFFFFFFF</color>
     <color name="black_overlay">#80000000</color>
 
