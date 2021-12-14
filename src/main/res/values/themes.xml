@@ -38,7 +38,7 @@
         <item name="dialogBackgroundColor">@color/masaDialogBackgroundColor</item>
         <item name="readMoreTextColor">@color/masaReadMoreTextColor</item>
         <item name="progressColor">@color/masaProgressColor</item>
-        <item name="bottomSheetDialogTheme">@style/Theme.BottomSheetDialogTheme</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.MobileBanking.BottomSheetDialogTheme</item>
 
         <!-- Customize your theme here. -->
 

@@ -220,22 +220,17 @@ data class MessageResponse(
                 }
                 messages.add(currencyMessageUiModel)
             } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredCarousel) {
-                //if there is text for content add text message before cards
-                messageContent.text?.let {
-                    messages.add(
-                        TextMessageUiModel(
-                            messageContent.text,
-                            MessageSender.Masa,
-                            time = AppUtils.getCurrentTime()
-                        )
-                    )
-                }
                 //create items list UI model
                 val items = ArrayList<ListItem>()
                 messageContent.elements?.forEach { element ->
                     items.add(ListItem(element.title, element.payload))
                 }
-                messages.add(ItemsListUiModel(items = items))
+                //if there is text for content add it as title of list
+                var title = ""
+                messageContent.text?.let {
+                    title = messageContent.text
+                }
+                messages.add(ItemsListUiModel(title = title, items = items))
             }
 
             return messages

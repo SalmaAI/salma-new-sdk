@@ -8,7 +8,18 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
-        tools:background="?attr/bottomSheetBackgroundColor">
+        android:background="?attr/bottomSheetBackgroundColor">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:textColor="?attr/titleTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="يرجى اختيار بنك المستفيد" />
 
         <EditText
             android:id="@+id/etSearch"
@@ -21,13 +32,14 @@
             android:hint="@string/search"
             android:padding="@dimen/medium_margin"
             android:textColorHint="?attr/textFieldHintTextColor"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerLanguages"
+            android:id="@+id/recyclerItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_margin"
+            android:paddingBottom="@dimen/large_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/etSearch"
             tools:listitem="@layout/list_item" />

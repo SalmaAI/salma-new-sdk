@@ -6,6 +6,8 @@ import ai.mawdoo3.salma.data.dataModel.ListItem
 import ai.mawdoo3.salma.databinding.ListBottomSheetBinding
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,13 +30,25 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
     private lateinit var dialog: BottomSheetDialog
     private lateinit var adapter: ItemsListAdapter
     lateinit var items: List<ListItem>
+    lateinit var listener: ListListener
+    lateinit var title: String
 
     companion object {
         val TAG = "ListBottomSheetFragment"
-        fun newInstance(items: List<ListItem>): ListBottomSheetFragment {
+        fun newInstance(
+            title: String,
+            items: List<ListItem>,
+            listener: ListListener
+        ): ListBottomSheetFragment {
             val listBottomSheetFragment = ListBottomSheetFragment()
             listBottomSheetFragment.items = items
+            listBottomSheetFragment.listener = listener
+            listBottomSheetFragment.title = title
             return listBottomSheetFragment
+        }
+
+        interface ListListener {
+            fun onItemSelected(title: String, payload: String)
         }
     }
 
@@ -50,17 +64,24 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        for (language in Language.values()) {
-//            adapter.addItem(
-//                LanguageItem(
-//                    language.code,
-//                    getString(language.titleID),
-//                    language.drawableID,
-//                    language.code == selectedLanguage
-//                )
-//            )
-//        }
-        binding.recyclerLanguages.adapter = adapter
+        adapter = ItemsListAdapter()
+        adapter.setItems(items)
+        binding.recyclerItems.adapter = adapter
+        binding.tvTitle.text = title
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
         adapter.setOnItemClickListener(this)
     }
 
@@ -70,14 +91,14 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
             val d = it as BottomSheetDialog
             val sheet: View? = d.findViewById<View>(design_bottom_sheet)
             behavior = BottomSheetBehavior.from(sheet!!)
-            behavior.isHideable = false
+            behavior.isHideable = true
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         return dialog
     }
 
     override fun onItemClicked(view: View, item: ListItem?, position: Int) {
-
+        item?.let { listener.onItemSelected(it.title!!, it.payload!!) }
         dismissAllowingStateLoss()
     }
 

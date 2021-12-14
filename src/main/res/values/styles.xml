@@ -100,13 +100,13 @@
 
     </style>
 
-    <style name="Theme.BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Theme.BottomSheetDialog.AppModalStyle
+    <style name="Theme.MobileBanking.BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Theme.MobileBanking.BottomSheetDialog.AppModalStyle
         </item>
     </style>
 
-    <style name="Theme.BottomSheetDialog.AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bottom_sheet_bg</item>
+    <style name="Theme.MobileBanking.BottomSheetDialog.AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/masa_bottom_sheet_bg</item>
     </style>
 
 </resources>
