@@ -22,6 +22,7 @@
     <attr name="separatorColor" format="color" />
 
     <!-- Text filed colors-->
+    <attr name="chatTextFieldHintTextColor" format="color" />
     <attr name="textFieldHintTextColor" format="color" />
     <attr name="textFieldTextColor" format="color" />
     <attr name="textFieldBackgroundColor" format="color" />

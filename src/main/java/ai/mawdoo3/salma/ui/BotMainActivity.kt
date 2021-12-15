@@ -18,7 +18,7 @@ class BotMainActivity : BaseActivity() {
         binding = ActivityMainBotBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close);
+        this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_chatbot_close);
         this.supportActionBar?.setDisplayHomeAsUpEnabled(true);
         this.supportActionBar?.title = getString(R.string.app_title)
     }

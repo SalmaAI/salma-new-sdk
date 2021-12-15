@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
                 android:background="@drawable/tv_border_white"
-                android:drawableStart="@drawable/ic_location"
+                android:drawableStart="@drawable/ic_chatbot_location"
                 android:drawablePadding="@dimen/small_margin"
                 android:fontFamily="@font/font_bold"
                 android:padding="@dimen/small_margin"

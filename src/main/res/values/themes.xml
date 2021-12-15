@@ -21,10 +21,13 @@
         <item name="separatorColor">@color/masaSeparatorColor</item>
 
         <!-- Text filed colors-->
+        <item name="chatTextFieldHintTextColor">@color/masaChatTextFieldHintTextColor</item>
         <item name="textFieldHintTextColor">@color/masaTextFieldHintTextColor</item>
         <item name="textFieldTextColor">@color/masaTextFieldTextColor</item>
         <item name="textFieldBackgroundColor">@color/masaTextFieldBackgroundColor</item>
         <item name="textFieldCursorColor">@color/masaTextFieldCursorColor</item>
+        <item name="textFieldActiveBorderColor">@color/masaTextFieldActiveBorderColor</item>
+        <item name="textFieldInActiveBorderColor">@color/masaTextFieldInActiveBorderColor</item>
         <!---->
         <item name="subTitleTextColor">@color/masaSubTitleTextColor</item>
         <item name="titleTextColor">@color/masaTitleTextColor</item>
@@ -39,8 +42,7 @@
         <item name="readMoreTextColor">@color/masaReadMoreTextColor</item>
         <item name="progressColor">@color/masaProgressColor</item>
         <item name="bottomSheetDialogTheme">@style/Theme.Salma.BottomSheetDialogTheme</item>
-        <item name="textFieldActiveBorderColor">@color/masaTextFieldActiveBorderColor</item>
-        <item name="textFieldInActiveBorderColor">@color/masaTextFieldInActiveBorderColor</item>
+
 
         <!-- Customize your theme here. -->
 

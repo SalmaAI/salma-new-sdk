@@ -18,15 +18,16 @@
     <color name="masaPrimaryActionColor">#FFFFFF</color>
     <color name="masaSecondaryActionColor">#BF294D</color>
     <color name="masaCurrencyFieldBorderColor">#DFE4EC</color>
-    <color name="masaSeparatorColor">#1AFFFFFF</color>
+    <color name="masaSeparatorColor">#59FFFFFF</color>
 
     <!-- Text filed colors-->
-    <color name="masaTextFieldHintTextColor">#577CB7</color>
+    <color name="masaChatTextFieldHintTextColor">#577CB7</color>
+    <color name="masaTextFieldHintTextColor">#59FFFFFF</color>
     <color name="masaTextFieldTextColor">#FFFFFFFF</color>
     <color name="masaTextFieldBackgroundColor">#FFFFFFFF</color>
     <color name="masaTextFieldCursorColor">#FFFFFFFF</color>
     <color name="masaTextFieldActiveBorderColor">#FFFFFFFF</color>
-    <color name="masaTextFieldInActiveBorderColor">#1AFFFFFF</color>
+    <color name="masaTextFieldInActiveBorderColor">#59FFFFFF</color>
     <color name="masaCardButtonBackgroundColor">#001B44</color>
     <color name="masaCardButtonTextColor">#FFFFFFFF</color>
     <color name="masaCardButtonIconColor">#0072BF</color>

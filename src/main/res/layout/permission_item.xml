@@ -56,7 +56,7 @@
                 android:paddingEnd="@dimen/medium_margin"
                 android:singleLine="true"
                 android:text="@{permission.buttonTitle}"
-                app:icon="@drawable/ic_settings"
+                app:icon="@drawable/ic_chatbot_settings"
                 app:iconGravity="textStart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvText"

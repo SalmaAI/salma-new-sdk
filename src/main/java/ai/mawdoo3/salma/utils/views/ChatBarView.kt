@@ -111,9 +111,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
             override fun afterTextChanged(s: Editable?) {
                 if (s.isNullOrEmpty()) {
-                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_microphone)
+                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
                 } else {
-                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_send)
+                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
                 }
             }
 

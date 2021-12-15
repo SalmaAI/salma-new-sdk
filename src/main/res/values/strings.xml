@@ -27,7 +27,7 @@
     <string name="record_audio_permission_button_title">permission to access microphone</string>
     <string name="permission_denied_message">To be able to complete this process, please give permission</string>
     <string name="app_title">MASA</string>
-    <string name="good_morning">"Good morning "</string>
+    <string name="good_morning">Good morning</string>
     <string name="good_evening">good evening</string>
     <string name="hello">hello</string>
     <string name="hello_message">hello, how can i help you today</string>
@@ -37,5 +37,5 @@
     <string name="choose_share_method">Choose share method</string>
     <string name="text_copied">text copied</string>
     <string name="equals">equals</string>
-    <string name="search">بحث</string>
+    <string name="chatbot_search_hint">بحث</string>
 </resources>
