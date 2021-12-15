@@ -25,6 +25,8 @@
     <color name="masaTextFieldTextColor">#FFFFFFFF</color>
     <color name="masaTextFieldBackgroundColor">#FFFFFFFF</color>
     <color name="masaTextFieldCursorColor">#FFFFFFFF</color>
+    <color name="masaTextFieldActiveBorderColor">#FFFFFFFF</color>
+    <color name="masaTextFieldInActiveBorderColor">#1AFFFFFF</color>
     <color name="masaCardButtonBackgroundColor">#001B44</color>
     <color name="masaCardButtonTextColor">#FFFFFFFF</color>
     <color name="masaCardButtonIconColor">#0072BF</color>

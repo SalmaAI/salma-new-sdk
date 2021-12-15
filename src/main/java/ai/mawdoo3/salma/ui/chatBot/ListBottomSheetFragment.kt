@@ -1,5 +1,6 @@
 package ai.mawdoo3.salma.ui.chatBot
 
+import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.R.id.design_bottom_sheet
 import ai.mawdoo3.salma.base.BaseAdapter
 import ai.mawdoo3.salma.data.dataModel.ListItem
@@ -86,7 +87,7 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog = BottomSheetDialog(requireContext(), R.style.Theme_Salma_BottomSheetDialogTheme);
         dialog.setOnShowListener {
             val d = it as BottomSheetDialog
             val sheet: View? = d.findViewById<View>(design_bottom_sheet)
@@ -94,6 +95,7 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
             behavior.isHideable = true
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
         return dialog
     }
 
