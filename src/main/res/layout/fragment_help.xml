@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/page_bg">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:background="@drawable/logo_bg"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_assistant_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:fontFamily="@font/font_bold"
+            android:text="مرحباً ! أنا ماسة،"
+            android:textColor="?attr/titleTextColor"
+            android:textSize="32sp"
+            app:layout_constraintStart_toEndOf="@+id/imgLogo"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:text="مساعدتك الرقمية.\n بعض ما يمكنني مساعدتك به:"
+            android:textColor="?attr/titleTextColor"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/imgLogo"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeader1" />
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:background="?attr/separatorColor"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeader2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingBottom="@dimen/medium_margin"
+            app:layout_constraintTop_toBottomOf="@+id/separator"
+            app:stackFromEnd="true"
+            tools:itemCount="5"
+            tools:listitem="@layout/incoming_text_message_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

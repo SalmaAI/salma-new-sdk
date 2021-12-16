@@ -5,6 +5,7 @@
         android:id="@+id/action_analytics"
         android:icon="@drawable/ic_chatbot_analytics"
         android:title="@string/help"
+        android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_help"

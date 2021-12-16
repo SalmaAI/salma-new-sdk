@@ -23,25 +23,6 @@ class BotMainActivity : BaseActivity() {
         this.supportActionBar?.title = getString(R.string.app_title)
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_analytics -> {
-
-            }
-            R.id.action_help -> {
-
-            }
-            android.R.id.home -> finish()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GpsUtils.GPS_REQUEST && resultCode == Activity.RESULT_OK) {
             val navHostFragment =

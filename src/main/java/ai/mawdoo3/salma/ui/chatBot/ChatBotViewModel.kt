@@ -24,8 +24,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
     val makeCall = LiveEvent<String>()
     val goToLocation = LiveEvent<String>()
-    val messageResponseList = MutableLiveData<List<MessageUiModel>>()
-    val messageSent = MutableLiveData<MessageUiModel>()
+    val messageResponseList = LiveEvent<List<MessageUiModel>>()
+    val messageSent = LiveEvent<MessageUiModel>()
     val showLoader = MutableLiveData<Boolean>()
     val rateAnswer = LiveEvent<String>()
     val getUserLocation = LiveEvent<Boolean>()

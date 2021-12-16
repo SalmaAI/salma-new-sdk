@@ -19,6 +19,8 @@
 package ai.mawdoo3.salma.utils
 
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 
 fun View.enable() {
@@ -51,5 +53,12 @@ fun View.makeGone() {
  */
 fun View.setVisible(isVisible: Boolean) {
     this.visibility = (if (isVisible) View.VISIBLE else View.GONE)
+}
+
+fun Fragment.getNavigationResult(key: String = "result") =
+    findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Any>(key)
+
+fun Fragment.setNavigationResult(key: String = "result", result: Any) {
+    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
 }
 

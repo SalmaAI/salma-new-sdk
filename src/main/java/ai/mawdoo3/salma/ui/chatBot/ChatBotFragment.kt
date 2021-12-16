@@ -12,6 +12,7 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
+import ai.mawdoo3.salma.utils.getNavigationResult
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
@@ -21,9 +22,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,9 +59,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        setHasOptionsMenu(true)
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
-        adapter.clear()
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
@@ -72,11 +71,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             moveDuration = 0
             changeDuration = 0
         }
-
-        adapter.addItem(HeaderUiModel(sender = MessageSender.Masa, name = MasaSdkInstance.username))
-
-        viewModel.sendMessage("", "القائمة الرئيسية", false)
-
+        if (adapter.isEmpty()) {
+            adapter.addItem(
+                HeaderUiModel(
+                    sender = MessageSender.Masa,
+                    name = MasaSdkInstance.username
+                )
+            )
+            viewModel.sendMessage("", "القائمة الرئيسية", false)
+        }
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
         } else {
@@ -87,6 +90,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getNavigationResult("Message")?.observe(viewLifecycleOwner, {
+            it as String
+            if (it.isNotEmpty()) {
+                viewModel.sendMessage(it, it, true)
+            }
+        })
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
             Log.d("SendMessage", "Add Masa message")
             Log.d("GRPC", "Message response")
@@ -180,6 +189,25 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_analytics -> {
+
+            }
+            R.id.action_help -> {
+                AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
+            }
+            android.R.id.home -> activity?.finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun makeCall() {
