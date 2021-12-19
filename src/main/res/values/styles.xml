@@ -115,7 +115,7 @@
 
     <style name="Theme.Salma.BottomSheetDialog.AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/masa_bottom_sheet_bg</item>
-        <item name="behavior_peekHeight">500dp</item>
+<!--        <item name="behavior_peekHeight">500dp</item>-->
     </style>
 
     <style name="Theme.Salma.OutlinedEditText" parent="Widget.AppCompat.EditText">

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
-            android:drawableEnd="@drawable/ic_chatbot_arrow_go"
+            android:drawableLeft="@drawable/ic_chatbot_arrow_go"
             android:text="@{item.title}"
             android:textColor="?attr/titleTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
