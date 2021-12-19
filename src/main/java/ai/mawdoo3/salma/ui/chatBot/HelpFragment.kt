@@ -46,7 +46,7 @@ import org.koin.core.parameter.parametersOf
 
 class HelpFragment : BaseFragment() {
     private val viewModel: ChatBotViewModel by viewModel()
-    private val adapter: MessagesAdapter by inject { parametersOf(viewModel) }
+    private val adapter: HelpMessagesAdapter by inject { parametersOf(viewModel) }
     private lateinit var binding: FragmentHelpBinding
 
 
@@ -77,7 +77,6 @@ class HelpFragment : BaseFragment() {
             Log.d("SendMessage", "Add Masa message")
             Log.d("GRPC", "Message response")
             adapter.addItems(it)
-            scrollToBottom()
         })
 
 

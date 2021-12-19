@@ -119,7 +119,13 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                 )
             }
             else -> {
-                TODO("Not yet implemented")
+                return EmptyMessageViewHolder(
+                    EmptyMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
             }
         }
     }

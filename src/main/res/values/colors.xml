@@ -5,6 +5,7 @@
     <color name="masaSecondaryColor">#FFD100</color>
     <color name="masaAccentColor">#0072BF</color>
     <color name="masaPageBackgroundColor">#011535</color>
+    <color name="masaHelpPageBackgroundColor">#001B44</color>
     <color name="masaBottomSheetBackgroundColor">#132B52</color>
     <color name="masaToolbarBackgroundColor">#011535</color>
     <color name="masaOutComingMessageBackgroundColor">#0081D9</color>

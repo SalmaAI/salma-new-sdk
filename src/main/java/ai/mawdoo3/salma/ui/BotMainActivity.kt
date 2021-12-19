@@ -7,20 +7,36 @@ import ai.mawdoo3.salma.ui.chatBot.ChatBotFragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 
 
 class BotMainActivity : BaseActivity() {
+    private lateinit var navController: NavController
     lateinit var binding: ActivityMainBotBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBotBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_chatbot_close);
-        this.supportActionBar?.setDisplayHomeAsUpEnabled(true);
         this.supportActionBar?.title = getString(R.string.app_title)
+        navController = findNavController(R.id.navHostBotMain)
+        val appBarConfiguration = AppBarConfiguration(
+            topLevelDestinationIds = setOf(),
+            fallbackOnNavigateUpListener = ::onSupportNavigateUp
+        )
+        NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            this.supportActionBar?.setDisplayHomeAsUpEnabled(true);
+            if (destination.id == R.id.chatBotFragment) {
+                this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_chatbot_close);
+            }
+        }
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -33,5 +49,13 @@ class BotMainActivity : BaseActivity() {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        if (!navController.navigateUp()) {
+            //navigateUp() returns false if there are no more fragments to pop
+            onBackPressed()
+        }
+        return navController.navigateUp()
     }
 }

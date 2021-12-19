@@ -205,7 +205,6 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             R.id.action_help -> {
                 AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
             }
-            android.R.id.home -> activity?.finish()
         }
         return super.onOptionsItemSelected(item)
     }

@@ -10,6 +10,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/toolbarBackgroundColor</item>
         <item name="toolbarBackgroundColor">@color/masaToolbarBackgroundColor</item>
         <item name="pageBackgroundColor">@color/masaPageBackgroundColor</item>
+        <item name="helpPageBackgroundColor">@color/masaHelpPageBackgroundColor</item>
         <item name="bottomSheetBackgroundColor">@color/masaBottomSheetBackgroundColor</item>
         <item name="outComingMessageBackgroundColor">@color/masaOutComingMessageBackgroundColor
         </item>

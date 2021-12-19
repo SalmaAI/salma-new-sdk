@@ -6,6 +6,7 @@
     <attr name="secondaryColor" format="color" />
     <attr name="accentColor" format="color" />
     <attr name="pageBackgroundColor" format="color" />
+    <attr name="helpPageBackgroundColor" format="color" />
     <attr name="bottomSheetBackgroundColor" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
     <attr name="outComingMessageBackgroundColor" format="color" />

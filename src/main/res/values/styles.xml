@@ -18,6 +18,14 @@
         <item name="android:minHeight">@dimen/card_button_height</item>
     </style>
 
+    <style name="Theme.Salma.ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- Customize color of Toolbar -->
+        <item name="colorControlNormal">?attr/titleTextColor</item>
+        <item name="android:background">?attr/toolbarBackgroundColor</item>
+        <item name="background">?attr/toolbarBackgroundColor</item>
+    </style>
+
+
     <!--    CardView Style-->
     <style name="Theme.Salma.CardView.OutComingMessage" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">?attr/outComingMessageBackgroundColor</item>

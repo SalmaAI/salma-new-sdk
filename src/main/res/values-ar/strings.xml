@@ -38,5 +38,6 @@
     <string name="text_copied">تم نسخ النص</string>
     <string name="equals">تساوي</string>
     <string name="chatbot_search_hint">بحث</string>
+    <string name="about_app_title">عن ماسة</string>
 
 </resources>
