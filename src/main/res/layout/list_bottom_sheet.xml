@@ -35,8 +35,10 @@
             android:drawableStart="@drawable/ic_chatbot_search"
             android:drawablePadding="@dimen/small_margin"
             android:hint="@string/chatbot_search_hint"
-            android:lines="1"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:maxLines="1"
+            android:minLines="1"
             android:textAlignment="viewStart" />
 
         <androidx.recyclerview.widget.RecyclerView
