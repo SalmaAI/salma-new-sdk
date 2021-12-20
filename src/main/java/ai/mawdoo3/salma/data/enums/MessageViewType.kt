@@ -11,4 +11,5 @@ enum class MessageViewType(val value: Int) {
     CurrencyConvertorMessageViewType(8),
     InformationalMessageViewType(9),
     HeaderMessageViewType(10),
+    DropDownMessageViewType(11)
 }

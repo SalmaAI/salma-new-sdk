@@ -91,13 +91,13 @@ class InComingInformationalMessageViewHolder(
                 when (button.function) {
                     ButtonFunction.Share.value,
                     ButtonFunction.CopyAndShare.value -> {
-                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_action_share))
+                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_chatbot_share))
                     }
                     ButtonFunction.Deeplink.value -> {
-                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_open_link))
+                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_chatbot_open_link))
                     }
                     ButtonFunction.Copy.value -> {
-                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_copy))
+                        this.imgGlobalButton.setImageDrawable(this.root.context.getDrawable(R.drawable.ic_chatbot_copy))
                     }
                 }
                 this.imgGlobalButton.setOnClickListener {

@@ -13,17 +13,17 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>() {
 
-    private var currentState: EnumState = EnumState.STATE_NORMAL
+    internal var currentState: EnumState = EnumState.STATE_NORMAL
     protected var list = mutableListOf<M>()
-    private var rvHandler: Handler = Handler()
+    var rvHandler: Handler = Handler()
     protected var onItemClickListener: OnItemClickListener<M>? = null
 
 
-    fun isEmpty(): Boolean {
+    open fun isEmpty(): Boolean {
         return list.isEmpty()
     }
 
-    fun isLastItem(position: Int): Boolean {
+    open fun isLastItem(position: Int): Boolean {
         return (position == list.size - 1)
     }
 
@@ -60,7 +60,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         return currentState == EnumState.STATE_LOADING
     }
 
-    fun addItem(item: M) {
+    open fun addItem(item: M) {
         rvHandler.post {
             list.add(item)
             notifyItemChanged(list.size - 1)
@@ -74,7 +74,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun removeItem(position: Int) {
+    open fun removeItem(position: Int) {
         if (list.size > position) {
             rvHandler.post {
                 list.removeAt(position)
@@ -83,7 +83,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun updateItem(item: M, position: Int) {
+    open fun updateItem(item: M, position: Int) {
         rvHandler.post {
             if (position >= 0 && position < list.size) {
                 list.add(position, item)
@@ -92,7 +92,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun clear() {
+    open fun clear() {
         rvHandler.post {
             currentState = EnumState.STATE_NORMAL
             list.clear()
@@ -100,7 +100,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun getItem(position: Int): M? {
+    open fun getItem(position: Int): M? {
         return if (position >= 0 && position < list.size) {
             list[position]
         } else {

@@ -17,7 +17,9 @@ enum class MessageType(val value: String) {
     InformationalCard("INFORMATIONAL_CARD"),
     UnansweredInformationalCard("UNANSWERED_INFORMATIONAL_CARD"),
     PropertiesCard("PROPERTIES_CARD"),
-    UnansweredPropertiesCard("UNANSWERED_PROPERTIES_CARD");
+    UnansweredPropertiesCard("UNANSWERED_PROPERTIES_CARD"),
+    KeyValueList("KEY_VALUE_LIST"),
+    UnansweredKeyValueList("UNANSWERED_KEY_VALUE_LIST");
 
     companion object {
         fun from(type: String?): MessageType = values().find { it.value == type } ?: Text

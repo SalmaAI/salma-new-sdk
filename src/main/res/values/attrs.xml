@@ -6,6 +6,8 @@
     <attr name="secondaryColor" format="color" />
     <attr name="accentColor" format="color" />
     <attr name="pageBackgroundColor" format="color" />
+    <attr name="helpPageBackgroundColor" format="color" />
+    <attr name="bottomSheetBackgroundColor" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
     <attr name="outComingMessageBackgroundColor" format="color" />
     <attr name="inComingMessageBackgroundColor" format="color" />
@@ -18,12 +20,16 @@
     <attr name="readMoreTextColor" format="color" />
     <attr name="messageTimeTextColor" format="color" />
     <attr name="currencyFieldBorderColor" format="color" />
+    <attr name="separatorColor" format="color" />
 
     <!-- Text filed colors-->
+    <attr name="chatTextFieldHintTextColor" format="color" />
     <attr name="textFieldHintTextColor" format="color" />
     <attr name="textFieldTextColor" format="color" />
     <attr name="textFieldBackgroundColor" format="color" />
     <attr name="textFieldCursorColor" format="color" />
+    <attr name="textFieldInActiveBorderColor" format="color" />
+    <attr name="textFieldActiveBorderColor" format="color" />
     <!---->
 
     <attr name="titleTextColor" format="color" />

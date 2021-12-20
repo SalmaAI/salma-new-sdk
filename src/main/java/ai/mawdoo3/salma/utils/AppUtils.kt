@@ -51,7 +51,7 @@ object AppUtils {
     fun showSettingsDialog(context: Context, @StringRes message: Int) {
         val alertDialogBuilder = MaterialAlertDialogBuilder(
             context,
-            R.style.Theme_MobileBanking_MaterialAlertDialog
+            R.style.Theme_Salma_MaterialAlertDialog
         )
             .setTitle(context.getString(R.string.permission_denied_title))
             .setMessage(message)
