@@ -3,7 +3,7 @@ package ai.mawdoo3.salma.ui.chatBot
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.R.id.design_bottom_sheet
 import ai.mawdoo3.salma.base.BaseAdapter
-import ai.mawdoo3.salma.data.dataModel.ListItem
+import ai.mawdoo3.salma.data.dataModel.DropdownListItem
 import ai.mawdoo3.salma.databinding.ListBottomSheetBinding
 import android.app.Dialog
 import android.os.Bundle
@@ -21,7 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
  * Created by iSaleem on 12/31/20
  */
 class ListBottomSheetFragment() : BottomSheetDialogFragment(),
-    BaseAdapter.OnItemClickListener<ListItem> {
+    BaseAdapter.OnItemClickListener<DropdownListItem> {
 
 
     private lateinit var binding: ListBottomSheetBinding
@@ -30,7 +30,7 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
 
     private lateinit var dialog: BottomSheetDialog
     private lateinit var adapter: ItemsListAdapter
-    lateinit var items: List<ListItem>
+    lateinit var items: List<DropdownListItem>
     lateinit var listener: ListListener
     lateinit var title: String
 
@@ -38,7 +38,7 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
         val TAG = "ListBottomSheetFragment"
         fun newInstance(
             title: String,
-            items: List<ListItem>,
+            items: List<DropdownListItem>,
             listener: ListListener
         ): ListBottomSheetFragment {
             val listBottomSheetFragment = ListBottomSheetFragment()
@@ -99,7 +99,7 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
         return dialog
     }
 
-    override fun onItemClicked(view: View, item: ListItem?, position: Int) {
+    override fun onItemClicked(view: View, item: DropdownListItem?, position: Int) {
         item?.let { listener.onItemSelected(it.title!!, it.payload!!) }
         dismissAllowingStateLoss()
     }

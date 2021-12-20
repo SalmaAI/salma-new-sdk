@@ -131,34 +131,26 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position >= list.size)
-            return EnumState.STATE_LOADING.viewType()
-        else if (list[position] is TextMessageUiModel) {//text message
-            if (list[position].sender == MessageSender.User) {
-                return MessageViewType.OutComingTextMessageViewType.value
-            } else {
-                return MessageViewType.InComingTextMessageViewType.value
+        if (position >= list.size) return EnumState.STATE_LOADING.viewType()
+
+        when (list[position]) {
+            is TextMessageUiModel -> {//text message
+                return if (list[position].sender == MessageSender.User) {
+                    MessageViewType.OutComingTextMessageViewType.value
+                } else {
+                    MessageViewType.InComingTextMessageViewType.value
+                }
             }
-        } else if (list[position] is HeaderUiModel) {
-            return MessageViewType.HeaderMessageViewType.value
-        } else if (list[position] is QuickReplyMessageUiModel) {
-            return MessageViewType.QuickRepliesMessageViewType.value
-        } else if (list[position] is LocationsListUiModel) {
-            return MessageViewType.LocationMessageViewType.value
-        } else if (list[position] is PermissionMessageUiModel) {
-            return MessageViewType.PermissionMessageViewType.value
-        } else if (list[position] is BillsMessageUiModel) {
-            return MessageViewType.InComingBillMessageViewType.value
-        } else if (list[position] is ImageMessageUiModel) {
-            return MessageViewType.InComingImageMessageViewType.value
-        } else if (list[position] is CurrencyMessageUiModel) {
-            return MessageViewType.CurrencyConvertorMessageViewType.value
-        } else if (list[position] is InformationalMessageUiModel) {
-            return MessageViewType.InformationalMessageViewType.value
-        } else if (list[position] is ItemsListUiModel) {
-            return MessageViewType.DropDownMessageViewType.value
-        } else {
-            return 0
+            is HeaderUiModel -> return MessageViewType.HeaderMessageViewType.value
+            is QuickReplyMessageUiModel -> return MessageViewType.QuickRepliesMessageViewType.value
+            is LocationsListUiModel -> return MessageViewType.LocationMessageViewType.value
+            is PermissionMessageUiModel -> return MessageViewType.PermissionMessageViewType.value
+            is BillsMessageUiModel -> return MessageViewType.InComingBillMessageViewType.value
+            is ImageMessageUiModel -> return MessageViewType.InComingImageMessageViewType.value
+            is CurrencyMessageUiModel -> return MessageViewType.CurrencyConvertorMessageViewType.value
+            is InformationalMessageUiModel -> return MessageViewType.InformationalMessageViewType.value
+            is DropdownListUiModel -> return MessageViewType.DropDownMessageViewType.value
+            else -> return 0
         }
     }
 

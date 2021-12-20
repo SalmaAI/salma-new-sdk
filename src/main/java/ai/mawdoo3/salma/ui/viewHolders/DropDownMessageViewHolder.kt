@@ -1,7 +1,7 @@
 package ai.mawdoo3.salma.ui.viewHolders
 
 import ai.mawdoo3.salma.base.BaseViewHolder
-import ai.mawdoo3.salma.data.dataModel.ItemsListUiModel
+import ai.mawdoo3.salma.data.dataModel.DropdownListUiModel
 import ai.mawdoo3.salma.data.dataModel.MessageUiModel
 import ai.mawdoo3.salma.databinding.DropdownMessageItemBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
@@ -14,7 +14,7 @@ class DropDownMessageViewHolder(
 ) : BaseViewHolder<MessageUiModel>(binding) {
     override fun bind(position: Int, item: MessageUiModel?) {
         return bind<DropdownMessageItemBinding> {
-            val listItems = item as ItemsListUiModel?
+            val listItems = item as DropdownListUiModel?
             binding.tvMessage.text = listItems?.title
             binding.tvMessage.setOnClickListener {
                 val listDialog =

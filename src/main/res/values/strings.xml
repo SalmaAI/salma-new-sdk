@@ -39,5 +39,7 @@
     <string name="equals">تساوي</string>
     <string name="chatbot_search_hint">بحث</string>
     <string name="about_app_title">عن ماسة</string>
+    <string name="help_hello_title">مرحباً ! أنا ماسة،</string>
+    <string name="help_subtitle">مساعدتك الرقمية.\n بعض ما يمكنني مساعدتك به:</string>
 
 </resources>

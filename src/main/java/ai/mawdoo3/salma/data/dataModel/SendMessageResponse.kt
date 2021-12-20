@@ -221,16 +221,16 @@ data class MessageResponse(
                 messages.add(currencyMessageUiModel)
             } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredCarousel) {
                 //create items list UI model
-                val items = ArrayList<ListItem>()
+                val items = ArrayList<DropdownListItem>()
                 messageContent.elements?.forEach { element ->
-                    items.add(ListItem(element.title, element.payload))
+                    items.add(DropdownListItem(element.title, element.payload))
                 }
                 //if there is text for content add it as title of list
                 var title = ""
                 messageContent.text?.let {
                     title = messageContent.text
                 }
-                messages.add(ItemsListUiModel(title = title, items = items))
+                messages.add(DropdownListUiModel(title = title, items = items))
             }
 
             return messages
