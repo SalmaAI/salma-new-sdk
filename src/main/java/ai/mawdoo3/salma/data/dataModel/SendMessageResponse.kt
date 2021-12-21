@@ -69,6 +69,14 @@ data class MessageResponse(
                         time = AppUtils.getCurrentTime()
                     )
                 )
+            } else if (messageType == MessageType.Location || messageType == MessageType.UnansweredLocation) {
+                messages.add(
+                    TextMessageUiModel(
+                        messageContent.text, MessageSender.Masa,
+                        time = AppUtils.getCurrentTime(),
+                        showLocation = true
+                    )
+                )
             } else if (messageType == MessageType.NumberKeyPad) {
                 messages.add(
                     TextMessageUiModel(
@@ -212,7 +220,8 @@ data class MessageResponse(
                         element.title,
                         element.subTitle,
                         element.optionalInfo,
-                        element.payload)
+                        element.payload
+                    )
                     messages.add(listItemMessage)
                 }
             } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {

@@ -3,6 +3,8 @@ package ai.mawdoo3.salma.data.enums
 enum class MessageType(val value: String) {
     Text("TEXT"),
     UnansweredText("UNANSWERED_TEXT"),
+    Location("LOCATION"),
+    UnansweredLocation("UNANSWERED_LOCATION"),
     TextLocation("TEXT_LOCATION"),
     UnansweredTextLocation("UNANSWERED_TEXT_LOCATION"),
     QuickReply("QUICK_REPLY"),

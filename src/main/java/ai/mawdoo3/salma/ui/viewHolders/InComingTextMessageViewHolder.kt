@@ -31,7 +31,7 @@ class InComingTextMessageViewHolder(
                             binding.tvMore.makeGone()
                     }
                 }
-            }?: run {
+            } ?: run {
                 binding.constraintView.makeGone()
             }
             binding.tvMore.setOnClickListener {
@@ -39,13 +39,12 @@ class InComingTextMessageViewHolder(
                 binding.tvMore.makeGone()
             }
 
-            item?.text?.let {
-                if (it.contains("يرجى ارسال موقعك") || it.contains("ابعتلي موقعك")) {
-                    binding.tvLocation.makeVisible()
-                } else {
-                    binding.tvLocation.makeGone()
-                }
+            if (item?.showLocation == true) {
+                binding.tvLocation.makeVisible()
+            } else {
+                binding.tvLocation.makeGone()
             }
+
             binding.tvRate.setOnClickListener {
                 viewModel.rateAnswer.postValue("1")
             }

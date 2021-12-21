@@ -61,7 +61,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
             buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://beta.stg-salma-ai.com/tts"')
+            buildConfigField("String", "TTS_URL", '"https://ingress.alpha.mawdu.com/flowtron-api-v0-3-4/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
         debug {
@@ -71,7 +71,7 @@ android {
             debuggable true
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
             buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://beta.stg-salma-ai.com/tts"')
+            buildConfigField("String", "TTS_URL", '"https://ingress.alpha.mawdu.com/flowtron-api-v0-3-4/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
     }
