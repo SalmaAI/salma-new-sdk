@@ -194,6 +194,27 @@ data class MessageResponse(
                     )
                     messages.add(informationalMessage)
                 }
+            }
+            //clickable cards items for ex:accounts, beneficiaries
+            else if (messageType == MessageType.ItemsList || messageType == MessageType.UnansweredItemsList) {
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                messageContent.elements?.forEach { element ->
+                    val listItemMessage = ListItemMessageUiModel(
+                        element.title,
+                        element.subTitle,
+                        element.optionalInfo,
+                        element.payload)
+                    messages.add(listItemMessage)
+                }
             } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {
                 val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
                 messageContent.properties?.forEach { property ->
@@ -219,7 +240,7 @@ data class MessageResponse(
                     currencyMessageUiModel.exchangeRate = exchangeRate
                 }
                 messages.add(currencyMessageUiModel)
-            } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredCarousel) {
+            } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredKeyValueList) {
                 //create items list UI model
                 val items = ArrayList<DropdownListItem>()
                 messageContent.elements?.forEach { element ->
