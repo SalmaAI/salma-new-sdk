@@ -5,6 +5,7 @@ import ai.mawdoo3.salma.data.dataModel.MessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.databinding.IncomingTextMessageItemBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
+import ai.mawdoo3.salma.utils.disableWithDelay
 import ai.mawdoo3.salma.utils.getTextLineCount
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
@@ -47,6 +48,7 @@ class InComingTextMessageViewHolder(
                 }
             }
             binding.tvRate.setOnClickListener {
+                binding.tvRate.disableWithDelay()
                 viewModel.rateAnswer.postValue("1")
             }
             binding.tvLocation.setOnClickListener {
