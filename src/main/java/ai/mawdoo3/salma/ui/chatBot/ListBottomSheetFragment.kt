@@ -75,7 +75,7 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                adapter.filter.filter(s.toString())
+                adapter.filter.filter(s.toString().trim())
             }
 
             override fun afterTextChanged(s: Editable?) {
