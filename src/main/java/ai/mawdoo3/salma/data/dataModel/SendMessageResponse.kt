@@ -25,6 +25,7 @@ data class MessageResponse(
     data class MessageContentResponse(
         @Json(name = "text") val text: String?,
         @Json(name = "url") val url: String?,
+        @Json(name = "useButtons") val useButtons: Boolean?,
         @Json(name = "elements") val elements: List<Element>?,
         @Json(name = "properties") val properties: List<Property>?,
         @Json(name = "attachmentId") val attachmentId: String?
@@ -184,45 +185,44 @@ data class MessageResponse(
                         )
                     )
                 }
-                messageContent.elements?.forEach { element ->
-                    var globalButton: ButtonUiModel? = null
-                    element.globalButton?.let {
-                        globalButton = ButtonUiModel(it.type, it.title, it.value ?: "", it.function)
-                    }
-                    val buttons = ArrayList<ButtonUiModel>()
-                    element.buttons?.forEach {
-                        buttons.add(ButtonUiModel(it.type, it.title, it.value ?: "", it.function))
-                    }
-                    val informationalMessage = InformationalMessageUiModel(
-                        element.title,
-                        element.subTitle,
-                        element.optionalInfo,
-                        globalButton,
-                        buttons, MessageSender.Masa
-                    )
-                    messages.add(informationalMessage)
-                }
-            }
-            //clickable cards items for ex:accounts, beneficiaries
-            else if (messageType == MessageType.ItemsList || messageType == MessageType.UnansweredItemsList) {
-                //if there is text for content add text message before cards
-                messageContent.text?.let {
-                    messages.add(
-                        TextMessageUiModel(
-                            messageContent.text,
-                            MessageSender.Masa,
-                            time = AppUtils.getCurrentTime()
+                if (messageContent.useButtons == true) {//add informational card with global and action buttons
+                    messageContent.elements?.forEach { element ->
+                        var globalButton: ButtonUiModel? = null
+                        element.globalButton?.let {
+                            globalButton =
+                                ButtonUiModel(it.type, it.title, it.value ?: "", it.function)
+                        }
+                        val buttons = ArrayList<ButtonUiModel>()
+                        element.buttons?.forEach {
+                            buttons.add(
+                                ButtonUiModel(
+                                    it.type,
+                                    it.title,
+                                    it.value ?: "",
+                                    it.function
+                                )
+                            )
+                        }
+                        val informationalMessage = InformationalMessageUiModel(
+                            element.title,
+                            element.subTitle,
+                            element.optionalInfo,
+                            globalButton,
+                            buttons, MessageSender.Masa
                         )
-                    )
-                }
-                messageContent.elements?.forEach { element ->
-                    val listItemMessage = ListItemMessageUiModel(
-                        element.title,
-                        element.subTitle,
-                        element.optionalInfo,
-                        element.payload
-                    )
-                    messages.add(listItemMessage)
+                        messages.add(informationalMessage)
+                    }
+                } else {
+                    //clickable cards items for ex: beneficiaries list
+                    messageContent.elements?.forEach { element ->
+                        val listItemMessage = ListItemMessageUiModel(
+                            element.title,
+                            element.subTitle,
+                            element.optionalInfo,
+                            element.payload
+                        )
+                        messages.add(listItemMessage)
+                    }
                 }
             } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {
                 val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
