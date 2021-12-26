@@ -78,7 +78,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                     name = MasaSdkInstance.username
                 )
             )
-            viewModel.sendMessage("", "القائمة الرئيسية", false)
+            viewModel.sendMessage("", "القائمة الرئيسية", showMessage = false, newSession = true)
         }
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()

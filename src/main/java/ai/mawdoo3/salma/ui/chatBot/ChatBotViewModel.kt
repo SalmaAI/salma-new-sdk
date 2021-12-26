@@ -41,7 +41,12 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
      * payload -> this value will be sent to server (won't show to user)
      * showMessage -> this boolean determine whether to show sent message in list or just send it to server without show it to user
      */
-    fun sendMessage(text: String?, payload: String, showMessage: Boolean = true) {
+    fun sendMessage(
+        text: String?,
+        payload: String,
+        showMessage: Boolean = true,
+        newSession: Boolean = false
+    ) {
         if (showMessage) {
             messageSent.value =
                 TextMessageUiModel(
@@ -57,10 +62,11 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             delay(1000)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
-                    PhoneUtils.getDeviceId(applicationContext),
+                    userId = PhoneUtils.getDeviceId(applicationContext),
                     message = payload,
-                    MasaSdkInstance.key,
-                    MasaSdkInstance.jwtToken
+                    secretKey = MasaSdkInstance.key,
+                    JWT = MasaSdkInstance.jwtToken,
+                    newSession = newSession
                 )
             )
 
