@@ -164,6 +164,33 @@ data class MessageResponse(
                     )
                 }
 
+            } else if (messageType == MessageType.CardsList || messageType == MessageType.UnansweredCardsList) {
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                //add cards UI model to messages list
+                messageContent.elements?.forEach { element ->
+                    messages.add(
+                        CardUiModel(
+                            cardNumber = element.title,
+                            image = element.image,
+                            holderName = element.subTitle,
+                            expiryDate = element.optionalInfo,
+                            cardId = element.payload,
+                            availableAmount = null,
+                            name = null,
+                            messageSender = MessageSender.Masa
+                        )
+                    )
+                }
+
             } else if (messageType == MessageType.Image || messageType == MessageType.UnansweredImage) {
                 messages.add(ImageMessageUiModel(url = messageContent.url, MessageSender.Masa))
             } else if (messageType == MessageType.DeepLink || messageType == MessageType.UnansweredDeepLink) {
