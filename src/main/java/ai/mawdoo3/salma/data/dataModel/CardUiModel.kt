@@ -8,7 +8,6 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 data class CardUiModel(
     val cardId: String?,
     val name: String?,
-    val availableAmount: String?,
     val cardNumber: String?,
     val holderName: String?,
     val expiryDate: String?,

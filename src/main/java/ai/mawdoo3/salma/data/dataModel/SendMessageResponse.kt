@@ -184,7 +184,6 @@ data class MessageResponse(
                             holderName = element.subTitle,
                             expiryDate = element.optionalInfo,
                             cardId = element.payload,
-                            availableAmount = null,
                             name = null,
                             messageSender = MessageSender.Masa
                         )
