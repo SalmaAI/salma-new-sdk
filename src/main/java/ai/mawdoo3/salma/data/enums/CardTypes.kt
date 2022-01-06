@@ -4,7 +4,7 @@ import ai.mawdoo3.salma.R
 import android.graphics.drawable.Drawable
 
 enum class CardTypes(val id: Int, val value: String, val drawableID: Int) {
-    CreditMCRevolvingClassic(1, "CreditMCRevolvingClassic", R.drawable.ic_chatbot_analytics),
+    CreditMCRevolvingClassic(1, "CreditMCRevolvingClassic", R.drawable.credit_mc_revolving_classic),
     CreditMCRevolvingTitanium(2, "CreditMCRevolvingTitanium", R.drawable.ic_chatbot_analytics),
     CreditMCRevolvingPlatinum(3, "CreditMCRevolvingPlatinum", R.drawable.ic_chatbot_analytics),
     CreditMCRevolvingWorld(4, "CreditMCRevolvingWorld", R.drawable.ic_chatbot_analytics),
