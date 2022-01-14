@@ -31,7 +31,8 @@ import kotlinx.coroutines.launch
 /**
  * created by Omar Qadomi on 3/17/21
  */
-class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
+class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs),
+    GrpcConnector.ITranscriptionStream {
     private var channel: ManagedChannel? = null
     lateinit var binding: ChatBarLayoutBinding
     private var actionStatus = ChatBarStatus.Nothing
@@ -49,7 +50,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    init {
         init(context)
     }
 
@@ -150,7 +151,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
 
     private fun sendGRPCMessage(text: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            Log.d("GRPC", "Send message ->" + text)
+            Log.d("GRPC", "Send message ->$text")
             listener?.sendMessage(text)
         }
     }
@@ -250,9 +251,9 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         binding.root.layout(
             0,
             0,
-            binding.root.getMeasuredWidth(),
-            binding.root.getMeasuredHeight()
-        );
+            binding.root.measuredWidth,
+            binding.root.measuredHeight
+        )
 
     }
 
@@ -264,7 +265,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
-                Log.d("GRPC", "onVoice " + data)
+                Log.d("GRPC", "onVoice $data")
                 data?.apply {
                     val stringByte =
                         GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
@@ -283,11 +284,11 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     override fun onTranscriptionReceived(text: String) {
         startSpeaking()
         binding.speakLayout.tvGrpcText.text = text
-        Log.d("GRPC", "Received text ->" + text)
+        Log.d("GRPC", "Received text ->$text")
     }
 
     override fun onFinalTranscriptionReceived(text: String) {
-        Log.d("GRPC", "Final text ->" + text)
+        Log.d("GRPC", "Final text ->$text")
         mVoiceRecorder?.updateHearingStatus(false)
         CoroutineScope(Dispatchers.IO).launch {
             mVoiceRecorder?.stop()
@@ -300,14 +301,14 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     override fun onSessionIdReceived(sessionId: String) {
-        Log.d("GRPC", "sessionId ->" + sessionId)
+        Log.d("GRPC", "sessionId ->$sessionId")
         // start voice recorder
         this.sessionId = sessionId
     }
 
     fun showNumberKeyPad() {
         binding.inputLayout.root.makeVisible()
-        binding.inputLayout.etMessage.inputType = InputType.TYPE_CLASS_NUMBER;
+        binding.inputLayout.etMessage.inputType = InputType.TYPE_CLASS_NUMBER
         AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
 
