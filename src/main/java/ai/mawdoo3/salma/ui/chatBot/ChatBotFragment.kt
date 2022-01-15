@@ -187,13 +187,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         super.onPause()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -211,11 +207,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     private fun makeCall() {
         val intent = Intent(Intent.ACTION_CALL)
-        intent.data = Uri.parse("tel:" + phone)
+        intent.data = Uri.parse("tel:$phone")
         startActivity(intent)
     }
 
-    override fun getViewModel(): BaseViewModel? {
+    override fun getViewModel(): BaseViewModel {
         return viewModel
     }
 
@@ -304,6 +300,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.ACCESS_FINE_LOCATION -> {
                             requestCurrentLocation()
                         }
+                        else -> {}
                     }
                 }
                 GrantResult.PERMANENTLY_DENIED -> {
@@ -326,6 +323,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         message
                     )
                 }
+                else -> {}
             }
         }
     }
@@ -350,16 +348,16 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         scrollToBottom()
     }
 
-    override fun showError(error: Int) {
-        showSnackbarMessage(error)
+    override fun showError(connectionFailedError: Int) {
+        showSnackbarMessage(connectionFailedError)
     }
 
     private fun scrollToBottom() {
-        binding.recyclerView.postDelayed(Runnable {
+        binding.recyclerView.postDelayed({
             binding.recyclerView.layoutManager?.smoothScrollToPosition(
                 binding.recyclerView,
                 RecyclerView.State(), adapter.getListCount() - 1
-            );
+            )
         }, 500)
 
     }

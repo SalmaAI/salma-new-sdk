@@ -64,6 +64,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                     GrpcConnector.startVoiceRecognition(channel)
                 }
             } catch (e: GrpcConnector.FailedChannelConnectionException) {
+                Log.d("failed", "connection failed")
             }
 
         }
