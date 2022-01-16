@@ -59,8 +59,9 @@ public class TTSStreamHelper {
     }
 
     public void startStreaming(String ttsId, boolean ttsDynamic) {
-        if (isPlaying)
+        if (isPlaying) {
             stopStream();
+        }
         isPlaying = true;
 
         initializePlayer(ttsId, ttsDynamic);
@@ -74,9 +75,9 @@ public class TTSStreamHelper {
     private void initializePlayer(String ttsId, boolean ttsDynamic) {
         if (context.get() != null) {
             String ttsParams;
-            if (ttsDynamic)
+            if (ttsDynamic) {
                 ttsParams = "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=mp3&normalize_text=true&transfer=false&tempo=0";
-            else {
+            } else {
                 ttsParams = "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=mp3&transfer=false&tempo=0";
             }
 
@@ -93,25 +94,27 @@ public class TTSStreamHelper {
             player.addListener(new Player.EventListener() {
                 @Override
                 public void onPlayerError(@NonNull ExoPlaybackException error) {
-                    for (int i = 0; i < streamListeners.size(); i++)
+                    for (int i = 0; i < streamListeners.size(); i++) {
                         streamListeners.get(i).onCompletedListener();
+                    }
                 }
 
                 @Override
                 public void onPlaybackStateChanged(int state) {
                     if (state == Player.STATE_ENDED) {
-                        for (int i = 0; i < streamListeners.size(); i++)
+                        for (int i = 0; i < streamListeners.size(); i++) {
                             streamListeners.get(i).onCompletedListener();
+                        }
                     }
                 }
             });
 
 
-
-
-        } else
-            for (int i = 0; i < streamListeners.size(); i++)
+        } else {
+            for (int i = 0; i < streamListeners.size(); i++) {
                 streamListeners.get(i).onCompletedListener();
+            }
+        }
     }
 
     private void releasePlayer() {
