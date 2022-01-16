@@ -70,12 +70,12 @@ public class MasaAmountTextView extends AppCompatTextView {
         Typeface typeface;
         AmountType type = AmountType.getAmountTypeByID(amountType);
         //set font family
-        typeface = ResourcesCompat.getFont(context, type.FONT);
+        typeface = ResourcesCompat.getFont(context, type != null ? type.FONT : 0);
         setTypeface(typeface);
         //set text size
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(type.AMOUNT_SIZE));
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(type != null ? type.AMOUNT_SIZE : 0));
         //set text color
-        setTextColor(AppUtils.INSTANCE.getColorFromAttr(context, type.AMOUNT_TEXT_COLOR));
+        setTextColor(AppUtils.INSTANCE.getColorFromAttr(context, type != null ? type.AMOUNT_TEXT_COLOR : 0));
 
     }
 
@@ -85,7 +85,7 @@ public class MasaAmountTextView extends AppCompatTextView {
             AmountType type = AmountType.getAmountTypeByID(amountType);
 
             builder.setSpan(
-                    new AbsoluteSizeSpan((int) getResources().getDimension(type.FRACTION_SIZE)),
+                    new AbsoluteSizeSpan((int) getResources().getDimension(type != null ? type.FRACTION_SIZE : 0)),
                     text.indexOf(afterChar),
                     text.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -134,20 +134,9 @@ public class MasaAmountTextView extends AppCompatTextView {
             return null;
         }
 
-        public int getFONT() {
-            return FONT;
-        }
 
         public int getID() {
             return ID;
-        }
-
-        public int getAmountSize() {
-            return AMOUNT_SIZE;
-        }
-
-        public int getFractionSize() {
-            return FRACTION_SIZE;
         }
     }
 }
