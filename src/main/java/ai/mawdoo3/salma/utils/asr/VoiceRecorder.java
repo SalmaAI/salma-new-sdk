@@ -27,7 +27,7 @@ import android.util.Log;
  *
  * <p>The recorded audio format is always {@link AudioFormat#ENCODING_PCM_16BIT} and
  * {@link AudioFormat#CHANNEL_IN_MONO}. This class will automatically pick the right sample rate
- * for the device. Use {@link #getSampleRate()} to get the selected value.</p>
+ * for the device.</p>
  */
 public class VoiceRecorder {
 
@@ -37,7 +37,7 @@ public class VoiceRecorder {
     private static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     private static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
-    private static final int AMPLITUDE_THRESHOLD = 1500;
+    //    private static final int AMPLITUDE_THRESHOLD = 1500;
     private static final int SPEECH_TIMEOUT_MILLIS = 2000;
     private static final int MAX_SPEECH_LENGTH_MILLIS = 30 * 1000;
     private boolean isHearingVoice = false;
@@ -139,18 +139,6 @@ public class VoiceRecorder {
             mLastVoiceHeardMillis = Long.MAX_VALUE;
             mCallback.onVoiceEnd();
         }
-    }
-
-    /**
-     * Retrieves the sample rate currently used to record audio.
-     *
-     * @return The sample rate of recorded audio.
-     */
-    public int getSampleRate() {
-        if (mAudioRecord != null) {
-            return mAudioRecord.getSampleRate();
-        }
-        return 0;
     }
 
     /**
