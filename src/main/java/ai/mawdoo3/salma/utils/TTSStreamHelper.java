@@ -22,16 +22,16 @@ import ai.mawdoo3.salma.BuildConfig;
  * email : a3adel@hotmail.com
  */
 public class TTSStreamHelper {
-    ExoPlayer player;
-    boolean playWhenReady;
-    int currentWindow;
-    long playbackPosition;
+    private static TTSStreamHelper instance;
+    private static WeakReference<Context> context;
+    private ExoPlayer player;
+    private boolean playWhenReady;
 
     private final MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
-    static TTSStreamHelper instance;
-    static WeakReference<Context> context;
-    ArrayList<TTSStreamCompletionListener> streamListeners;
+    private int currentWindow;
+    private long playbackPosition;
+    private ArrayList<TTSStreamCompletionListener> streamListeners;
 
     public void setTtsStreamCompletionListener(TTSStreamCompletionListener ttsStreamCompletionListener) {
         streamListeners.add(ttsStreamCompletionListener);
@@ -68,7 +68,7 @@ public class TTSStreamHelper {
     }
 
 
-    public interface TTSStreamCompletionListener {
+    private interface TTSStreamCompletionListener {
         void onCompletedListener();
     }
 

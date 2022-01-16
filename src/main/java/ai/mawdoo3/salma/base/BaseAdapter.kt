@@ -33,12 +33,12 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     }
 */
 
-    open fun setItems(items: List<M>) =
+    open fun setItems(items: List<M>) {
         rvHandler.post {
             list.addAll(items)
             notifyItemRangeInserted(/*positionStart*/list.size,/*itemCount*/ items.size)
         }
-
+    }
 
 
     fun loading(isLoading: Boolean) {
@@ -59,19 +59,20 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     fun isLoading(): Boolean = currentState == EnumState.STATE_LOADING
 
 
-    open fun addItem(item: M) =
+    open fun addItem(item: M) {
         rvHandler.post {
             list.add(item)
             notifyItemChanged(list.size - 1)
         }
+    }
 
 
-    fun addItems(items: List<M>) =
+    fun addItems(items: List<M>) {
         rvHandler.post {
             list.addAll(items)
             notifyItemRangeChanged(list.size - items.size - 1, list.size - 1)
         }
-
+    }
 
     open fun removeItem(position: Int) {
         if (list.size > position) {
@@ -91,12 +92,13 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    open fun clear() =
+    open fun clear() {
         rvHandler.post {
             currentState = EnumState.STATE_NORMAL
             list.clear()
             notifyDataSetChanged()
         }
+    }
 
 
     open fun getItem(position: Int): M? = if (position >= 0 && position < list.size) {
