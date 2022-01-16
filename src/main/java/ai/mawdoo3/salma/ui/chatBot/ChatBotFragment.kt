@@ -79,6 +79,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                 )
             )
             viewModel.sendMessage("", "القائمة الرئيسية", false)
+        } else {
+            Log.d("", "")
         }
         if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
@@ -142,14 +144,20 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             if (it == Permission.ACCESS_FINE_LOCATION) {
                 if (!isAllGranted(Permission.ACCESS_FINE_LOCATION)) {
                     requestPermission(Permission.ACCESS_FINE_LOCATION)
+                } else {
+                    Log.d("", "")
                 }
             } else if (it == Permission.RECORD_AUDIO) {
                 if (!isAllGranted(Permission.RECORD_AUDIO)) {
                     requestPermission(Permission.RECORD_AUDIO)
+                } else {
+                    Log.d("", "")
                 }
             } else if (it == Permission.CALL_PHONE) {
                 if (!isAllGranted(Permission.CALL_PHONE)) {
                     requestPermission(Permission.CALL_PHONE)
+                } else {
+                    Log.d("", "")
                 }
             }
         })
@@ -201,6 +209,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             R.id.action_help -> {
                 AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
             }
+            else -> {
+                Log.d("", "")
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -211,9 +222,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         startActivity(intent)
     }
 
-    override fun getViewModel(): BaseViewModel {
-        return viewModel
-    }
+    override fun getViewModel(): BaseViewModel = viewModel
 
     /**
      * this fun will check has location permission then will proceed and request current location
@@ -274,6 +283,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                             )
                         }
                     }
+                } else {
+                    Log.d("", "")
                 }
             }
         })
@@ -300,7 +311,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.ACCESS_FINE_LOCATION -> {
                             requestCurrentLocation()
                         }
-                        else -> {}
+                        else -> {
+                            Log.d("", "")
+                        }
                     }
                 }
                 GrantResult.PERMANENTLY_DENIED -> {
@@ -323,7 +336,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         message
                     )
                 }
-                else -> {}
+                else -> {
+                    Log.d("", "")
+                }
             }
         }
     }
@@ -348,11 +363,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         scrollToBottom()
     }
 
-    override fun showError(connectionFailedError: Int) {
+    override fun showError(connectionFailedError: Int) =
         showSnackbarMessage(connectionFailedError)
-    }
 
-    private fun scrollToBottom() {
+
+    private fun scrollToBottom() =
         binding.recyclerView.postDelayed({
             binding.recyclerView.layoutManager?.smoothScrollToPosition(
                 binding.recyclerView,
@@ -360,6 +375,5 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             )
         }, 500)
 
-    }
 
 }

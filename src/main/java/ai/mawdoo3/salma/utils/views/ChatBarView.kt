@@ -31,7 +31,8 @@ import kotlinx.coroutines.launch
 /**
  * created by Omar Qadomi on 3/17/21
  */
-class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
+class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs),
+    GrpcConnector.ITranscriptionStream {
     private var channel: ManagedChannel? = null
     lateinit var binding: ChatBarLayoutBinding
     private var actionStatus = ChatBarStatus.Nothing
@@ -49,7 +50,7 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    init {
         init(context)
     }
 
@@ -105,9 +106,15 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         }
         binding.inputLayout.etMessage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+                Log.d("", "${s.toString()} $start $count $after")
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                Log.d("", "${s.toString()} $start $count $before")
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -126,6 +133,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         this.chatBarType = chatBarType
         if (chatBarType == ChatBarType.AUDIO) {
             binding.inputLayout.etMessage.makeInvisible()
+        } else {
+            Log.d("", "")
         }
 
     }
@@ -135,6 +144,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         if (!audioList.isNullOrEmpty()) {
             playAudio(audioList!![0])
             this.audioList!!.removeAt(0)
+        } else {
+            Log.d("", "")
         }
     }
 
@@ -146,6 +157,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         if (binding.inputLayout.etMessage.text?.trim()?.isNotEmpty() == true) {
             listener?.sendMessage(binding.inputLayout.etMessage.text.toString())
             binding.inputLayout.etMessage.text?.clear()
+        } else {
+            Log.d("", "")
         }
     }
 
@@ -164,29 +177,6 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         } else {
             listener?.requestMicPermission()
         }
-//        // Requests one or more permissions, sending the result to a callback
-//        (this.context as AppCompatActivity).askForPermissions(Permission.RECORD_AUDIO) { result ->
-//            // Check the result, see the Using Results section
-//            // Returns GRANTED, DENIED, or PERMANENTLY_DENIED
-//            when (result[Permission.RECORD_AUDIO]) {
-//                GrantResult.GRANTED -> {
-//                    startListening()
-//                }
-//                GrantResult.DENIED -> {
-//                    Snackbar.make(
-//                        this@ChatBarView,
-//                        context!!.getString(R.string.audio_permission_denied_message),
-//                        Snackbar.LENGTH_SHORT
-//                    ).show()
-//                }
-//                GrantResult.PERMANENTLY_DENIED -> {
-//                    AppUtils.showSettingsDialog(
-//                        this@ChatBarView.context,
-//                        R.string.audio_permission_denied_message
-//                    )
-//                }
-//            }
-//        }
     }
 
     private fun startSpeaking() {
@@ -251,8 +241,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         binding.root.layout(
             0,
             0,
-            binding.root.getMeasuredWidth(),
-            binding.root.getMeasuredHeight()
+            binding.root.measuredWidth,
+            binding.root.measuredHeight
         );
 
     }
