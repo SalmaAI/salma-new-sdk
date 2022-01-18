@@ -12,16 +12,20 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Theme.Salma.CardView.InComingMessage"
+        corners="card_view_radius"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/card_view_margin">
+        android:layout_margin="@dimen/medium_margin"
+        android:elevation="@dimen/card_view_elevation"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cardRoot"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/medium_margin">
+            android:layout_height="match_parent"
+            android:background="@drawable/credit_classic"
+            android:padding="@dimen/medium_margin">
 
             <TextView
                 android:id="@+id/tvName"

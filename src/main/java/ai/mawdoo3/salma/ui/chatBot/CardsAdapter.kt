@@ -4,6 +4,7 @@ import ai.mawdoo3.salma.base.BaseAdapter
 import ai.mawdoo3.salma.base.BaseViewHolder
 import ai.mawdoo3.salma.data.dataModel.CardUiModel
 import ai.mawdoo3.salma.data.dataModel.LocationMessageUiModel
+import ai.mawdoo3.salma.data.enums.CardTypes
 import ai.mawdoo3.salma.databinding.CardItemBinding
 import ai.mawdoo3.salma.databinding.LocationItemBinding
 import android.view.LayoutInflater
@@ -37,6 +38,10 @@ class CardsAdapter(val viewModel: ChatBotViewModel) :
         ) {
             return bind<CardItemBinding> {
                 this.card = item
+                item?.image?.let {
+                    val cardType=CardTypes.from(it)
+                    this.cardRoot.setBackgroundResource(cardType.drawableID)
+                }
                 this.cardRoot.setOnClickListener {
                     viewModel.sendMessage(item!!.cardNumber, item.cardId!!)
                 }

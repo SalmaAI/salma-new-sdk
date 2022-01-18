@@ -180,7 +180,7 @@ data class MessageResponse(
                     messages.add(
                         CardUiModel(
                             cardNumber = element.title,
-                            image = element.image,
+                            image = element.image?.toInt(),
                             holderName = element.subTitle,
                             expiryDate = element.optionalInfo,
                             cardId = element.payload,

@@ -11,7 +11,7 @@ data class CardUiModel(
     val cardNumber: String?,
     val holderName: String?,
     val expiryDate: String?,
-    val image: String?,
+    val image: Int?,
     val messageSender: MessageSender
 ) :
     MessageUiModel {
