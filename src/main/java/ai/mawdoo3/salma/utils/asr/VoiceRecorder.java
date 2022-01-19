@@ -20,6 +20,8 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import java.util.Arrays;
+
 
 /**
  * Continuously records audio and notifies the {@link} when voice (or any
@@ -42,27 +44,20 @@ public class VoiceRecorder {
     private static final int MAX_SPEECH_LENGTH_MILLIS = 30 * 1000;
     private boolean isHearingVoice = false;
 
-    public static abstract class Callback {
-
-        /**
-         * Called when the recorder starts hearing voice.
-         */
-        public void onVoiceStart() {
+    /**
+     * Stops recording audio.
+     */
+    public void stop() {
+        dismiss();
+        if (mThread != null) {
+            Log.d("GRPC", "Stop recorder");
+            mThread.interrupt();
+            mThread = null;
         }
-
-        /**
-         * Called when the recorder is hearing voice.
-         *
-         * @param data The audio data in {@link AudioFormat#ENCODING_PCM_16BIT}.
-         * @param size The size of the actual data in {@code data}.
-         */
-        public void onVoice(byte[] data, int size) {
-        }
-
-        /**
-         * Called when the recorder stops hearing voice.
-         */
-        public void onVoiceEnd() {
+        if (mAudioRecord != null) {
+            mAudioRecord.stop();
+            mAudioRecord.release();
+            mAudioRecord = null;
         }
     }
 
@@ -114,21 +109,29 @@ public class VoiceRecorder {
         mThread.start();
     }
 
-    /**
-     * Stops recording audio.
-     */
-    public void stop() {
-            dismiss();
-            if (mThread != null) {
-                Log.d("GRPC", "Stop recorder");
-                mThread.interrupt();
-                mThread = null;
-            }
-            if (mAudioRecord != null) {
-                mAudioRecord.stop();
-                mAudioRecord.release();
-                mAudioRecord = null;
-            }
+    public static abstract class Callback {
+
+        /**
+         * Called when the recorder starts hearing voice.
+         */
+        public void onVoiceStart() {
+        }
+
+        /**
+         * Called when the recorder is hearing voice.
+         *
+         * @param data The audio data in {@link AudioFormat#ENCODING_PCM_16BIT}.
+         * @param size The size of the actual data in {@code data}.
+         */
+        public void onVoice(byte[] data, int size) {
+            Log.d("", Arrays.toString(data) + "" + size);
+        }
+
+        /**
+         * Called when the recorder stops hearing voice.
+         */
+        public void onVoiceEnd() {
+        }
     }
 
     /**

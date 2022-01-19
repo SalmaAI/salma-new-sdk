@@ -3,6 +3,7 @@ package ai.mawdoo3.salma.utils.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -20,14 +21,14 @@ public class FlowLayout extends ViewGroup {
      * container and the number of the child views, so that the child views are placed evenly in
      * the container.
      */
-    public static final int SPACING_AUTO = -65536;
+    private static final int SPACING_AUTO = -65536;
     /**
      * Special value for the horizontal spacing of the child views in the last row
      * SPACING_ALIGN means that the horizontal spacing of the child views in the last row keeps
      * the same with the spacing used in the row above. If there is only one row, this value is
      * ignored and the spacing will be calculated according to childSpacing.
      */
-    public static final int SPACING_ALIGN = -65537;
+    private static final int SPACING_ALIGN = -65537;
     private static final String LOG_TAG = FlowLayout.class.getSimpleName();
     private static final int SPACING_UNDEFINED = -65538;
 
@@ -322,12 +323,13 @@ public class FlowLayout extends ViewGroup {
         switch (horizontalGravity) {
             case Gravity.CENTER_HORIZONTAL:
                 offset = (parentWidth - horizontalPadding - mWidthForRow.get(row)) / 2;
-                break;
+                Log.d("", String.valueOf(offset));
             case Gravity.RIGHT:
+            case Gravity.END:
                 offset = parentWidth - horizontalPadding - mWidthForRow.get(row);
-                break;
+                Log.d("", String.valueOf(offset));
             default:
-                break;
+                Log.d("", "default");
         }
         return offset;
     }
@@ -343,7 +345,7 @@ public class FlowLayout extends ViewGroup {
     }
 
 
-    public void setGravity(int gravity) {
+    private void setGravity(int gravity) {
         if (mGravity != gravity) {
             mGravity = gravity;
             requestLayout();
