@@ -1,6 +1,8 @@
 <resources>
+    <!-- masa-->
+
     <string name="app_name">ماسة</string>
-    <string name="try_again">محاولة مرة أخرى</string>
+    <string name="try_again">يرجى إعادة المحاولة مرة أخرى</string>
     <string name="no_connection_message">الرجاء التأكد من الإتصال بالإنترنت</string>
     <string name="no_data_available">لا يوجد بيانات</string>
     <string name="general_error_message">حصل خطأ ما</string>
@@ -21,10 +23,10 @@
     <string name="use_my_location">استخدام موقعي الحالي</string>
     <string name="location_permission_message">أنا بحاجة للوصول إلى الموقع الخاص بك، لتزويدك بمواقع الفروع الأقرب إليك</string>
     <string name="call_permission_message">تحتاج ماسة للوصول إلى الهاتف لاجراء الاتصال </string>
-    <string name="call_permission_button_title">أذونات الوصول إلى الهاتف</string>
-    <string name="location_permission_button_title">أذونات الوصول إلى الموقع</string>
+    <string name="call_permission_button_title">الحصول على صلاحيات الوصول إلى الهاتف</string>
+    <string name="location_permission_button_title">الحصول على صلاحيات الوصول إلى الموقع</string>
     <string name="record_audio_permission_message">تحتاج ماسة للوصول إلى المايكروفون الخاص بك</string>
-    <string name="record_audio_permission_button_title">أذونات الوصول إلى المايكروفون</string>
+    <string name="record_audio_permission_button_title">الحصول على صلاحيات الوصول إلى المايكروفون</string>
     <string name="permission_denied_message">لتتمكن من اتمام هذه العملية الرجاء اعطاء الصلاحية</string>
     <string name="app_title">ماسة</string>
     <string name="good_morning">"صباح الخير "</string>
@@ -40,6 +42,6 @@
     <string name="chatbot_search_hint">بحث</string>
     <string name="about_app_title">عن ماسة</string>
     <string name="help_hello_title">مرحباً ! أنا ماسة،</string>
-    <string name="help_subtitle">مساعدتك الرقمية.\n بعض ما يمكنني مساعدتك به:</string>
+    <string name="help_subtitle">مساعدتك الرقمية. يمكنني مساعدتك بما يلي:</string>
 
 </resources>
