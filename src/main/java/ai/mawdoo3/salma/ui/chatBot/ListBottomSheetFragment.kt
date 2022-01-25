@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -69,20 +70,10 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
         adapter.setItems(items)
         binding.recyclerItems.adapter = adapter
         binding.tvTitle.text = title
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        binding.etSearch.doAfterTextChanged {
+            adapter.filter.filter(it.toString().trim())
 
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                adapter.filter.filter(s.toString().trim())
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-        })
+        }
         adapter.setOnItemClickListener(this)
     }
 

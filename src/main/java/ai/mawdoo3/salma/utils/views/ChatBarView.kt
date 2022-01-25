@@ -19,6 +19,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.afollestad.assent.Permission
 import com.afollestad.assent.isAllGranted
 import com.google.protobuf.ByteString
@@ -104,28 +105,13 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             resetLayoutState()
             mVoiceRecorder?.stop()
         }
-        binding.inputLayout.etMessage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-                Log.d("", "${s.toString()} $start $count $after")
-
+        binding.inputLayout.etMessage.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
+            } else {
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                Log.d("", "${s.toString()} $start $count $before")
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) {
-                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
-                } else {
-                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
-                }
-            }
-
-        })
+        }
 
     }
 
@@ -262,11 +248,6 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
                             ?.build()
                     GrpcConnector.sendVoice(channel, sessionId, stringByte)
                 }
-
-            }
-
-            override fun onVoiceEnd() {
-                Log.d("GRPC", "onVoiceEnd")
             }
         }
     }

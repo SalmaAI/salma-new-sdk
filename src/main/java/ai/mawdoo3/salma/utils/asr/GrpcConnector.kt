@@ -104,7 +104,6 @@ object GrpcConnector {
         val asrSpearBuilder: Asr.speak.Builder = Asr.speak.newBuilder()
         asrSpearBuilder.sampleRate = Int32Value.of(VoiceRecorder.SAMPLE_RATE)
         asrSpearBuilder.audioBytes = voice
-//        Log.d("GRPC", "sid -> " + sessionId)
 
         asrSpearBuilder.sid = StringValue.of(sessionId)
         streamObserverSpeakChunk?.onNext(asrSpearBuilder.build())
