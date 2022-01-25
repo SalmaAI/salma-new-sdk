@@ -68,7 +68,7 @@ public class TTSStreamHelper {
     }
 
 
-    private interface TTSStreamCompletionListener {
+    public interface TTSStreamCompletionListener {
         void onCompletedListener();
     }
 
