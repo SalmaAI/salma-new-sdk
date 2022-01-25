@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.75" />
+            app:layout_constraintGuide_percent="0.90" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -51,22 +51,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_margin"
-                android:gravity="end"
+                app:flRtl="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle">
 
             </ai.mawdoo3.salma.utils.views.FlowLayout>
 
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/recyclerQuickReplies"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/tvTitle"-->
-            <!--                tools:itemCount="3"-->
-            <!--                tools:listitem="@layout/quick_reply_item" />-->
+
+            <TextView
+                android:id="@+id/tvMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quick_replies_more"
+                android:textColor="?attr/titleTextColor"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/quickRepliesLayout"
+                app:layout_constraintTop_toBottomOf="@+id/quickRepliesLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

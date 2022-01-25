@@ -1,5 +1,6 @@
 package ai.mawdoo3.salma.data.dataSource
 
+import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.data.dataModel.SendMessageRequest
 import ai.mawdoo3.salma.data.dataModel.SendMessageResponse
 import ai.mawdoo3.salma.remote.MasaApiEndpoints
@@ -18,14 +19,16 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 .addFormDataPart("secretKey", sendMessageRequest.secretKey)
                 .addFormDataPart("userId", sendMessageRequest.userId)
                 .addFormDataPart("message", sendMessageRequest.message)
+                .addFormDataPart("mobileJWT", sendMessageRequest.JWT)
                 .build()
 
-            val result = endpoints.sendMessageNew(
-                "1",
-                "LlfjJwVrMPJKeA",
+            val result = endpoints.sendMessage(
+                MasaSdkInstance.botId,
+                MasaSdkInstance.botChannelId,
                 body.part(0),
                 body.part(1),
-                body.part(2)
+                body.part(2),
+                body.part(3)
             )
             RepoResponse.create(result)
         } catch (e: Exception) {

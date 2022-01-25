@@ -17,7 +17,7 @@ import java.io.InputStream
  * Created by iSaleem on 3/22/21
  */
 
-const val CERT_NAME = "asr_nemo.crt"
+const val CERT_NAME = "asr-beta.crt"
 
 object GrpcConnector {
 
@@ -26,8 +26,8 @@ object GrpcConnector {
     var streamObserverSpeakChunk: StreamObserver<Asr.speak>? = null
 
     fun connect(context: Context): ManagedChannel {
-        var channel: ManagedChannel?
-        var input: InputStream?
+        val channel: ManagedChannel?
+        val input: InputStream?
         try {
             input = context.resources.assets.open(CERT_NAME)
             channel = ChannelBuilder.buildTls(
@@ -36,11 +36,12 @@ object GrpcConnector {
             input.close()
             return channel
         } catch (e: Throwable) {
-            throw FailedChannelConnectionException("Cannot Connect to Server " + e.message)
+            Log.d("GRPC", "Connection failed")
+            throw FailedChannelConnectionException()
         }
     }
 
-    fun getASRStub(channel: ManagedChannel): asr_serviceGrpc.asr_serviceStub {
+    private fun getASRStub(channel: ManagedChannel): asr_serviceGrpc.asr_serviceStub {
         stub?.let {
             return it
         } ?: run {
@@ -48,25 +49,24 @@ object GrpcConnector {
         }
     }
 
-    fun getByteBuilder(): BytesValue.Builder {
-        return BytesValue.newBuilder()
-    }
+    fun getByteBuilder(): BytesValue.Builder =
+        BytesValue.newBuilder()
+
 
     fun startVoiceRecognition(channel: ManagedChannel) {
         val stub = getASRStub(channel)
         stub.getSid(Empty.getDefaultInstance(), object : StreamObserver<Asr.session_id> {
             override fun onNext(value: Asr.session_id?) {
                 sessionId = value?.sid?.value.toString()
-                voiceRecognition?.let {
-                    it.onSessionIdReceived(sessionId)
-
-                }
+                voiceRecognition?.onSessionIdReceived(sessionId)
             }
 
             override fun onError(t: Throwable?) {
+                Log.d("GRPC", t!!.localizedMessage!!)
             }
 
             override fun onCompleted() {
+                Log.d("", "")
             }
         })
     }
@@ -87,7 +87,6 @@ object GrpcConnector {
                             if (value.final.value) {
                                 streamObserverSpeakChunk?.onCompleted()
                                 ref.onFinalTranscriptionReceived(it.text.value)
-
                             }
                         }
                     }
@@ -95,16 +94,17 @@ object GrpcConnector {
                 }
 
                 override fun onError(t: Throwable?) {
-                    Log.d("transcribe", t?.message.toString())
+                    Log.d("GRPC", "Error -> " + t?.message.toString())
                 }
 
                 override fun onCompleted() {
-
+                    Log.d("", "")
                 }
             })
         val asrSpearBuilder: Asr.speak.Builder = Asr.speak.newBuilder()
         asrSpearBuilder.sampleRate = Int32Value.of(VoiceRecorder.SAMPLE_RATE)
         asrSpearBuilder.audioBytes = voice
+
         asrSpearBuilder.sid = StringValue.of(sessionId)
         streamObserverSpeakChunk?.onNext(asrSpearBuilder.build())
     }
@@ -125,5 +125,5 @@ object GrpcConnector {
     }
 
 
-    class FailedChannelConnectionException(message: String) : Exception()
+    class FailedChannelConnectionException : Exception()
 }

@@ -1,22 +1,25 @@
 package ai.mawdoo3.salma.utils.views
 
-import ai.mawdoo3.salma.BuildConfig
 import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.data.TtsItem
+import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.databinding.ChatBarLayoutBinding
+import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.TTSStreamHelper
 import ai.mawdoo3.salma.utils.asr.GrpcConnector
 import ai.mawdoo3.salma.utils.asr.VoiceRecorder
-import ai.mawdoo3.salma.utils.makeGone
+import ai.mawdoo3.salma.utils.makeInvisible
 import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
-import android.media.MediaPlayer
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.afollestad.assent.Permission
 import com.afollestad.assent.isAllGranted
 import com.google.protobuf.ByteString
@@ -29,32 +32,43 @@ import kotlinx.coroutines.launch
 /**
  * created by Omar Qadomi on 3/17/21
  */
-class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
-    private lateinit var channel: ManagedChannel
+class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs),
+    GrpcConnector.ITranscriptionStream {
+    private var channel: ManagedChannel? = null
     lateinit var binding: ChatBarLayoutBinding
     private var actionStatus = ChatBarStatus.Nothing
     private var listener: ChatBarListener? = null
     private var sessionId: String = ""
     private var mVoiceRecorder: VoiceRecorder? = null
     private var cancelCurrentRecord: Boolean = false
-    private var audioList: ArrayList<String>? = null
+    private var audioList: ArrayList<TtsItem>? = null
+    private var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
 
     interface ChatBarListener {
         fun sendMessage(messageText: String)
         fun requestMicPermission()
+        fun showError(connectionFailedError: Int)
     }
 
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    init {
         init(context)
     }
 
     private fun init(context: Context?) {
         context?.let {
-            channel = GrpcConnector.connect(it)
-            GrpcConnector.registerVoiceRecognitionListener(this)
-            val mVoiceCallback: VoiceRecorder.Callback = getVoiceRecorderCallbacks(channel)
-            mVoiceRecorder = VoiceRecorder(mVoiceCallback)
+            try {
+                channel = GrpcConnector.connect(it)
+                GrpcConnector.registerVoiceRecognitionListener(this)
+                channel?.let { channel ->
+                    val mVoiceCallback: VoiceRecorder.Callback = getVoiceRecorderCallbacks(channel)
+                    mVoiceRecorder = VoiceRecorder(mVoiceCallback)
+                    GrpcConnector.startVoiceRecognition(channel)
+                }
+            } catch (e: GrpcConnector.FailedChannelConnectionException) {
+                Log.d("failed", "connection failed")
+            }
+
         }
         val inflater = LayoutInflater.from(context)
         binding = ChatBarLayoutBinding.inflate(inflater)
@@ -65,52 +79,60 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
                     playAudio(it[0])
                     it.removeAt(0)
                 } else {
-                    stopListening()
+                    resetLayoutState()
                 }
 
             }
         }
-        binding.imgAction.setOnClickListener {
-            if (actionStatus == ChatBarStatus.Listening
-                || actionStatus == ChatBarStatus.Speaking
-            ) {
-                cancelCurrentRecord = true
-                stopListening()
-            } else if (actionStatus == ChatBarStatus.PlayingAudio) {
-                TTSStreamHelper.getInstance(this.context).stopStream()
-                audioList?.clear()
-                stopListening()
-            } else if (binding.etMessage.text.isNullOrEmpty()) {
+
+        binding.speakLayout.aviSpeaking.setOnClickListener {
+            mVoiceRecorder?.stop()
+            resetLayoutState()
+            startNewGrpcSession()
+        }
+
+        binding.audioLayout.imgMute.setOnClickListener {
+            resetLayoutState()
+        }
+        binding.inputLayout.imgAction.setOnClickListener {
+            if (binding.inputLayout.etMessage.text.isNullOrEmpty()) {
                 checkPermissionAndStartListening()
             } else {
                 sendMessage()
             }
         }
-        binding.aviListening.setOnClickListener {
-            stopListening()
+        binding.listenLayout.root.setOnClickListener {
+            resetLayoutState()
+            mVoiceRecorder?.stop()
         }
-        binding.etMessage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        binding.inputLayout.etMessage.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
+            } else {
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
             }
+        }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) {
-                    binding.imgAction.setImageResource(R.drawable.ic_microphone)
-                } else {
-                    binding.imgAction.setImageResource(R.drawable.ic_send)
-                }
-            }
-
-        })
     }
 
-    fun playAudioList(list: List<String>) {
+    fun setChatBarType(chatBarType: ChatBarType) {
+        this.chatBarType = chatBarType
+        if (chatBarType == ChatBarType.AUDIO) {
+            binding.inputLayout.etMessage.makeInvisible()
+        } else {
+            Log.d("", "")
+        }
+
+    }
+
+    fun playAudioList(list: List<TtsItem>) {
         audioList = ArrayList(list)
-        playAudio(audioList!![0])
-        this.audioList!!.removeAt(0)
+        if (!audioList.isNullOrEmpty()) {
+            playAudio(audioList!![0])
+            this.audioList!!.removeAt(0)
+        } else {
+            Log.d("", "")
+        }
     }
 
     fun setActionsListener(listener: ChatBarListener) {
@@ -118,15 +140,18 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     }
 
     private fun sendMessage() {
-        listener?.sendMessage(binding.etMessage.text.toString())
-        binding.etMessage.text?.clear()
+        if (binding.inputLayout.etMessage.text?.trim()?.isNotEmpty() == true) {
+            listener?.sendMessage(binding.inputLayout.etMessage.text.toString())
+            binding.inputLayout.etMessage.text?.clear()
+        } else {
+            Log.d("", "")
+        }
     }
 
     private fun sendGRPCMessage(text: String) {
         CoroutineScope(Dispatchers.Main).launch {
+            Log.d("GRPC", "Send message ->" + text)
             listener?.sendMessage(text)
-            binding.tvGrpcText.text = ""
-            binding.tvGrpcText.makeGone()
         }
     }
 
@@ -138,92 +163,63 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         } else {
             listener?.requestMicPermission()
         }
-//        // Requests one or more permissions, sending the result to a callback
-//        (this.context as AppCompatActivity).askForPermissions(Permission.RECORD_AUDIO) { result ->
-//            // Check the result, see the Using Results section
-//            // Returns GRANTED, DENIED, or PERMANENTLY_DENIED
-//            when (result[Permission.RECORD_AUDIO]) {
-//                GrantResult.GRANTED -> {
-//                    startListening()
-//                }
-//                GrantResult.DENIED -> {
-//                    Snackbar.make(
-//                        this@ChatBarView,
-//                        context!!.getString(R.string.audio_permission_denied_message),
-//                        Snackbar.LENGTH_SHORT
-//                    ).show()
-//                }
-//                GrantResult.PERMANENTLY_DENIED -> {
-//                    AppUtils.showSettingsDialog(
-//                        this@ChatBarView.context,
-//                        R.string.audio_permission_denied_message
-//                    )
-//                }
-//            }
-//        }
     }
 
     private fun startSpeaking() {
-        Log.d("GRPC", "begin of start speaking")
         actionStatus = ChatBarStatus.Speaking
         CoroutineScope(Dispatchers.Main).launch {
-            binding.aviListening.makeGone()
-            binding.aviSpeaking.makeVisible()
-            binding.imgAction.makeVisible()
-            binding.imgAction.setImageResource(R.drawable.ic_delete)
-            binding.etMessage.makeGone()
-            binding.tvSpeak.makeGone()
-            binding.tvGrpcText.text = ""
-            binding.tvGrpcText.makeVisible()
+            binding.inputLayout.root.makeInvisible()
+            binding.listenLayout.root.makeInvisible()
+            binding.audioLayout.root.makeInvisible()
+            binding.speakLayout.root.makeVisible()
         }
     }
 
     fun startListening() {
-        Log.d("GRPC", "begin of start Listening")
-        CoroutineScope(Dispatchers.Main).launch {
-            actionStatus = ChatBarStatus.Listening
-            var mediaPlayer = MediaPlayer.create(context, R.raw.ring)
-            mediaPlayer.start() // no need to call prepare(); create() does that for you
-            binding.aviListening.makeVisible()
-            binding.aviSpeaking.makeGone()
-            binding.imgAction.makeGone()
-            binding.etMessage.makeGone()
-            binding.tvSpeak.makeVisible()
-            binding.tvGrpcText.makeGone()
+        if (channel != null) {
+            CoroutineScope(Dispatchers.Main).launch {
+                mVoiceRecorder?.updateHearingStatus(true)
+                actionStatus = ChatBarStatus.Listening
+                binding.inputLayout.root.makeInvisible()
+                binding.listenLayout.root.makeVisible()
+                binding.audioLayout.root.makeInvisible()
+                binding.speakLayout.root.makeInvisible()
+                mVoiceRecorder?.start()
+            }
+        } else {
+            Log.d("GRPC", "channel not initialized")
+            listener?.showError(R.string.connection_failed_error)
         }
-        GrpcConnector.startVoiceRecognition(channel)
     }
 
-    private fun stopListening() {
-        Log.d("GRPC", "begin of Stop Listening")
+    private fun playAudio(ttsItem: TtsItem) {
+        TTSStreamHelper.getInstance(this.context).startStreaming(ttsItem.ttsId, ttsItem.isDynamic)
+        CoroutineScope(Dispatchers.Main).launch {
+            mVoiceRecorder?.stop()
+            actionStatus = ChatBarStatus.PlayingAudio
+            binding.inputLayout.root.makeInvisible()
+            binding.listenLayout.root.makeInvisible()
+            binding.audioLayout.root.makeVisible()
+            binding.speakLayout.root.makeInvisible()
+        }
+    }
+
+    fun resetLayoutState() {
         CoroutineScope(Dispatchers.Main).launch {
             actionStatus = ChatBarStatus.Nothing
-            binding.aviListening.makeGone()
-            binding.aviSpeaking.makeGone()
-            binding.tvSpeak.makeGone()
-            binding.imgAction.setImageResource(R.drawable.ic_microphone)
-            binding.imgAction.makeVisible()
-            binding.etMessage.makeVisible()
-            binding.tvGrpcText.makeGone()
-            Log.d("GRPC", "end of Stop Listening")
+            binding.inputLayout.root.makeVisible()
+            binding.listenLayout.root.makeInvisible()
+            binding.audioLayout.root.makeInvisible()
+            binding.speakLayout.root.makeInvisible()
+            binding.speakLayout.tvGrpcText.text = ""
         }
-        mVoiceRecorder?.stop()
+        audioList?.clear()
+        TTSStreamHelper.getInstance(this.context).stopStream()
     }
 
-    private fun playAudio(ttsID: String) {
-        mVoiceRecorder?.stop()
-        val url = String.format(BuildConfig.TTS_URL, ttsID)
-        TTSStreamHelper.getInstance(this.context).startStreaming(url)
-        CoroutineScope(Dispatchers.Main).launch {
-            actionStatus = ChatBarStatus.PlayingAudio
-            binding.aviListening.makeGone()
-            binding.aviSpeaking.makeVisible()
-            binding.imgAction.makeVisible()
-            binding.imgAction.setImageResource(R.drawable.ic_volume_mute)
-            binding.etMessage.makeGone()
-            binding.tvSpeak.makeGone()
-            binding.tvGrpcText.makeGone()
-        }
+    private fun startNewGrpcSession() {
+        Log.d("GRPC", "Start initialize new session")
+        GrpcConnector.startVoiceRecognition(channel!!)
     }
 
 
@@ -231,8 +227,8 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
         binding.root.layout(
             0,
             0,
-            binding.root.getMeasuredWidth(),
-            binding.root.getMeasuredHeight()
+            binding.root.measuredWidth,
+            binding.root.measuredHeight
         );
 
     }
@@ -240,44 +236,59 @@ class ChatBarView : FrameLayout, GrpcConnector.ITranscriptionStream {
     private fun getVoiceRecorderCallbacks(channel: ManagedChannel): VoiceRecorder.Callback {
         return object : VoiceRecorder.Callback() {
             override fun onVoiceStart() {
+                Log.d("GRPC", "onVoiceStart")
                 cancelCurrentRecord = false
-                startSpeaking()
-
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
+                Log.d("GRPC", "onVoice " + data)
                 data?.apply {
                     val stringByte =
-                        GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))?.build()
+                        GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
+                            ?.build()
                     GrpcConnector.sendVoice(channel, sessionId, stringByte)
                 }
-            }
-
-            override fun onVoiceEnd() {
-                Log.d("GRPC", "onVoiceEnd")
-                stopListening()
             }
         }
     }
 
     override fun onTranscriptionReceived(text: String) {
-        binding.tvGrpcText.text = text
+        startSpeaking()
+        binding.speakLayout.tvGrpcText.text = text
         Log.d("GRPC", "Received text ->" + text)
     }
 
     override fun onFinalTranscriptionReceived(text: String) {
         Log.d("GRPC", "Final text ->" + text)
+        mVoiceRecorder?.updateHearingStatus(false)
+        CoroutineScope(Dispatchers.IO).launch {
+            mVoiceRecorder?.stop()
+        }
         if (text.isNotEmpty() && !cancelCurrentRecord) {
             sendGRPCMessage(text)
         }
+        resetLayoutState()
+        startNewGrpcSession()
     }
 
     override fun onSessionIdReceived(sessionId: String) {
-        Log.d("sessionId", sessionId)
-
+        Log.d("GRPC", "sessionId ->" + sessionId)
         // start voice recorder
-
         this.sessionId = sessionId
-        mVoiceRecorder?.start()
+    }
+
+    fun showNumberKeyPad() {
+        binding.inputLayout.root.makeVisible()
+        binding.inputLayout.etMessage.inputType = InputType.TYPE_CLASS_NUMBER;
+        AppUtils.requestFocus(context, binding.inputLayout.etMessage)
+    }
+
+    fun setInputType(inputType: Int) {
+        binding.inputLayout.etMessage.inputType = inputType
+    }
+
+    fun destroyView() {
+        resetLayoutState()
+        mVoiceRecorder?.stop()
     }
 }

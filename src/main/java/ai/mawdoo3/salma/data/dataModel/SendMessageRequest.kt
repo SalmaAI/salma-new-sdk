@@ -13,5 +13,7 @@ data class SendMessageRequest(
     @Json(name = "message")
     var message: String,
     @Json(name = "secretKey")
-    var secretKey: String
+    var secretKey: String,
+    @Json(name = "mobileJWT")
+    var JWT: String
 )

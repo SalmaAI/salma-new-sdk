@@ -2,25 +2,30 @@ package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.R
-import ai.mawdoo3.salma.RateAnswerDialogListener
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
+import ai.mawdoo3.salma.data.dataModel.HeaderUiModel
 import ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
+import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
+import ai.mawdoo3.salma.utils.getNavigationResult
+import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.InputType
+import android.util.Log
+import android.view.*
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.GrantResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
@@ -30,12 +35,13 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
-    RateAnswerDialogListener {
+
+class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     private var phone = ""
     private val viewModel: ChatBotViewModel by viewModel()
@@ -53,21 +59,69 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        setHasOptionsMenu(true)
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
-        adapter.clear()
-        adapter.addItem(TextMessageUiModel("كيف يمكنني مساعدتك؟", MessageSender.Masa))
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
-        binding.tvWelcome.text = "صباح الخير, ${MasaSdkInstance.username}"
+        binding.recyclerView.itemAnimator = SlideInUpAnimator()
+        binding.recyclerView.itemAnimator?.apply {
+            addDuration = 400
+            removeDuration = 0
+            moveDuration = 0
+            changeDuration = 0
+        }
+        if (adapter.isEmpty()) {
+            adapter.addItem(
+                HeaderUiModel(
+                    sender = MessageSender.Masa,
+                    name = MasaSdkInstance.username
+                )
+            )
+            viewModel.sendMessage("", "القائمة الرئيسية", false)
+        } else {
+            Log.d("", "")
+        }
+        if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
+            binding.chatBarView.makeGone()
+        } else {
+            binding.chatBarView.setChatBarType(MasaSdkInstance.chatBarType)
+        }
         return attachView(binding.root)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        getNavigationResult("Message")?.observe(viewLifecycleOwner, {
+            it as String
+            if (it.isNotEmpty()) {
+                viewModel.sendMessage(it, it, true)
+            }
+        })
         viewModel.messageResponseList.observe(viewLifecycleOwner, {
+            Log.d("SendMessage", "Add Masa message")
+            Log.d("GRPC", "Message response")
             adapter.addItems(it)
             scrollToBottom()
+        })
+        viewModel.openLink.observe(viewLifecycleOwner, {
+            AppUtils.openLinkInTheBrowser(it, requireContext())
+        })
+        viewModel.openDialUp.observe(viewLifecycleOwner, {
+            AppUtils.makePhoneCall(it, requireContext())
+        })
+        viewModel.stopTTS.observe(viewLifecycleOwner, {
+            binding.chatBarView.resetLayoutState()
+        })
+        viewModel.messageSent.observe(viewLifecycleOwner, {
+            Log.d("SendMessage", "Add user message")
+            Log.d("GRPC", "Message sent")
+            binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
+            adapter.clear()
+            binding.recyclerView.postDelayed({
+                adapter.addItem(it)
+            }, 300)
+
         })
         viewModel.ttsAudioList.observe(viewLifecycleOwner, {
             binding.chatBarView.playAudioList(it)
@@ -78,17 +132,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         viewModel.rateAnswer.observe(viewLifecycleOwner, {
 
             findNavController().navigate(
-                ChatBotFragmentDirections.actionChatBotFragmentToRateAnswerDialogFragment(it, this)
+                ChatBotFragmentDirections.actionChatBotFragmentToRateAnswerDialogFragment(it)
             )
 
         })
         viewModel.getUserLocation.observe(viewLifecycleOwner, {
-            adapter.addItem(
-                TextMessageUiModel(
-                    getString(R.string.use_my_location),
-                    MessageSender.User
-                )
-            )
             scrollToBottom()
             checkLocationPermission()
         })
@@ -96,14 +144,20 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             if (it == Permission.ACCESS_FINE_LOCATION) {
                 if (!isAllGranted(Permission.ACCESS_FINE_LOCATION)) {
                     requestPermission(Permission.ACCESS_FINE_LOCATION)
+                } else {
+                    Log.d("", "")
                 }
             } else if (it == Permission.RECORD_AUDIO) {
                 if (!isAllGranted(Permission.RECORD_AUDIO)) {
                     requestPermission(Permission.RECORD_AUDIO)
+                } else {
+                    Log.d("", "")
                 }
             } else if (it == Permission.CALL_PHONE) {
                 if (!isAllGranted(Permission.CALL_PHONE)) {
                     requestPermission(Permission.CALL_PHONE)
+                } else {
+                    Log.d("", "")
                 }
             }
         })
@@ -130,18 +184,45 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
             )
             startActivity(intent)
         })
+        viewModel.openNumberKeyPad.observe(this, {
+            binding.chatBarView.showNumberKeyPad()
+        })
 
+    }
+
+    override fun onPause() {
+        binding.chatBarView.destroyView()
+        super.onPause()
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_analytics -> {
+
+            }
+            R.id.action_help -> {
+                AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
+            }
+            else -> {
+                Log.d("", "")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun makeCall() {
         val intent = Intent(Intent.ACTION_CALL)
-        intent.data = Uri.parse("tel:" + phone)
+        intent.data = Uri.parse("tel:$phone")
         startActivity(intent)
     }
 
-    override fun getViewModel(): BaseViewModel? {
-        return viewModel
-    }
+    override fun getViewModel(): BaseViewModel = viewModel
 
     /**
      * this fun will check has location permission then will proceed and request current location
@@ -163,7 +244,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                 )
                 adapter.loading(false)
                 scrollToBottom()
-            }, 1000)
+            }, 500)
         }
 
     }
@@ -187,22 +268,23 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                         if (task.isSuccessful) {
                             val result: Location = task.result
                             "Location (success): ${result.latitude}, ${result.longitude}"
-                            adapter.loading(false)
                             viewModel.sendMessage(
-                                result.latitude.toString() + "," + result.longitude.toString(),
-                                false
+                                text = "",
+                                payload = result.latitude.toString() + "," + result.longitude.toString(),
+                                showMessage = false
                             )
                         } else {
-                            adapter.loading(false)
                             adapter.addItem(
                                 TextMessageUiModel(
                                     getString(R.string.get_location_failed_message),
-                                    MessageSender.Masa
+                                    MessageSender.Masa,
+                                    time = AppUtils.getCurrentTime()
                                 )
                             )
-//                            showSnackbarMessage(getString(R.string.get_location_failed_message))
                         }
                     }
+                } else {
+                    Log.d("", "")
                 }
             }
         })
@@ -229,6 +311,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                         Permission.ACCESS_FINE_LOCATION -> {
                             requestCurrentLocation()
                         }
+                        else -> {
+                            Log.d("", "")
+                        }
                     }
                 }
                 GrantResult.PERMANENTLY_DENIED -> {
@@ -251,6 +336,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
                         message
                     )
                 }
+                else -> {
+                    Log.d("", "")
+                }
             }
         }
     }
@@ -259,7 +347,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
      * this method will be called when user click send button
      */
     override fun sendMessage(messageText: String) {
-        viewModel.sendMessage(messageText)
+        binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
+        AppUtils.hideKeyboard(activity, binding.chatBarView)
+        viewModel.sendMessage(text = messageText, payload = messageText)
     }
 
     override fun requestMicPermission() {
@@ -273,14 +363,17 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,
         scrollToBottom()
     }
 
-    private fun scrollToBottom() {
-        binding.appBar.setExpanded(false)
-        binding.recyclerView.postDelayed(Runnable {
-            binding.recyclerView.scrollToPosition(adapter.itemCount - 1)
+    override fun showError(connectionFailedError: Int) =
+        showSnackbarMessage(connectionFailedError)
+
+
+    private fun scrollToBottom() =
+        binding.recyclerView.postDelayed({
+            binding.recyclerView.layoutManager?.smoothScrollToPosition(
+                binding.recyclerView,
+                RecyclerView.State(), adapter.getListCount() - 1
+            )
         }, 500)
-    }
 
-    override fun rateAnswer(answerId: String, isGood: Boolean) {
 
-    }
 }

@@ -31,7 +31,7 @@
             android:fillType="evenOdd"
             android:pathData="M119,92C119,108.575 105.797,122 89.541,122C73.203,122 60,108.575 60,92C60,75.425 73.203,62 89.541,62C105.797,62 119,75.425 119,92Z" />
         <path
-            android:fillColor="#011B44"
+            android:fillColor="#011535"
             android:pathData="M187.957,117.722C288.201,152.06 378.421,132.029 411,117.722V174H0V117.722C58.542,85.626 149.698,104.348 187.957,117.722Z" />
         <path
             android:fillColor="#ffffff"

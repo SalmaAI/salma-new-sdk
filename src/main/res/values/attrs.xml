@@ -5,26 +5,48 @@
     <attr name="primaryColor" format="color" />
     <attr name="secondaryColor" format="color" />
     <attr name="accentColor" format="color" />
-    <attr name="pageBackgroundPrimaryColor" format="color" />
-    <attr name="pageBackgroundSecondaryColor" format="color" />
+    <attr name="pageBackgroundColor" format="color" />
+    <attr name="helpPageBackgroundColor" format="color" />
+    <attr name="bottomSheetBackgroundColor" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
     <attr name="outComingMessageBackgroundColor" format="color" />
     <attr name="inComingMessageBackgroundColor" format="color" />
+    <attr name="inComingMessageTextColor" format="color" />
+    <attr name="outComingMessageTextColor" format="color" />
     <attr name="cardButtonBackgroundColor" format="color" />
     <attr name="cardButtonTextColor" format="color" />
     <attr name="cardButtonIconColor" format="color" />
     <attr name="dialogBackgroundColor" format="color" />
+    <attr name="readMoreTextColor" format="color" />
+    <attr name="messageTimeTextColor" format="color" />
+    <attr name="currencyFieldBorderColor" format="color" />
+    <attr name="separatorColor" format="color" />
 
     <!-- Text filed colors-->
+    <attr name="chatTextFieldHintTextColor" format="color" />
     <attr name="textFieldHintTextColor" format="color" />
     <attr name="textFieldTextColor" format="color" />
     <attr name="textFieldBackgroundColor" format="color" />
     <attr name="textFieldCursorColor" format="color" />
+    <attr name="textFieldInActiveBorderColor" format="color" />
+    <attr name="textFieldActiveBorderColor" format="color" />
     <!---->
 
     <attr name="titleTextColor" format="color" />
     <attr name="subTitleTextColor" format="color" />
     <attr name="headerTextColor" format="color" />
+
+    <attr name="amount1TextColor" format="color" />
+    <attr name="amount2TextColor" format="color" />
+
+    <declare-styleable name="MasaAmountTextView">
+        <attr name="reduceAfterChar" format="string" />
+        <attr name="amountTextType" format="enum">
+            <enum name="amount_1" value="0" />
+            <enum name="amount_2" value="1" />
+
+        </attr>
+    </declare-styleable>
 
     <declare-styleable name="FlowLayout">
         <attr name="flFlow" format="boolean" />

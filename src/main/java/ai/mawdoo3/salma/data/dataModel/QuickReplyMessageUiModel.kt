@@ -7,7 +7,7 @@ import ai.mawdoo3.salma.data.enums.MessageSender
  */
 data class QuickReplyMessageUiModel(
     val title: String?,
-    val replies: List<MessageResponse.MessageContentResponse.QuickReplyElement>?,
+    val replies: List<MessageResponse.MessageContentResponse.Element>?,
     val messageSender: MessageSender
 ) :
     MessageUiModel {

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="message"
+            type="ai.mawdoo3.salma.data.dataModel.CurrencyMessageUiModel" />
+    </data>
+
+
+    <com.google.android.material.card.MaterialCardView
+
+        style="@style/Theme.Salma.CardView.InComingMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/medium_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@android:color/transparent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:paddingEnd="@dimen/small_margin"
+                android:text='@{message.fromValue +" "+ message.fromCurrency.description+" "+ @string/equals}'
+                android:textColor="?attr/titleTextColor"
+                android:textSize="@dimen/card_text_size"
+                app:fontFamily="@font/font_regular"
+                app:layout_constraintBottom_toTopOf="@+id/tvDetails"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="١ دينار أردني تساوي ١.٢٧ يورو" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:paddingEnd="@dimen/small_margin"
+                android:text="@{message.toValue+' '+message.toCurrency.description}"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="@dimen/header_text_size"
+                app:fontFamily="@font/font_extra_bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                tools:text="يورو 1.27 " />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fromAmountLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:background="@drawable/currency_tv_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDetails">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFromAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.fromValue}"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="@dimen/header_text_size"
+                    app:fontFamily="@font/font_extra_bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="320" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFromCurrencyCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.fromCurrency.code.toUpperCase()}"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="@dimen/card_text_size"
+                    app:fontFamily="@font/font_extra_bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="JOD" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFromCurrencyDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.fromCurrency.description}"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="@dimen/card_text_size"
+                    app:fontFamily="@font/font_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFromCurrencyCode"
+                    tools:text="دينار أردني" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/small_margin"
+                    android:visibility="gone"
+                    android:background="?attr/currencyFieldBorderColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvFromCurrencyDescription"
+                    app:layout_constraintEnd_toStartOf="@+id/tvFromCurrencyDescription"
+                    app:layout_constraintTop_toTopOf="@+id/tvFromCurrencyCode" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toAmountLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:background="@drawable/currency_tv_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fromAmountLayout">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvToAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.toValue}"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="@dimen/header_text_size"
+                    app:fontFamily="@font/font_extra_bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="320" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvToCurrencyCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.toCurrency.code.toUpperCase()}"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="@dimen/card_text_size"
+                    app:fontFamily="@font/font_extra_bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="JOD" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvToCurrencyDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:paddingEnd="@dimen/small_margin"
+                    android:text="@{message.toCurrency.description}"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="@dimen/card_text_size"
+                    app:fontFamily="@font/font_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvToCurrencyCode"
+                    tools:text="دينار أردني" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/small_margin"
+                    android:visibility="gone"
+                    android:background="?attr/currencyFieldBorderColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvToCurrencyDescription"
+                    app:layout_constraintEnd_toStartOf="@+id/tvToCurrencyDescription"
+                    app:layout_constraintTop_toTopOf="@+id/tvToCurrencyCode" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvExchangeRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:paddingEnd="@dimen/small_margin"
+                android:text='@{message.exchangeRate}'
+                android:textColor="?attr/titleTextColor"
+                android:textSize="@dimen/card_text_size"
+                app:fontFamily="@font/font_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toAmountLayout"
+                tools:text="١ دينار أردني تساوي ١.٢٧ يورو" />
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:background="?attr/currencyFieldBorderColor"
+                app:layout_constraintTop_toBottomOf="@+id/tvExchangeRate" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:drawableEnd="@drawable/ic_chatbot_open_link"
+                android:text="currencyconverterapi.com"
+                android:textAlignment="viewStart"
+                android:textColor="?attr/subTitleTextColor"
+                app:fontFamily="@font/font_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/separator" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

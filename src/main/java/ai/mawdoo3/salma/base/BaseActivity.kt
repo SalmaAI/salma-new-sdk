@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import org.koin.android.ext.android.inject
 
@@ -17,22 +18,29 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         theme.applyStyle(R.style.Theme_Banking_Masa, true)
-        currentLanguage = LocalizationHelper.getCurrentLocale(this)
+        //enable this if we want to support arabic/english localization in salma library
+//        currentLanguage = LocalizationHelper.getCurrentLocale(this)
+        currentLanguage = LocalizationHelper.LANG_ARABIC
         if (currentLanguage == LocalizationHelper.LANG_ARABIC) {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL;
         } else {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR;
         }
+
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_SECURE,
+//            WindowManager.LayoutParams.FLAG_SECURE);
+
         super.onCreate(savedInstanceState)
     }
 
 
     override fun onResume() {
         super.onResume()
-        val language = LocalizationHelper.getCurrentLocale(this)
-        if (currentLanguage != language) {
-            recreate()
-        }
+//        val language = LocalizationHelper.getCurrentLocale(this)
+//        if (currentLanguage != language) {
+//            recreate()
+//        }
     }
 
     override fun attachBaseContext(newBase: Context) {

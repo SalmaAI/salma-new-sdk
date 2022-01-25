@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="permission"
+            type="ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+
+    <com.google.android.material.card.MaterialCardView
+
+        style="@style/Theme.Salma.CardView.InComingMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/card_view_margin"
+        android:layout_marginTop="@dimen/card_view_margin"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin">
+
+            <TextView
+                android:id="@+id/tvText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="5dp"
+                android:text="@{permission.text}"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/btnSettings"
+                app:layout_constraintStart_toStartOf="@+id/btnSettings"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="أنا بحاجة للوصول إلى الموقع الخاص بك، لتزويدك بمواقع الفروع الأقرب إليك" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSettings"
+                style="@style/Theme.Salma.Button.CardButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_weight="1"
+                android:minWidth="200dp"
+                android:paddingStart="@dimen/medium_margin"
+                android:paddingEnd="@dimen/medium_margin"
+                android:singleLine="true"
+                android:text="@{permission.buttonTitle}"
+                app:icon="@drawable/ic_settings"
+                app:iconGravity="textStart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvText"
+                tools:text="أذونات الوصول إلى الموقع" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

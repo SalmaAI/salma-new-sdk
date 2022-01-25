@@ -2,11 +2,13 @@ package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.base.BaseViewModel
+import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.remote.RepoErrorResponse
 import ai.mawdoo3.salma.remote.RepoSuccessResponse
+import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.PhoneUtils
 import android.app.Application
 import android.util.Log
@@ -14,6 +16,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.afollestad.assent.Permission
 import com.hadilq.liveevent.LiveEvent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
@@ -21,124 +24,90 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
     val makeCall = LiveEvent<String>()
     val goToLocation = LiveEvent<String>()
-    val messageResponseList = MutableLiveData<MutableList<MessageUiModel>>()
+    val messageResponseList = LiveEvent<List<MessageUiModel>>()
+    val messageSent = LiveEvent<MessageUiModel>()
     val showLoader = MutableLiveData<Boolean>()
     val rateAnswer = LiveEvent<String>()
     val getUserLocation = LiveEvent<Boolean>()
-    val ttsAudioList = LiveEvent<List<String>>()
+    val openLink = LiveEvent<String>()
+    val openNumberKeyPad = LiveEvent<Boolean>()
+    val openDialUp = LiveEvent<String>()
+    val ttsAudioList = LiveEvent<List<TtsItem>>()
+    val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
 
-    fun sendMessage(text: String, showMessage: Boolean = true) {
-        showLoader.postValue(false)
-        messageResponseList.value = ArrayList()
+    /**
+     * text -> this value will be shown to user as message (required when showMessage=true)
+     * payload -> this value will be sent to server (won't show to user)
+     * showMessage -> this boolean determine whether to show sent message in list or just send it to server without show it to user
+     */
+    fun sendMessage(text: String?, payload: String, showMessage: Boolean = true) {
         if (showMessage) {
-            messageResponseList.value?.add(TextMessageUiModel(text, MessageSender.User))
+            messageSent.value =
+                TextMessageUiModel(
+                    text, MessageSender.User,
+                    time = AppUtils.getCurrentTime()
+                )
+
         }
+        stopTTS.value = true
         viewModelScope.launch {
-            showLoader.postValue(true)
+            showLoader.value = true
+            Log.d("SendMessage", "delay request 1000 millisecond")
+            delay(1000)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     PhoneUtils.getDeviceId(applicationContext),
-                    message = text,
-                    MasaSdkInstance.key
+                    message = payload,
+                    MasaSdkInstance.key,
+                    MasaSdkInstance.jwtToken
                 )
             )
 
             when (result) {
                 is RepoSuccessResponse -> {
+                    Log.d("SendMessage", "Response success")
+                    showLoader.postValue(false)
+
                     val responseMessages = ArrayList<MessageUiModel>()
                     val locationMessages = ArrayList<LocationMessageUiModel>()
-                    val messageAudiolist = ArrayList<String>()
+                    val messageAudiolist = ArrayList<TtsItem>()
                     val messagesResponse = result.body
-                    Log.d("resultoo", messagesResponse.toString())
                     for (message in messagesResponse.messages) {
                         message.Factory().create()?.let {
                             if (!message.ttsId.isNullOrEmpty()) {
-                                messageAudiolist.add(message.ttsId)
+                                messageAudiolist.add(TtsItem(message.ttsId, message.ttsDynamic))
                             }
-                            if (it is LocationMessageUiModel)
-                                locationMessages.add(it)
-                            else {
-                                responseMessages.add(it)
+                            it.forEach { messageUiModel ->
+                                //Aggregation all messages of LocationMessageUiModel in one list
+                                if (messageUiModel is LocationMessageUiModel) {
+                                    locationMessages.add(messageUiModel)
+                                } else if (messageUiModel is DeeplinkMessageUiModel) {
+                                    openLink.value = messageUiModel.url
+                                } else if (messageUiModel is KeyPadUiModel) {
+                                    openNumberKeyPad.value = true
+                                } else {
+                                    responseMessages.add(messageUiModel)
+                                }
                             }
+
                         }
                     }
-                    if (locationMessages.isNotEmpty()) {
+                    if (locationMessages.isNotEmpty()) {//add locations messages to messages list
                         val locationsListUiModel = LocationsListUiModel(locationMessages)
                         responseMessages.add(locationsListUiModel)
                     }
-                    messageResponseList.postValue(responseMessages)
+                    //send response to fragment
+                    messageResponseList.value = responseMessages
                     if (messageAudiolist.size > 0) {
-                        ttsAudioList.postValue(messageAudiolist)
+                        ttsAudioList.value = messageAudiolist
                     }
-                    showLoader.postValue(false)
 
                 }
                 is RepoErrorResponse -> {
-
-                    Log.d("resultoo", result.error.toString())
-
-//                    val responseMessages = ArrayList<MessageUiModel>()
-//                    val items =
-//                        ArrayList<MessageResponse.MessageContentResponse.QuickReplyElement>()
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "ما هي آخر عمليات شراء قمت بها؟",
-//                            "ما هي آخر عمليات شراء قمت بها؟",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "ما مزايا القرض السكني؟",
-//                            "ما مزايا القرض السكني؟",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "أوقات عمل مركز خدمة العملاء",
-//                            "أوقات عمل مركز خدمة العملاء",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "القروض",
-//                            "القروض",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "البطاقات",
-//                            "البطاقات",
-//                            null
-//                        )
-//                    )
-//                    items.add(
-//                        MessageResponse.MessageContentResponse.QuickReplyElement(
-//                            "التأمين",
-//                            "التأمين",
-//                            null
-//                        )
-//                    )
-//                    val quickReplies = QuickReplyMessageUiModel(
-//                        "بعض ما يمكنني مساعدتك به",
-//                        items,
-//                        MessageSender.Masa
-//                    )
-//                    val audioList = ArrayList<String>()
-//                    audioList.add("20210323115331.2e76069c-0bb1-4171-9127-515dc196f759")
-//                    audioList.add("20210323115332.88635623-b883-4d11-8054-65ac5354ea2c")
-//                    audioList.add("20210323115332.1d3364f3-9f89-4da6-83d6-3842be25e2f4")
-//                    audioList.add("20210323115333.75232e8b-a89e-49af-afc8-fa92660ed3f3")
-//                    audioList.add("20210323115333.5c7ee0df-94ab-468f-83a3-43e3c7faa3a8")
-//                    ttsAudioList.postValue(audioList)
-//                    responseMessages.add(quickReplies)
-//                    messageResponseList.postValue(responseMessages)
-                    showLoader.postValue(false)
-                    showErrorMessage.postValue("Something went wrong, please try again")
+                    Log.d("SendMessage", "Response error")
+                    showLoader.value = false
+                    onLoadFailure(result.error, true)
                 }
                 else -> {
 

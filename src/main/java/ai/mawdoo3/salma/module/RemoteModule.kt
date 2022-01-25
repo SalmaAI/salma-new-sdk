@@ -1,7 +1,10 @@
-package ai.mawdoo3.salma.remote
+package ai.mawdoo3.salma.module
 
 
 import ai.mawdoo3.salma.BuildConfig
+import ai.mawdoo3.salma.remote.AppAuthenticator
+import ai.mawdoo3.salma.remote.AuthorizationInterceptor
+import ai.mawdoo3.salma.remote.MasaApiEndpoints
 import ai.mawdoo3.salma.utils.DefaultIfNullFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -34,9 +37,9 @@ val remoteModule = module {
     //create OkHttpClient
     single(named("masaOkhttpClient")) {
         val builder = OkHttpClient.Builder()
-//            .readTimeout(30, TimeUnit.SECONDS)
-//            .writeTimeout(30, TimeUnit.SECONDS)
-//            .connectTimeout(30, TimeUnit.SECONDS)
+//            .readTimeout(20, TimeUnit.SECONDS)
+//            .writeTimeout(20, TimeUnit.SECONDS)
+//            .connectTimeout(20, TimeUnit.SECONDS)
 
         builder.addInterceptor(get<AuthorizationInterceptor>(named("masaAuthInterceptor")))
         builder.authenticator(get<AppAuthenticator>(named("masaAuth")))
@@ -52,7 +55,7 @@ val remoteModule = module {
     //Create retrofit builder
     single<Retrofit>(named("masaRetrofit")) {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BuildConfig.BOT_API_BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(get<Moshi>(named("masaMoshi"))))
             .client(get<OkHttpClient>(named("masaOkhttpClient")))
             .build()

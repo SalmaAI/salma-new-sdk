@@ -3,6 +3,7 @@ package ai.mawdoo3.salma.utils.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -20,14 +21,14 @@ public class FlowLayout extends ViewGroup {
      * container and the number of the child views, so that the child views are placed evenly in
      * the container.
      */
-    public static final int SPACING_AUTO = -65536;
+    private static final int SPACING_AUTO = -65536;
     /**
      * Special value for the horizontal spacing of the child views in the last row
      * SPACING_ALIGN means that the horizontal spacing of the child views in the last row keeps
      * the same with the spacing used in the row above. If there is only one row, this value is
      * ignored and the spacing will be calculated according to childSpacing.
      */
-    public static final int SPACING_ALIGN = -65537;
+    private static final int SPACING_ALIGN = -65537;
     private static final String LOG_TAG = FlowLayout.class.getSimpleName();
     private static final int SPACING_UNDEFINED = -65538;
 
@@ -37,27 +38,25 @@ public class FlowLayout extends ViewGroup {
 
     private static final boolean DEFAULT_FLOW = true;
     private static final int DEFAULT_CHILD_SPACING = 0;
-    private static final int DEFAULT_CHILD_SPACING_FOR_LAST_ROW = SPACING_UNDEFINED;
     private static final float DEFAULT_ROW_SPACING = 0;
     private static final boolean DEFAULT_RTL = false;
     private static final int DEFAULT_MAX_ROWS = Integer.MAX_VALUE;
 
-    private boolean mFlow = DEFAULT_FLOW;
-    private int mChildSpacing = DEFAULT_CHILD_SPACING;
-    private int mMinChildSpacing = DEFAULT_CHILD_SPACING;
-    private int mChildSpacingForLastRow = DEFAULT_CHILD_SPACING_FOR_LAST_ROW;
-    private float mRowSpacing = DEFAULT_ROW_SPACING;
+    private final boolean mFlow;
+    private final boolean mRtl;
+    private final int mMaxRows;
+    private final int mRowVerticalGravity;
+    private final List<Float> mHorizontalSpacingForRow = new ArrayList<>();
     private float mAdjustedRowSpacing = DEFAULT_ROW_SPACING;
-    private boolean mRtl = DEFAULT_RTL;
-    private int mMaxRows = DEFAULT_MAX_ROWS;
-    private int mGravity = UNSPECIFIED_GRAVITY;
-    private int mRowVerticalGravity = ROW_VERTICAL_GRAVITY_AUTO;
+    private final List<Integer> mHeightForRow = new ArrayList<>();
+    private final List<Integer> mWidthForRow = new ArrayList<>();
+    private final List<Integer> mChildNumForRow = new ArrayList<>();
+    private int mChildSpacing;
     private int mExactMeasuredHeight;
-
-    private List<Float> mHorizontalSpacingForRow = new ArrayList<>();
-    private List<Integer> mHeightForRow = new ArrayList<>();
-    private List<Integer> mWidthForRow = new ArrayList<>();
-    private List<Integer> mChildNumForRow = new ArrayList<>();
+    private int mMinChildSpacing;
+    private int mChildSpacingForLastRow;
+    private float mRowSpacing;
+    private int mGravity;
 
     public FlowLayout(Context context) {
         this(context, null);
@@ -324,12 +323,13 @@ public class FlowLayout extends ViewGroup {
         switch (horizontalGravity) {
             case Gravity.CENTER_HORIZONTAL:
                 offset = (parentWidth - horizontalPadding - mWidthForRow.get(row)) / 2;
-                break;
+                Log.d("", String.valueOf(offset));
             case Gravity.RIGHT:
+            case Gravity.END:
                 offset = parentWidth - horizontalPadding - mWidthForRow.get(row);
-                break;
+                Log.d("", String.valueOf(offset));
             default:
-                break;
+                Log.d("", "default");
         }
         return offset;
     }
@@ -344,140 +344,12 @@ public class FlowLayout extends ViewGroup {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
-    /**
-     * Returns whether to allow child views flow to next row when there is no enough space.
-     *
-     * @return Whether to flow child views to next row when there is no enough space.
-     */
-    public boolean isFlow() {
-        return mFlow;
-    }
 
-    /**
-     * Sets whether to allow child views flow to next row when there is no enough space.
-     *
-     * @param flow true to allow flow. false to restrict all child views in one row.
-     */
-    public void setFlow(boolean flow) {
-        mFlow = flow;
-        requestLayout();
-    }
-
-    /**
-     * Returns the horizontal spacing between child views.
-     *
-     * @return The spacing, either {@link FlowLayout#SPACING_AUTO}, or a fixed size in pixels.
-     */
-    public int getChildSpacing() {
-        return mChildSpacing;
-    }
-
-    /**
-     * Sets the horizontal spacing between child views.
-     *
-     * @param childSpacing The spacing, either {@link FlowLayout#SPACING_AUTO}, or a fixed size in
-     *                     pixels.
-     */
-    public void setChildSpacing(int childSpacing) {
-        mChildSpacing = childSpacing;
-        requestLayout();
-    }
-
-    /**
-     * Returns the horizontal spacing between child views of the last row.
-     *
-     * @return The spacing, either {@link FlowLayout#SPACING_AUTO},
-     * {@link FlowLayout#SPACING_ALIGN}, or a fixed size in pixels
-     */
-    public int getChildSpacingForLastRow() {
-        return mChildSpacingForLastRow;
-    }
-
-    /**
-     * Sets the horizontal spacing between child views of the last row.
-     *
-     * @param childSpacingForLastRow The spacing, either {@link FlowLayout#SPACING_AUTO},
-     *                               {@link FlowLayout#SPACING_ALIGN}, or a fixed size in pixels
-     */
-    public void setChildSpacingForLastRow(int childSpacingForLastRow) {
-        mChildSpacingForLastRow = childSpacingForLastRow;
-        requestLayout();
-    }
-
-    /**
-     * Returns the vertical spacing between rows.
-     *
-     * @return The spacing, either {@link FlowLayout#SPACING_AUTO}, or a fixed size in pixels.
-     */
-    public float getRowSpacing() {
-        return mRowSpacing;
-    }
-
-    /**
-     * Sets the vertical spacing between rows in pixels. Use SPACING_AUTO to evenly place all rows
-     * in vertical.
-     *
-     * @param rowSpacing The spacing, either {@link FlowLayout#SPACING_AUTO}, or a fixed size in
-     *                   pixels.
-     */
-    public void setRowSpacing(float rowSpacing) {
-        mRowSpacing = rowSpacing;
-        requestLayout();
-    }
-
-    /**
-     * Returns the maximum number of rows of the FlowLayout.
-     *
-     * @return The maximum number of rows.
-     */
-    public int getMaxRows() {
-        return mMaxRows;
-    }
-
-    /**
-     * Sets the height of the FlowLayout to be at most maxRows tall.
-     *
-     * @param maxRows The maximum number of rows.
-     */
-    public void setMaxRows(int maxRows) {
-        mMaxRows = maxRows;
-        requestLayout();
-    }
-
-    public void setGravity(int gravity) {
+    private void setGravity(int gravity) {
         if (mGravity != gravity) {
             mGravity = gravity;
             requestLayout();
         }
-    }
-
-    public void setRowVerticalGravity(int rowVerticalGravity) {
-        if (mRowVerticalGravity != rowVerticalGravity) {
-            mRowVerticalGravity = rowVerticalGravity;
-            requestLayout();
-        }
-    }
-
-    public boolean isRtl() {
-        return mRtl;
-    }
-
-    public void setRtl(boolean rtl) {
-        mRtl = rtl;
-        requestLayout();
-    }
-
-    public int getMinChildSpacing() {
-        return mMinChildSpacing;
-    }
-
-    public void setMinChildSpacing(int minChildSpacing) {
-        this.mMinChildSpacing = minChildSpacing;
-        requestLayout();
-    }
-
-    public int getRowsCount() {
-        return mChildNumForRow.size();
     }
 
     private float getSpacingForRow(int spacingAttribute, int rowSize, int usedSize, int childNum) {
