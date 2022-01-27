@@ -41,5 +41,13 @@
     <string name="about_app_title">عن ماسة</string>
     <string name="help_hello_title">مرحباً ! أنا ماسة،</string>
     <string name="help_subtitle">مساعدتك الرقمية.\n بعض ما يمكنني مساعدتك به:</string>
+    <string name="credit_mc_resolving_classic">ريفولفينغ كلاسيك</string>
+    <string name="credit_mc_resolving_titanium">ريفولفينغ تيتانيوم</string>
+    <string name="credit_mc_resolving_platinum">ريفولفينغ بلاتينيوم</string>
+    <string name="credit_mc_resolving_world">ريفولفينغ وورد</string>
+    <string name="credit_mc_resolving_world_elite">ريفولفينغ وورد اليت</string>
+    <string name="credit_rjmc_resolving_platinum">ريفولفينغ بلاتينيوم</string>
+    <string name="credit_rjmc_resolving_world">ريفولفينغ وورد</string>
+    <string name="credit_rjmc_resolving_world_elite">ريفولفينغ وورد اليت</string>
 
 </resources>

@@ -38,10 +38,10 @@ val remoteModule = module {
     //create OkHttpClient
     single(named("masaOkhttpClient")) {
         val builder = OkHttpClient.Builder()
-            .readTimeout(90, TimeUnit.SECONDS)
-            .writeTimeout(90, TimeUnit.SECONDS)
-            .connectTimeout(90, TimeUnit.SECONDS)
-            .callTimeout(90, TimeUnit.SECONDS)
+            .readTimeout(6, TimeUnit.MINUTES)
+            .writeTimeout(6, TimeUnit.MINUTES)
+            .connectTimeout(6, TimeUnit.MINUTES)
+            .callTimeout(6, TimeUnit.MINUTES)
 
         builder.addInterceptor(get<AuthorizationInterceptor>(named("masaAuthInterceptor")))
         builder.authenticator(get<AppAuthenticator>(named("masaAuth")))
