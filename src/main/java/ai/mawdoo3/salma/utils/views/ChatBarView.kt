@@ -19,6 +19,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.afollestad.assent.Permission
 import com.afollestad.assent.isAllGranted
 import com.google.protobuf.ByteString
@@ -65,6 +66,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
                     GrpcConnector.startVoiceRecognition(channel)
                 }
             } catch (e: GrpcConnector.FailedChannelConnectionException) {
+                Log.d("failed", "connection failed")
             }
 
         }
@@ -103,22 +105,13 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             resetLayoutState()
             mVoiceRecorder?.stop()
         }
-        binding.inputLayout.etMessage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        binding.inputLayout.etMessage.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
+            } else {
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) {
-                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
-                } else {
-                    binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
-                }
-            }
-
-        })
+        }
 
     }
 
@@ -126,6 +119,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         this.chatBarType = chatBarType
         if (chatBarType == ChatBarType.AUDIO) {
             binding.inputLayout.etMessage.makeInvisible()
+        } else {
+            Log.d("", "")
         }
 
     }
@@ -135,6 +130,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         if (!audioList.isNullOrEmpty()) {
             playAudio(audioList!![0])
             this.audioList!!.removeAt(0)
+        } else {
+            Log.d("", "")
         }
     }
 
@@ -146,6 +143,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         if (binding.inputLayout.etMessage.text?.trim()?.isNotEmpty() == true) {
             listener?.sendMessage(binding.inputLayout.etMessage.text.toString())
             binding.inputLayout.etMessage.text?.clear()
+        } else {
+            Log.d("", "")
         }
     }
 
@@ -164,29 +163,6 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         } else {
             listener?.requestMicPermission()
         }
-//        // Requests one or more permissions, sending the result to a callback
-//        (this.context as AppCompatActivity).askForPermissions(Permission.RECORD_AUDIO) { result ->
-//            // Check the result, see the Using Results section
-//            // Returns GRANTED, DENIED, or PERMANENTLY_DENIED
-//            when (result[Permission.RECORD_AUDIO]) {
-//                GrantResult.GRANTED -> {
-//                    startListening()
-//                }
-//                GrantResult.DENIED -> {
-//                    Snackbar.make(
-//                        this@ChatBarView,
-//                        context!!.getString(R.string.audio_permission_denied_message),
-//                        Snackbar.LENGTH_SHORT
-//                    ).show()
-//                }
-//                GrantResult.PERMANENTLY_DENIED -> {
-//                    AppUtils.showSettingsDialog(
-//                        this@ChatBarView.context,
-//                        R.string.audio_permission_denied_message
-//                    )
-//                }
-//            }
-//        }
     }
 
     private fun startSpeaking() {
@@ -272,11 +248,6 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
                             ?.build()
                     GrpcConnector.sendVoice(channel, sessionId, stringByte)
                 }
-
-            }
-
-            override fun onVoiceEnd() {
-                Log.d("GRPC", "onVoiceEnd")
             }
         }
     }

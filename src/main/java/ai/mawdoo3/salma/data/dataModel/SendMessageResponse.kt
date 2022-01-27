@@ -60,7 +60,7 @@ data class MessageResponse(
     }
 
     inner class Factory {
-        fun create(): List<MessageUiModel>? {
+        fun create(): List<MessageUiModel> {
             val messageType = MessageType.from(type)
             val messages = ArrayList<MessageUiModel>()
             if (messageType == MessageType.Text || messageType == MessageType.UnansweredText) {
@@ -269,6 +269,7 @@ data class MessageResponse(
                             currencyMessageUiModel.toValue = property.value.toString()
                         }
 
+                        else -> {}
                     }
                 }
                 messageContent.text?.let { exchangeRate ->

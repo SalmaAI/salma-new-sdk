@@ -2,18 +2,15 @@ package ai.mawdoo3.salma.utils;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -25,16 +22,16 @@ import ai.mawdoo3.salma.BuildConfig;
  * email : a3adel@hotmail.com
  */
 public class TTSStreamHelper {
-    ExoPlayer player;
-    boolean playWhenReady;
-    int currentWindow;
-    long playbackPosition;
+    private static TTSStreamHelper instance;
+    private static WeakReference<Context> context;
+    private ExoPlayer player;
+    private boolean playWhenReady;
 
-    private MediaPlayer mediaPlayer;
+    private final MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
-    static TTSStreamHelper instance;
-    static WeakReference<Context> context;
-    ArrayList<TTSStreamCompletionListener> streamListeners;
+    private int currentWindow;
+    private long playbackPosition;
+    private ArrayList<TTSStreamCompletionListener> streamListeners;
 
     public void setTtsStreamCompletionListener(TTSStreamCompletionListener ttsStreamCompletionListener) {
         streamListeners.add(ttsStreamCompletionListener);
@@ -56,25 +53,18 @@ public class TTSStreamHelper {
 
     }
 
-    public boolean isPlaying() {
-        return isPlaying;
-    }
-
     public void stopStream() {
         isPlaying = false;
         releasePlayer();
     }
 
     public void startStreaming(String ttsId, boolean ttsDynamic) {
-        if (isPlaying)
+        if (isPlaying) {
             stopStream();
+        }
         isPlaying = true;
 
         initializePlayer(ttsId, ttsDynamic);
-    }
-
-    public boolean isMediaPlayerPlaying() {
-        return isPlaying;
     }
 
 
@@ -103,37 +93,28 @@ public class TTSStreamHelper {
             Log.d("TTS", BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams);
             player.addListener(new Player.EventListener() {
                 @Override
-                public void onPlayerError(ExoPlaybackException error) {
-                    for (int i = 0; i < streamListeners.size(); i++)
+                public void onPlayerError(@NonNull ExoPlaybackException error) {
+                    for (int i = 0; i < streamListeners.size(); i++) {
                         streamListeners.get(i).onCompletedListener();
+                    }
                 }
 
                 @Override
                 public void onPlaybackStateChanged(int state) {
                     if (state == Player.STATE_ENDED) {
-                        for (int i = 0; i < streamListeners.size(); i++)
+                        for (int i = 0; i < streamListeners.size(); i++) {
                             streamListeners.get(i).onCompletedListener();
+                        }
                     }
                 }
             });
 
 
-
-
-        } else
-            for (int i = 0; i < streamListeners.size(); i++)
+        } else {
+            for (int i = 0; i < streamListeners.size(); i++) {
                 streamListeners.get(i).onCompletedListener();
-    }
-
-    private MediaSource buildMediaSource(Uri uri) {
-        DataSource.Factory source = () -> {
-            DefaultHttpDataSource source1 = new DefaultHttpDataSource("exoplayer-codelab");
-            source1.setRequestProperty("x-api-key", "ssBIeKRaH615KFMAERPoF3GGYMk0CdjL8f3FHRmj");
-            source1.setRequestProperty("Accept", "audio/mp3");
-            return source1;
-        };
-        MediaSource mediaSource = new ExtractorMediaSource.Factory(source).createMediaSource(uri);
-        return mediaSource;
+            }
+        }
     }
 
     private void releasePlayer() {

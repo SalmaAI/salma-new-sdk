@@ -36,14 +36,15 @@ import io.grpc.okhttp.OkHttpChannelBuilder;
  * A helper class to create a OkHttp based channel.
  */
 public class ChannelBuilder {
-    public static ManagedChannel buildTls(String host, int port, InputStream caStream)
-    {
+
+    private static final int maxByteSize = 16 * 1024 * 1024;
+
+    public static ManagedChannel buildTls(String host, int port, InputStream caStream) {
         return build(host, port, null, true, caStream);
     }
 
     public static ManagedChannel buildTls(
-            String host, int port, InputStream caStream, @Nullable String serverHostOverride)
-    {
+            String host, int port, InputStream caStream, @Nullable String serverHostOverride) {
         return build(host, port, serverHostOverride, true, caStream);
     }
 
@@ -55,7 +56,7 @@ public class ChannelBuilder {
             @Nullable InputStream caStream) {
         ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder
                 .forAddress(host, port)
-                .maxInboundMessageSize(16 * 1024 * 1024);
+                .maxInboundMessageSize(maxByteSize);
         if (serverHostOverride != null) {
             // Force the hostname to match the cert the server uses.
             channelBuilder.overrideAuthority(serverHostOverride);

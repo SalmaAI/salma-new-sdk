@@ -142,14 +142,20 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             if (it == Permission.ACCESS_FINE_LOCATION) {
                 if (!isAllGranted(Permission.ACCESS_FINE_LOCATION)) {
                     requestPermission(Permission.ACCESS_FINE_LOCATION)
+                } else {
+                    Log.d("", "")
                 }
             } else if (it == Permission.RECORD_AUDIO) {
                 if (!isAllGranted(Permission.RECORD_AUDIO)) {
                     requestPermission(Permission.RECORD_AUDIO)
+                } else {
+                    Log.d("", "")
                 }
             } else if (it == Permission.CALL_PHONE) {
                 if (!isAllGranted(Permission.CALL_PHONE)) {
                     requestPermission(Permission.CALL_PHONE)
+                } else {
+                    Log.d("", "")
                 }
             }
         })
@@ -187,13 +193,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         super.onPause()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -205,19 +207,20 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             R.id.action_help -> {
                 AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
             }
+            else -> {
+                Log.d("", "")
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun makeCall() {
         val intent = Intent(Intent.ACTION_CALL)
-        intent.data = Uri.parse("tel:" + phone)
+        intent.data = Uri.parse("tel:$phone")
         startActivity(intent)
     }
 
-    override fun getViewModel(): BaseViewModel? {
-        return viewModel
-    }
+    override fun getViewModel(): BaseViewModel = viewModel
 
     /**
      * this fun will check has location permission then will proceed and request current location
@@ -278,6 +281,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                             )
                         }
                     }
+                } else {
+                    Log.d("", "")
                 }
             }
         })
@@ -304,6 +309,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.ACCESS_FINE_LOCATION -> {
                             requestCurrentLocation()
                         }
+                        else -> {
+                            Log.d("", "")
+                        }
                     }
                 }
                 GrantResult.PERMANENTLY_DENIED -> {
@@ -325,6 +333,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         requireContext(),
                         message
                     )
+                }
+                else -> {
+                    Log.d("", "")
                 }
             }
         }
@@ -350,18 +361,17 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         scrollToBottom()
     }
 
-    override fun showError(error: Int) {
-        showSnackbarMessage(error)
-    }
+    override fun showError(connectionFailedError: Int) =
+        showSnackbarMessage(connectionFailedError)
 
-    private fun scrollToBottom() {
-        binding.recyclerView.postDelayed(Runnable {
+
+    private fun scrollToBottom() =
+        binding.recyclerView.postDelayed({
             binding.recyclerView.layoutManager?.smoothScrollToPosition(
                 binding.recyclerView,
                 RecyclerView.State(), adapter.getListCount() - 1
-            );
+            )
         }, 500)
 
-    }
 
 }
