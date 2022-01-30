@@ -11,85 +11,91 @@
 
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cardRoot"
-        android:layout_width="273dp"
-        android:layout_height="178dp"
-        android:layout_marginStart="@dimen/medium_margin">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgBackground"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cardRoot"
             android:layout_width="273dp"
             android:layout_height="178dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/credit_classic"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/medium_margin"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:layout_marginEnd="@dimen/medium_margin"
-            android:fontFamily="@font/font_bold"
-            android:text="@{card.name}"
-            android:textAlignment="viewStart"
-            android:textColor="?attr/titleTextColor"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="بطاقة الدفع المباشر" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/medium_margin">
 
-        <TextView
-            android:id="@+id/tvCardNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginBottom="@dimen/x_small_margin"
-            android:fontFamily="@font/font_bold"
-            android:text='@{"\u202A"+card.cardNumber}'
-            android:textColor="?attr/subTitleTextColor"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvHolderName"
-            app:layout_constraintEnd_toEndOf="@+id/tvName"
-            tools:text="**** **** **** 1234" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgBackground"
+                android:layout_width="273dp"
+                android:layout_height="178dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/credit_classic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvHolderName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/x_small_margin"
-            android:ellipsize="end"
-            android:fontFamily="@font/font_bold"
-            android:lines="1"
-            android:maxLines="1"
-            android:text="@{card.holderName}"
-            android:textColor="?attr/subTitleTextColor"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvExpiryDate"
-            app:layout_constraintEnd_toEndOf="@+id/tvName"
-            tools:text="OMAR K QADOMI" />
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:fontFamily="@font/font_bold"
+                android:text="@{card.name}"
+                android:textAlignment="viewStart"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="بطاقة الدفع المباشر" />
+
+            <TextView
+                android:id="@+id/tvCardNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginBottom="@dimen/x_small_margin"
+                android:fontFamily="@font/font_bold"
+                android:text='@{"\u202A"+card.cardNumber}'
+                android:textColor="?attr/subTitleTextColor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/tvHolderName"
+                app:layout_constraintEnd_toEndOf="@+id/tvName"
+                tools:text="**** **** **** 1234" />
+
+            <TextView
+                android:id="@+id/tvHolderName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/x_small_margin"
+                android:ellipsize="end"
+                android:fontFamily="@font/font_bold"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@{card.holderName}"
+                android:textColor="?attr/subTitleTextColor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/tvExpiryDate"
+                app:layout_constraintEnd_toEndOf="@+id/tvName"
+                tools:text="OMAR K QADOMI" />
 
 
-        <TextView
-            android:id="@+id/tvExpiryDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:fontFamily="@font/font_bold"
-            android:text="@{card.expiryDate}"
-            android:textColor="?attr/titleTextColor"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tvName"
-            tools:text="07/23" />
+            <TextView
+                android:id="@+id/tvExpiryDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:fontFamily="@font/font_bold"
+                android:text="@{card.expiryDate}"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tvName"
+                tools:text="07/23" />
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
