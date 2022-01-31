@@ -118,6 +118,24 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+            MessageViewType.ListItemMessageViewType.value -> {
+                return ListItemMessageViewHolder(
+                    ListMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
+            MessageViewType.CardsListMessageViewType.value -> {
+                return CardsListMessageViewHolder(
+                    CardsListMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
             else -> {
                 return EmptyMessageViewHolder(
                     EmptyMessageItemBinding.inflate(
@@ -150,6 +168,8 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             is CurrencyMessageUiModel -> return MessageViewType.CurrencyConvertorMessageViewType.value
             is InformationalMessageUiModel -> return MessageViewType.InformationalMessageViewType.value
             is DropdownListUiModel -> return MessageViewType.DropDownMessageViewType.value
+            is ListItemMessageUiModel -> return MessageViewType.ListItemMessageViewType.value
+            is CardsListMessageUiModel -> return MessageViewType.CardsListMessageViewType.value
             else -> return 0
         }
     }

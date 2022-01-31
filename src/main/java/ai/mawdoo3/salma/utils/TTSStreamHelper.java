@@ -75,9 +75,9 @@ public class TTSStreamHelper {
     private void initializePlayer(String ttsId, boolean ttsDynamic) {
         if (context.get() != null) {
             String ttsParams;
-            if (ttsDynamic) {
+            if (ttsDynamic)
                 ttsParams = "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=mp3&normalize_text=true&transfer=false&tempo=0";
-            } else {
+            else {
                 ttsParams = "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=mp3&transfer=false&tempo=0";
             }
 

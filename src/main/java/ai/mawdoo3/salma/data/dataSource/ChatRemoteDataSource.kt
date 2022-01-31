@@ -23,12 +23,13 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 .build()
 
             val result = endpoints.sendMessage(
-                MasaSdkInstance.botId,
-                MasaSdkInstance.botChannelId,
-                body.part(0),
-                body.part(1),
-                body.part(2),
-                body.part(3)
+                botId = MasaSdkInstance.botId,
+                botChannelId = MasaSdkInstance.botChannelId,
+                userId = body.part(0),
+                message = body.part(1),
+                secretKey = body.part(2),
+                mobileJWT = body.part(3),
+                newSession = sendMessageRequest.newSession
             )
             RepoResponse.create(result)
         } catch (e: Exception) {

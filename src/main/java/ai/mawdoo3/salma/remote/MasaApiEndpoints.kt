@@ -19,7 +19,8 @@ interface MasaApiEndpoints {
         @Part userId: MultipartBody.Part,
         @Part message: MultipartBody.Part,
         @Part secretKey: MultipartBody.Part,
-        @Part mobileJWT: MultipartBody.Part
-        ): Response<SendMessageResponse>
+        @Part mobileJWT: MultipartBody.Part,
+        @Part("newSession") newSession: Boolean
+    ): Response<SendMessageResponse>
 
 }

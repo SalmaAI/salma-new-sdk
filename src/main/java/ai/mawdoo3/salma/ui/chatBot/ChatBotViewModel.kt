@@ -41,7 +41,12 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
      * payload -> this value will be sent to server (won't show to user)
      * showMessage -> this boolean determine whether to show sent message in list or just send it to server without show it to user
      */
-    fun sendMessage(text: String?, payload: String, showMessage: Boolean = true) {
+    fun sendMessage(
+        text: String?,
+        payload: String,
+        showMessage: Boolean = true,
+        newSession: Boolean = false
+    ) {
         if (showMessage) {
             messageSent.value =
                 TextMessageUiModel(
@@ -57,10 +62,11 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             delay(1000)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
-                    PhoneUtils.getDeviceId(applicationContext),
+                    userId = PhoneUtils.getDeviceId(applicationContext),
                     message = payload,
-                    MasaSdkInstance.key,
-                    MasaSdkInstance.jwtToken
+                    secretKey = MasaSdkInstance.key,
+                    JWT = MasaSdkInstance.jwtToken,
+                    newSession = newSession
                 )
             )
 
@@ -71,6 +77,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
 
                     val responseMessages = ArrayList<MessageUiModel>()
                     val locationMessages = ArrayList<LocationMessageUiModel>()
+                    val cardsMessages = ArrayList<CardUiModel>()
                     val messageAudiolist = ArrayList<TtsItem>()
                     val messagesResponse = result.body
                     for (message in messagesResponse.messages) {
@@ -82,6 +89,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                                 //Aggregation all messages of LocationMessageUiModel in one list
                                 if (messageUiModel is LocationMessageUiModel) {
                                     locationMessages.add(messageUiModel)
+                                } else if (messageUiModel is CardUiModel) {
+                                    cardsMessages.add(messageUiModel)
                                 } else if (messageUiModel is DeeplinkMessageUiModel) {
                                     openLink.value = messageUiModel.url
                                 } else if (messageUiModel is KeyPadUiModel) {
@@ -96,6 +105,10 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     if (locationMessages.isNotEmpty()) {//add locations messages to messages list
                         val locationsListUiModel = LocationsListUiModel(locationMessages)
                         responseMessages.add(locationsListUiModel)
+                    }
+                    if (cardsMessages.isNotEmpty()) {//add cards list messages to messages list
+                        val cardsListUiModel = CardsListMessageUiModel(cardsMessages)
+                        responseMessages.add(cardsListUiModel)
                     }
                     //send response to fragment
                     messageResponseList.value = responseMessages

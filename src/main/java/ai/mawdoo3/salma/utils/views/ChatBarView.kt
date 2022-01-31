@@ -150,7 +150,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
 
     private fun sendGRPCMessage(text: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            Log.d("GRPC", "Send message ->" + text)
+            Log.d("GRPC", "Send message ->$text")
             listener?.sendMessage(text)
         }
     }
@@ -229,7 +229,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             0,
             binding.root.measuredWidth,
             binding.root.measuredHeight
-        );
+        )
 
     }
 
@@ -241,7 +241,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
-                Log.d("GRPC", "onVoice " + data)
+                Log.d("GRPC", "onVoice $data")
                 data?.apply {
                     val stringByte =
                         GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
@@ -255,11 +255,11 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     override fun onTranscriptionReceived(text: String) {
         startSpeaking()
         binding.speakLayout.tvGrpcText.text = text
-        Log.d("GRPC", "Received text ->" + text)
+        Log.d("GRPC", "Received text ->$text")
     }
 
     override fun onFinalTranscriptionReceived(text: String) {
-        Log.d("GRPC", "Final text ->" + text)
+        Log.d("GRPC", "Final text ->$text")
         mVoiceRecorder?.updateHearingStatus(false)
         CoroutineScope(Dispatchers.IO).launch {
             mVoiceRecorder?.stop()
@@ -272,14 +272,14 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     }
 
     override fun onSessionIdReceived(sessionId: String) {
-        Log.d("GRPC", "sessionId ->" + sessionId)
+        Log.d("GRPC", "sessionId ->$sessionId")
         // start voice recorder
         this.sessionId = sessionId
     }
 
     fun showNumberKeyPad() {
         binding.inputLayout.root.makeVisible()
-        binding.inputLayout.etMessage.inputType = InputType.TYPE_CLASS_NUMBER;
+        binding.inputLayout.etMessage.inputType = InputType.TYPE_CLASS_NUMBER
         AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
 

@@ -25,6 +25,7 @@ data class MessageResponse(
     data class MessageContentResponse(
         @Json(name = "text") val text: String?,
         @Json(name = "url") val url: String?,
+        @Json(name = "useButtons") val useButtons: Boolean?,
         @Json(name = "elements") val elements: List<Element>?,
         @Json(name = "properties") val properties: List<Property>?,
         @Json(name = "attachmentId") val attachmentId: String?
@@ -67,6 +68,14 @@ data class MessageResponse(
                     TextMessageUiModel(
                         messageContent.text, MessageSender.Masa,
                         time = AppUtils.getCurrentTime()
+                    )
+                )
+            } else if (messageType == MessageType.Location || messageType == MessageType.UnansweredLocation) {
+                messages.add(
+                    TextMessageUiModel(
+                        messageContent.text, MessageSender.Masa,
+                        time = AppUtils.getCurrentTime(),
+                        showLocation = true
                     )
                 )
             } else if (messageType == MessageType.NumberKeyPad) {
@@ -155,6 +164,32 @@ data class MessageResponse(
                     )
                 }
 
+            } else if (messageType == MessageType.CardsList || messageType == MessageType.UnansweredCardsList) {
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                //add cards UI model to messages list
+                messageContent.elements?.forEach { element ->
+                    messages.add(
+                        CardUiModel(
+                            cardNumber = element.title,
+                            image = element.image?.toInt(),
+                            holderName = element.subTitle,
+                            expiryDate = element.optionalInfo,
+                            cardId = element.payload,
+                            name = null,
+                            messageSender = MessageSender.Masa
+                        )
+                    )
+                }
+
             } else if (messageType == MessageType.Image || messageType == MessageType.UnansweredImage) {
                 messages.add(ImageMessageUiModel(url = messageContent.url, MessageSender.Masa))
             } else if (messageType == MessageType.DeepLink || messageType == MessageType.UnansweredDeepLink) {
@@ -176,23 +211,44 @@ data class MessageResponse(
                         )
                     )
                 }
-                messageContent.elements?.forEach { element ->
-                    var globalButton: ButtonUiModel? = null
-                    element.globalButton?.let {
-                        globalButton = ButtonUiModel(it.type, it.title, it.value ?: "", it.function)
+                if (messageContent.useButtons == true) {//add informational card with global and action buttons
+                    messageContent.elements?.forEach { element ->
+                        var globalButton: ButtonUiModel? = null
+                        element.globalButton?.let {
+                            globalButton =
+                                ButtonUiModel(it.type, it.title, it.value ?: "", it.function)
+                        }
+                        val buttons = ArrayList<ButtonUiModel>()
+                        element.buttons?.forEach {
+                            buttons.add(
+                                ButtonUiModel(
+                                    it.type,
+                                    it.title,
+                                    it.value ?: "",
+                                    it.function
+                                )
+                            )
+                        }
+                        val informationalMessage = InformationalMessageUiModel(
+                            element.title,
+                            element.subTitle,
+                            element.optionalInfo,
+                            globalButton,
+                            buttons, MessageSender.Masa
+                        )
+                        messages.add(informationalMessage)
                     }
-                    val buttons = ArrayList<ButtonUiModel>()
-                    element.buttons?.forEach {
-                        buttons.add(ButtonUiModel(it.type, it.title, it.value ?: "", it.function))
+                } else {
+                    //clickable cards items for ex: beneficiaries list
+                    messageContent.elements?.forEach { element ->
+                        val listItemMessage = ListItemMessageUiModel(
+                            element.title,
+                            element.subTitle,
+                            element.optionalInfo,
+                            element.payload
+                        )
+                        messages.add(listItemMessage)
                     }
-                    val informationalMessage = InformationalMessageUiModel(
-                        element.title,
-                        element.subTitle,
-                        element.optionalInfo,
-                        globalButton,
-                        buttons, MessageSender.Masa
-                    )
-                    messages.add(informationalMessage)
                 }
             } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {
                 val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
@@ -220,7 +276,7 @@ data class MessageResponse(
                     currencyMessageUiModel.exchangeRate = exchangeRate
                 }
                 messages.add(currencyMessageUiModel)
-            } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredCarousel) {
+            } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredKeyValueList) {
                 //create items list UI model
                 val items = ArrayList<DropdownListItem>()
                 messageContent.elements?.forEach { element ->
