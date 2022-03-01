@@ -4,7 +4,7 @@ import com.squareup.moshi.*
 import java.lang.reflect.Type
 
 /**
- * Created by iSaleem on 2/8/21
+ * Created on 2/8/21
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)

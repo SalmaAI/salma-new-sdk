@@ -7,8 +7,6 @@ import ai.mawdoo3.salma.data.dataModel.DropdownListItem
 import ai.mawdoo3.salma.databinding.ListBottomSheetBinding
 import android.app.Dialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 /**
- * Created by iSaleem on 12/31/20
+ * Created on 12/31/20
  */
 class ListBottomSheetFragment() : BottomSheetDialogFragment(),
     BaseAdapter.OnItemClickListener<DropdownListItem> {
