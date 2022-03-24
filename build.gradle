@@ -54,8 +54,6 @@ android {
         //applicationId "ai.mawdoo3.salma"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -66,8 +64,6 @@ android {
         release {
             shrinkResources false
             minifyEnabled false
-            useProguard true
-            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
             buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
@@ -77,9 +73,7 @@ android {
         debug {
             shrinkResources false
             minifyEnabled false
-            useProguard false
-            debuggable true
-//            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
+            //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
             buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
             buildConfigField("String", "TTS_URL", '"https://ingress.alpha.mawdu.com/flowtron-api-v0-3-4/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
