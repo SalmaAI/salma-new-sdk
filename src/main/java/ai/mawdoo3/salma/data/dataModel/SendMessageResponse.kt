@@ -150,13 +150,14 @@ data class MessageResponse(
                     element.buttons?.forEach {
                         buttons.add(ButtonUiModel(it.type, it.title, it.value ?: "", it.function))
                     }
-                    val date = element.subTitle?.split("\\n\\n")?.get(0)
-                    val amount = element.subTitle?.split("\\n\\n")?.get(1)
+
+//                    val date = element.subTitle?.split("\\n\\n")?.get(0)
+                    val amount = element.subTitle
                     messages.add(
                         BillsMessageUiModel(
                             title = element.title,
                             image = element.image,
-                            date = date,
+                            date = null,
                             amount = amount,
                             buttons = buttons,
                             messageSender = MessageSender.Masa
