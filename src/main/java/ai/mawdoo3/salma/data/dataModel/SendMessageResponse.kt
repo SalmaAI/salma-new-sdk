@@ -176,7 +176,7 @@ data class MessageResponse(
                         )
                     )
                 }
-                //add cards UI model to messages list
+                //add cards(credit, debit, prepaid) UI model to messages list
                 messageContent.elements?.forEach { element ->
                     messages.add(
                         CardUiModel(
