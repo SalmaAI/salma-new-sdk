@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
     BaseViewModel(application) {
 
-    private var startIndex = 0
+    var historyStartIndex = 0
     val makeCall = LiveEvent<String>()
     val goToLocation = LiveEvent<String>()
     val historyResponseList = LiveEvent<List<MessageUiModel>>()
@@ -50,6 +50,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
         showMessage: Boolean = true,
         newSession: Boolean = false
     ) {
+        historyStartIndex=0
         if (showMessage) {
             messageSent.value =
                 TextMessageUiModel(
@@ -142,7 +143,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 MessagesHistoryRequest(
                     secretKey = MasaSdkInstance.key,
                     historyApiKey = historyApiKey,
-                    start = startIndex,
+                    start = historyStartIndex,
                     size = 10
                 ), PhoneUtils.getDeviceId(applicationContext)
             )
@@ -153,11 +154,11 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     showLoader.postValue(false)
 
                     val responseMessages = ArrayList<MessageUiModel>()
-                    val locationMessages = ArrayList<LocationMessageUiModel>()
-                    val cardsMessages = ArrayList<CardUiModel>()
-                    val historyResponse = result.body
-                    startIndex+=historyResponse.size
+                   val historyResponse = result.body
+                    historyStartIndex += historyResponse.size
                     for (historyItem in historyResponse) {
+                        val locationMessages = ArrayList<LocationMessageUiModel>()
+                        val cardsMessages = ArrayList<CardUiModel>()
                         responseMessages.add(
                             TextMessageUiModel(
                                 historyItem.userRequest.value,
@@ -166,6 +167,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                             )
                         )
                         for (message in historyItem.botResponses) {
+
                             message.Factory().create()?.let {
 
                                 it.forEach { messageUiModel ->
@@ -177,28 +179,24 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                                         is CardUiModel -> {
                                             cardsMessages.add(messageUiModel)
                                         }
-                                        is DeeplinkMessageUiModel -> {
-                                            openLink.value = messageUiModel.url
-                                        }
-                                        is KeyPadUiModel -> {
-                                            openNumberKeyPad.value = true
-                                        }
                                         else -> {
                                             responseMessages.add(messageUiModel)
                                         }
                                     }
                                 }
                             }
+
+                        }
+                        if (locationMessages.isNotEmpty()) {//add locations messages to messages list
+                            val locationsListUiModel = LocationsListUiModel(locationMessages)
+                            responseMessages.add(locationsListUiModel)
+                        }
+                        if (cardsMessages.isNotEmpty()) {//add cards list messages to messages list
+                            val cardsListUiModel = CardsListMessageUiModel(cardsMessages)
+                            responseMessages.add(cardsListUiModel)
                         }
                     }
-                    if (locationMessages.isNotEmpty()) {//add locations messages to messages list
-                        val locationsListUiModel = LocationsListUiModel(locationMessages)
-                        responseMessages.add(locationsListUiModel)
-                    }
-                    if (cardsMessages.isNotEmpty()) {//add cards list messages to messages list
-                        val cardsListUiModel = CardsListMessageUiModel(cardsMessages)
-                        responseMessages.add(cardsListUiModel)
-                    }
+
                     //send response to fragment
                     historyResponseList.value = responseMessages
                 }
