@@ -247,8 +247,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
 
     private fun loadMore() {
-        if (viewModel.historyStartIndex==0) {
-            adapter.clear()
+        if (adapter.getItem(0) is HeaderUiModel) {
+            adapter.removeItem(0)
         }
         viewModel.getMessagesHistory()
 ////        binding.loadMoreProgress.makeVisible()
@@ -293,7 +293,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         viewModel.historyResponseList.observe(viewLifecycleOwner) {
 
             adapter.addItems(it, 0)
-            scrollToBottom()
+            binding.recyclerView.postDelayed({
+                binding.recyclerView.layoutManager?.scrollToPosition(
+                    adapter.getListCount() - 1
+                )
+            }, 500)
+
         }
         viewModel.openLink.observe(viewLifecycleOwner) {
             AppUtils.openLinkInTheBrowser(it, requireContext())

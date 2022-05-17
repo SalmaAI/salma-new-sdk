@@ -50,7 +50,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
         showMessage: Boolean = true,
         newSession: Boolean = false
     ) {
-        historyStartIndex=0
+        historyStartIndex = 0
         if (showMessage) {
             messageSent.value =
                 TextMessageUiModel(
@@ -152,11 +152,15 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 is RepoSuccessResponse -> {
                     Log.d("SendMessage", "Response success")
                     showLoader.postValue(false)
-
+                    val isFirstPage = historyStartIndex == 0
                     val responseMessages = ArrayList<MessageUiModel>()
-                   val historyResponse = result.body
+                    val historyResponse = result.body
                     historyStartIndex += historyResponse.size
                     for (historyItem in historyResponse) {
+                        if (isFirstPage && historyItem == historyResponse[historyResponse.lastIndex])
+                        {
+                            continue
+                        }
                         val locationMessages = ArrayList<LocationMessageUiModel>()
                         val cardsMessages = ArrayList<CardUiModel>()
                         responseMessages.add(
@@ -168,7 +172,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                         )
                         for (message in historyItem.botResponses) {
 
-                            message.Factory().create()?.let {
+                            message.Factory().create().let {
 
                                 it.forEach { messageUiModel ->
                                     //Aggregation all messages of LocationMessageUiModel in one list
@@ -178,6 +182,18 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                                         }
                                         is CardUiModel -> {
                                             cardsMessages.add(messageUiModel)
+                                        }
+                                        is QuickReplyMessageUiModel -> {
+                                            messageUiModel.isHistory = true
+                                            responseMessages.add(messageUiModel)
+                                        }
+                                        is BillsMessageUiModel -> {
+                                            messageUiModel.isHistory = true
+                                            responseMessages.add(messageUiModel)
+                                        }
+                                        is InformationalMessageUiModel -> {
+                                            messageUiModel.isHistory = true
+                                            responseMessages.add(messageUiModel)
                                         }
                                         else -> {
                                             responseMessages.add(messageUiModel)

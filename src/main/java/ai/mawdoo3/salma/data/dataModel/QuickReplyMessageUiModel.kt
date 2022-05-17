@@ -9,8 +9,8 @@ data class QuickReplyMessageUiModel(
     val title: String?,
     val replies: List<MessageResponse.MessageContentResponse.Element>?,
     val messageSender: MessageSender
-) :
+    ) :
     MessageUiModel {
     override var sender = messageSender
-
+    var isHistory: Boolean = false
 }
