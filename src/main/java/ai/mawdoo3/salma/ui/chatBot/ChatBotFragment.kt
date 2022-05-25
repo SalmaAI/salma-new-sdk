@@ -4,9 +4,7 @@ import ai.mawdoo3.salma.MasaSdkInstance
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
-import ai.mawdoo3.salma.data.dataModel.HeaderUiModel
-import ai.mawdoo3.salma.data.dataModel.PermissionMessageUiModel
-import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
+import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
@@ -14,6 +12,7 @@ import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.getNavigationResult
 import ai.mawdoo3.salma.utils.makeGone
+import ai.mawdoo3.salma.utils.makeVisible
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.content.Context
@@ -26,7 +25,6 @@ import android.util.Log
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.View.OnTouchListener
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,9 +38,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -50,6 +45,7 @@ import org.koin.core.parameter.parametersOf
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
+    private var scrollingUp: Boolean = false
     private var phone = ""
     private val viewModel: ChatBotViewModel by viewModel()
     private val adapter: MessagesAdapter by inject { parametersOf(viewModel) }
@@ -72,13 +68,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         binding.chatBarView.setActionsListener(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.itemAnimator = SlideInUpAnimator()
-        binding.recyclerView.itemAnimator?.apply {
-            addDuration = 400
-            removeDuration = 0
-            moveDuration = 0
-            changeDuration = 0
-        }
+        addRecyclerItemAnimator()
         if (adapter.isEmpty()) {
             adapter.addItem(
                 HeaderUiModel(
@@ -93,44 +83,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         } else {
             binding.chatBarView.setChatBarType(MasaSdkInstance.chatBarType)
         }
-//        binding.swipeRefreshLayout.isRefreshing = false
-
-//        binding.rootLayout.setOnDragListener(object : View.OnDragListener {
-//            override fun onDrag(p0: View?, p1: DragEvent?): Boolean {
-//                return true
-//            }
-//
-//        })
-
-        val touchListener = OnSwipeTouchListener(requireContext(), object :
-            OnSwipeTouchListener.SwipeCallback {
-            override fun onSwipeRight() {
-//                Toast.makeText(requireContext(), "Swiped right", Toast.LENGTH_SHORT).show();
-            }
-
-            override fun onSwipeLeft() {
-//                Toast.makeText(requireContext(), "Swiped left", Toast.LENGTH_SHORT).show();
-            }
-
-            override fun onSwipeTop() {
-//                Toast.makeText(requireContext(), "Swiped top", Toast.LENGTH_SHORT).show();
-            }
-
-            override fun onSwipeBottom() {
-//                CoroutineScope(Dispatchers.Main).launch {
-//                    val layoutManager: LinearLayoutManager =
-//                        binding.recyclerView.layoutManager as LinearLayoutManager
-//                    val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
-//                    if (firstVisibleItem == 0) {
-//                        loadMore()
-//                    }
-//
-//                }
-                Toast.makeText(requireContext(), "Swiped bottom", Toast.LENGTH_SHORT).show();
-            }
-        })
-
-//        binding.recyclerView.setOnTouchListener(touchListener)
+        binding.loadPrevious.setOnClickListener {
+            loadMore()
+        }
 
 //        binding.recyclerView.setOnTouchListener(OnTouchListener { v, event ->
 //            if (event.action == MotionEvent.ACTION_SCROLL) {
@@ -143,20 +98,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 //            detector.onTouchEvent(motionEvent)
 //            return@OnTouchListener false
 //        })
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                loadMore()
-//                binding.swipeRefreshLayout.isEnabled = false
-            }
-        }
+
 //        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                scrollingUp = dy < 0
-//                if (dy > 0) {
-//                    binding.swipeRefreshLayout.isEnabled = false
-//                }
-//                super.onScrolled(recyclerView, dx, dy)
-//            }
+////            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+////                scrollingUp = dy < 0
+//////                if (dy > 0) {
+//////                    binding.swipeRefreshLayout.isEnabled = false
+//////                }
+////                super.onScrolled(recyclerView, dx, dy)
+////            }
 //
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                super.onScrollStateChanged(recyclerView, newState)
@@ -169,7 +119,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 //
 //                }
 //            }
-
+//
 //            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 //                super.onScrolled(recyclerView, dx, dy)
 //                if (dy<0 && !recyclerView.canScrollVertically(-1))
@@ -247,10 +197,40 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
 
     private fun loadMore() {
-        if (adapter.getItem(0) is HeaderUiModel) {
-            adapter.removeItem(0)
+        if (adapter.itemCount < viewModel.historyList.size) {
+
+//            adapter.clear()
+            val visibleMessageIndex = viewModel.historyList.indexOf(adapter.getItem(0))
+            val sublist = viewModel.historyList.subList(0, visibleMessageIndex)
+            sublist.map {
+                when (it) {
+                    is QuickReplyMessageUiModel -> {
+                        it.isHistory = true
+                    }
+                    is BillsMessageUiModel -> {
+                        it.isHistory = true
+                    }
+                    is InformationalMessageUiModel -> {
+                        it.isHistory = true
+                    }
+
+                }
+            }
+            binding.recyclerView.itemAnimator = null
+            adapter.addItems(sublist, 0)
+            binding.recyclerView.postDelayed({
+//                binding.recyclerView.layoutManager?.scrollToPosition(
+//                    visibleMessageIndex
+//                )
+                addRecyclerItemAnimator()
+            }, 500)
         }
-        viewModel.getMessagesHistory()
+        binding.loadPrevious.makeGone()
+//        if (adapter.getItem(0) is HeaderUiModel) {
+//            adapter.removeItem(0)
+//        }
+
+//        viewModel.getMessagesHistory()
 ////        binding.loadMoreProgress.makeVisible()
 //        delay(1000)
 //        if (adapter.getItem(0) is HeaderUiModel) {
@@ -271,9 +251,19 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 //        )
 //        adapter.addItems(items, 0)
 ////        binding.loadMoreProgress.makeGone()
-        binding.swipeRefreshLayout.isRefreshing = false
+//        binding.swipeRefreshLayout.isRefreshing = false
 
 
+    }
+
+    private fun addRecyclerItemAnimator() {
+        binding.recyclerView.itemAnimator = SlideInUpAnimator()
+        binding.recyclerView.itemAnimator?.apply {
+            addDuration = 400
+            removeDuration = 0
+            moveDuration = 0
+            changeDuration = 0
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -287,19 +277,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         viewModel.messageResponseList.observe(viewLifecycleOwner) {
             Log.d("SendMessage", "Add Masa message")
             Log.d("GRPC", "Message response")
+            viewModel.historyList.addAll(it)
             adapter.addItems(it)
             scrollToBottom()
         }
-        viewModel.historyResponseList.observe(viewLifecycleOwner) {
 
-            adapter.addItems(it, 0)
-            binding.recyclerView.postDelayed({
-                binding.recyclerView.layoutManager?.scrollToPosition(
-                    adapter.getListCount() - 1
-                )
-            }, 500)
-
-        }
         viewModel.openLink.observe(viewLifecycleOwner) {
             AppUtils.openLinkInTheBrowser(it, requireContext())
         }
@@ -312,11 +294,13 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         viewModel.messageSent.observe(viewLifecycleOwner) {
             Log.d("SendMessage", "Add user message")
             Log.d("GRPC", "Message sent")
+            viewModel.historyList.add(it)
             binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
             adapter.clear()
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
             }, 300)
+            binding.loadPrevious.makeVisible()
 
         }
         viewModel.ttsAudioList.observe(viewLifecycleOwner) {

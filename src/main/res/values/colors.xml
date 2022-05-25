@@ -20,6 +20,7 @@
     <color name="masaSecondaryActionColor">#BF294D</color>
     <color name="masaCurrencyFieldBorderColor">#DFE4EC</color>
     <color name="masaSeparatorColor">#59FFFFFF</color>
+    <color name="masaChipTextColor">#FFFFFF</color>
 
     <!-- Text filed colors-->
     <color name="masaChatTextFieldHintTextColor">#577CB7</color>

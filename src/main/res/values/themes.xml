@@ -42,6 +42,7 @@
         <item name="dialogBackgroundColor">@color/masaDialogBackgroundColor</item>
         <item name="readMoreTextColor">@color/masaReadMoreTextColor</item>
         <item name="progressColor">@color/masaProgressColor</item>
+        <item name="chipTextColor">@color/masaChipTextColor</item>
         <item name="bottomSheetDialogTheme">@style/Theme.Salma.BottomSheetDialogTheme</item>
 
 
