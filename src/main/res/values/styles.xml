@@ -135,4 +135,21 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:enabled">true</item>
     </style>
+
+    <style name="Theme.Salma.Chip" parent="@style/Widget.MaterialComponents.Chip.Action">
+        <item name="chipBackgroundColor">@android:color/transparent</item>
+        <item name="android:textAppearance">@style/Theme.Salma.ChipText</item>
+        <item name="android:textColor">?attr/chipTextColor</item>
+        <item name="chipStrokeColor">?attr/chipTextColor</item>
+        <item name="chipSurfaceColor">@android:color/transparent</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="iconStartPadding">@dimen/small_margin</item>
+
+    </style>
+
+    <style name="Theme.Salma.ChipText" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/font_regular</item>
+    </style>
+
 </resources>

@@ -32,12 +32,14 @@ class QuickRepliesMessageViewHolder(
                         false
                     ).apply {
                         this.quickReply = quickReplyElement
-                        this.tvText.setOnClickListener {
-                            viewModel.sendMessage(
-                                text = quickReplyElement.title,
-                                payload = quickReplyElement.quickReplyPayload!!
-                            )
-                            binding.root.makeGone()
+                        if (!item.isHistory) {
+                            this.tvText.setOnClickListener {
+                                viewModel.sendMessage(
+                                    text = quickReplyElement.title,
+                                    payload = quickReplyElement.quickReplyPayload!!
+                                )
+                                binding.root.makeGone()
+                            }
                         }
                     }
                     binding.quickRepliesLayout.addView(quickReplyItem.root)
@@ -52,7 +54,7 @@ class QuickRepliesMessageViewHolder(
                                 item.replies.subList(
                                     quickReplyIndex + 1,
                                     item.replies.size
-                                )
+                                ),item.isHistory
                             )
                         }
                         break
@@ -64,7 +66,7 @@ class QuickRepliesMessageViewHolder(
     }
 
     private fun loadMoreOptions(
-        subList: List<MessageResponse.MessageContentResponse.Element>
+        subList: List<MessageResponse.MessageContentResponse.Element>, isHistory: Boolean
     ) {
         subList.forEach { quickReplyElement ->
             binding.quickRepliesLayout.addView(
@@ -74,11 +76,13 @@ class QuickRepliesMessageViewHolder(
                     false
                 ).apply {
                     this.quickReply = quickReplyElement
-                    this.root.setOnClickListener {
-                        viewModel.sendMessage(
-                            text = quickReplyElement.title,
-                            payload = quickReplyElement.quickReplyPayload!!
-                        )
+                    if (!isHistory) {
+                        this.root.setOnClickListener {
+                            viewModel.sendMessage(
+                                text = quickReplyElement.title,
+                                payload = quickReplyElement.quickReplyPayload!!
+                            )
+                        }
                     }
                 }.root
             )

@@ -21,6 +21,7 @@
     <attr name="messageTimeTextColor" format="color" />
     <attr name="currencyFieldBorderColor" format="color" />
     <attr name="separatorColor" format="color" />
+    <attr name="chipTextColor" format="color" />
 
     <!-- Text filed colors-->
     <attr name="chatTextFieldHintTextColor" format="color" />

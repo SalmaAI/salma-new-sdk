@@ -11,6 +11,7 @@ import com.squareup.moshi.JsonClass
 data class SendMessageResponse(
     @Json(name = "date") val date: String,
     @Json(name = "requestText") val requestText: String,
+    @Json(name = "historyApiKey") val historyApiKey: String,
     @Json(name = "messages") val messages: List<MessageResponse>
 )
 

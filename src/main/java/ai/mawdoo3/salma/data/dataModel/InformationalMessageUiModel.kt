@@ -15,5 +15,6 @@ data class InformationalMessageUiModel(
 ) :
     MessageUiModel {
     override var sender = messageSender
+    var isHistory: Boolean = false
 
 }

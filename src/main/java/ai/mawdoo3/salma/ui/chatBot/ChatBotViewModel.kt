@@ -22,8 +22,10 @@ import kotlinx.coroutines.launch
 class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
     BaseViewModel(application) {
 
+    var historyStartIndex = 0
     val makeCall = LiveEvent<String>()
     val goToLocation = LiveEvent<String>()
+    val historyList = ArrayList<MessageUiModel>()
     val messageResponseList = LiveEvent<List<MessageUiModel>>()
     val messageSent = LiveEvent<MessageUiModel>()
     val showLoader = MutableLiveData<Boolean>()
@@ -35,6 +37,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val ttsAudioList = LiveEvent<List<TtsItem>>()
     val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
+    var historyApiKey: String = ""
 
     /**
      * text -> this value will be shown to user as message (required when showMessage=true)
@@ -47,6 +50,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
         showMessage: Boolean = true,
         newSession: Boolean = false
     ) {
+        historyStartIndex = 0
         if (showMessage) {
             messageSent.value =
                 TextMessageUiModel(
@@ -80,6 +84,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     val cardsMessages = ArrayList<CardUiModel>()
                     val messageAudiolist = ArrayList<TtsItem>()
                     val messagesResponse = result.body
+                    historyApiKey = result.body.historyApiKey
                     for (message in messagesResponse.messages) {
                         message.Factory().create()?.let {
                             if (!message.ttsId.isNullOrEmpty()) {
@@ -128,5 +133,99 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             }
         }
     }
+
+
+//    fun getMessagesHistory(
+//    ) {
+//        viewModelScope.launch {
+//            showLoader.value = true
+//            val result = chatRepository.getHistory(
+//                MessagesHistoryRequest(
+//                    secretKey = MasaSdkInstance.key,
+//                    historyApiKey = historyApiKey,
+//                    start = historyStartIndex,
+//                    size = 10
+//                ), PhoneUtils.getDeviceId(applicationContext)
+//            )
+//
+//            when (result) {
+//                is RepoSuccessResponse -> {
+//                    Log.d("SendMessage", "Response success")
+//                    showLoader.postValue(false)
+//                    val isFirstPage = historyStartIndex == 0
+//                    val responseMessages = ArrayList<MessageUiModel>()
+//                    val historyResponse = result.body
+//                    historyStartIndex += historyResponse.size
+//                    for (historyItem in historyResponse) {
+//                        if (isFirstPage && historyItem == historyResponse[historyResponse.lastIndex])
+//                        {
+//                            continue
+//                        }
+//                        val locationMessages = ArrayList<LocationMessageUiModel>()
+//                        val cardsMessages = ArrayList<CardUiModel>()
+//                        responseMessages.add(
+//                            TextMessageUiModel(
+//                                historyItem.userRequest.value,
+//                                MessageSender.User,
+//                                time = historyItem.requestDate
+//                            )
+//                        )
+//                        for (message in historyItem.botResponses) {
+//
+//                            message.Factory().create().let {
+//
+//                                it.forEach { messageUiModel ->
+//                                    //Aggregation all messages of LocationMessageUiModel in one list
+//                                    when (messageUiModel) {
+//                                        is LocationMessageUiModel -> {
+//                                            locationMessages.add(messageUiModel)
+//                                        }
+//                                        is CardUiModel -> {
+//                                            cardsMessages.add(messageUiModel)
+//                                        }
+//                                        is QuickReplyMessageUiModel -> {
+//                                            messageUiModel.isHistory = true
+//                                            responseMessages.add(messageUiModel)
+//                                        }
+//                                        is BillsMessageUiModel -> {
+//                                            messageUiModel.isHistory = true
+//                                            responseMessages.add(messageUiModel)
+//                                        }
+//                                        is InformationalMessageUiModel -> {
+//                                            messageUiModel.isHistory = true
+//                                            responseMessages.add(messageUiModel)
+//                                        }
+//                                        else -> {
+//                                            responseMessages.add(messageUiModel)
+//                                        }
+//                                    }
+//                                }
+//                            }
+//
+//                        }
+//                        if (locationMessages.isNotEmpty()) {//add locations messages to messages list
+//                            val locationsListUiModel = LocationsListUiModel(locationMessages)
+//                            responseMessages.add(locationsListUiModel)
+//                        }
+//                        if (cardsMessages.isNotEmpty()) {//add cards list messages to messages list
+//                            val cardsListUiModel = CardsListMessageUiModel(cardsMessages)
+//                            responseMessages.add(cardsListUiModel)
+//                        }
+//                    }
+//
+//                    //send response to fragment
+//                    historyResponseList.value = responseMessages
+//                }
+//                is RepoErrorResponse -> {
+//                    Log.d("SendMessage", "Response error")
+//                    showLoader.value = false
+//                    onLoadFailure(result.error, true)
+//                }
+//                else -> {
+//
+//                }
+//            }
+//        }
+//    }
 
 }
