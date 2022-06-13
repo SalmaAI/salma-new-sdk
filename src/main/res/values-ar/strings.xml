@@ -53,5 +53,6 @@
     <string name="credit_rjmc_resolving_world_elite">ريفولفينغ وورد اليت</string>
     <string name="main_menu">القائمة الرئيسية</string>
     <string name="show_more">أظهر المزيد (%s)</string>
+    <string name="check_internet_connection">الرجاء التأكد من الإتصال بالإنترنت</string>
 
 </resources>

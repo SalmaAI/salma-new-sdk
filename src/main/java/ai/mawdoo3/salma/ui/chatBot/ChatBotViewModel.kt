@@ -1,6 +1,7 @@
 package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.MasaSdkInstance
+import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.dataModel.*
@@ -132,7 +133,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                         val responseMessages = ArrayList<MessageUiModel>()
                         responseMessages.add(
                             TextMessageUiModel(
-                                "الرجاء التأكد من الإتصال بالإنترنت", MessageSender.Masa,
+                                applicationContext.getString(R.string.check_internet_connection), MessageSender.Masa,
                                 time = AppUtils.getCurrentTime()
                             )
                         )
