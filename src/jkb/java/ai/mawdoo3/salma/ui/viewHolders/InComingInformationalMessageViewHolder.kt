@@ -76,7 +76,7 @@ class InComingInformationalMessageViewHolder(
                                 viewModel.openLink.postValue(button.value)
                             }
                             ButtonType.from(button.type) == ButtonType.PostBack -> {
-                                viewModel.sendMessage(text = button.title, payload = button.value)
+                                viewModel.sendMessage(text = button.value, payload = button.value)
                             }
                             ButtonType.from(button.type) == ButtonType.PerformFunction -> {
                                 performFunction(button, this.linearButtons.context)
