@@ -300,6 +300,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
             }, 300)
+            // TODO: remove comment on below line of code to show load history icon when send new message
 //            binding.loadPrevious.makeVisible()
 
         }
