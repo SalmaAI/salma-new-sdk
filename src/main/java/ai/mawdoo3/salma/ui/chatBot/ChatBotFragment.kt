@@ -12,7 +12,6 @@ import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.getNavigationResult
 import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
 import ai.mawdoo3.salma.utils.views.ChatBarView
 import android.annotation.SuppressLint
 import android.content.Context
@@ -391,7 +390,14 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                 AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
             }
             R.id.action_home -> {
-                viewModel.sendMessage("القائمة الرئيسية", "القائمة الرئيسية", showMessage = true, newSession = false)
+                if (viewModel.lastSentMessage != "القائمة الرئيسية") {
+                    viewModel.sendMessage(
+                        "القائمة الرئيسية",
+                        "القائمة الرئيسية",
+                        showMessage = true,
+                        newSession = false
+                    )
+                }
             }
             else -> {
                 Log.d("", "")

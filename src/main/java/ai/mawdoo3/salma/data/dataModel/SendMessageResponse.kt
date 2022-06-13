@@ -214,6 +214,7 @@ data class MessageResponse(
                     )
                 }
                 if (messageContent.useButtons == true) {//add informational card with global and action buttons
+                    val informationalMessages=ArrayList<InformationalMessageUiModel>()
                     messageContent.elements?.forEach { element ->
                         var globalButton: ButtonUiModel? = null
                         element.globalButton?.let {
@@ -238,7 +239,11 @@ data class MessageResponse(
                             globalButton,
                             buttons, MessageSender.Masa
                         )
-                        messages.add(informationalMessage)
+                        //add all informational items in one list
+                        informationalMessages.add(informationalMessage)
+                    }
+                    if (informationalMessages.isNotEmpty()){
+                        messages.add(InformationalListMessageUiModel(informationalMessages,MessageSender.Masa))
                     }
                 } else {
                     //clickable cards items for ex: beneficiaries list

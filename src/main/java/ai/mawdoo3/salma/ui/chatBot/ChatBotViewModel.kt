@@ -18,6 +18,7 @@ import com.afollestad.assent.Permission
 import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
     BaseViewModel(application) {
@@ -38,6 +39,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
     var historyApiKey: String = ""
+    var lastSentMessage: String = ""
 
     /**
      * text -> this value will be shown to user as message (required when showMessage=true)
@@ -64,6 +66,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             showLoader.value = true
             Log.d("SendMessage", "delay request 1000 millisecond")
             delay(1000)
+            lastSentMessage = payload
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     userId = PhoneUtils.getDeviceId(applicationContext),
@@ -125,7 +128,20 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 is RepoErrorResponse -> {
                     Log.d("SendMessage", "Response error")
                     showLoader.value = false
-                    onLoadFailure(result.error, true)
+                    if (result.error is IOException) {
+                        val responseMessages = ArrayList<MessageUiModel>()
+                        responseMessages.add(
+                            TextMessageUiModel(
+                                "الرجاء التأكد من الإتصال بالإنترنت", MessageSender.Masa,
+                                time = AppUtils.getCurrentTime()
+                            )
+                        )
+                        messageResponseList.value = responseMessages
+
+
+                    } else {
+                        onLoadFailure(result.error, true)
+                    }
                 }
                 else -> {
 
