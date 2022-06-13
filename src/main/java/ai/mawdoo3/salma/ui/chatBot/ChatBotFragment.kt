@@ -300,7 +300,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             binding.recyclerView.postDelayed({
                 adapter.addItem(it)
             }, 300)
-            binding.loadPrevious.makeVisible()
+//            binding.loadPrevious.makeVisible()
 
         }
         viewModel.ttsAudioList.observe(viewLifecycleOwner) {
@@ -388,6 +388,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             }
             R.id.action_help -> {
                 AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
+            }
+            R.id.action_home -> {
+                viewModel.sendMessage("القائمة الرئيسية", "القائمة الرئيسية", showMessage = true, newSession = false)
             }
             else -> {
                 Log.d("", "")
