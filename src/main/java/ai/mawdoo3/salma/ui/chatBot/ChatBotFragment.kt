@@ -41,7 +41,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     private var scrollingUp: Boolean = false
@@ -49,6 +48,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
     private val viewModel: ChatBotViewModel by viewModel()
     private val adapter: MessagesAdapter by inject { parametersOf(viewModel) }
     private lateinit var binding: FragmentChatBotBinding
+    private var homeMenu: MenuItem? = null
 
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(requireContext().applicationContext)
@@ -279,6 +279,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             viewModel.historyList.addAll(it)
             adapter.addItems(it)
             scrollToBottom()
+            homeMenu?.isEnabled = true
         }
 
         viewModel.openLink.observe(viewLifecycleOwner) {
@@ -378,6 +379,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
+        homeMenu = menu.findItem(R.id.action_home)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -390,14 +392,14 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                 AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
             }
             R.id.action_home -> {
-                if (viewModel.lastSentMessage != "القائمة الرئيسية") {
-                    viewModel.sendMessage(
-                        "القائمة الرئيسية",
-                        "القائمة الرئيسية",
-                        showMessage = true,
-                        newSession = false
-                    )
-                }
+
+                viewModel.sendMessage(
+                    "القائمة الرئيسية",
+                    "القائمة الرئيسية",
+                    showMessage = true,
+                    newSession = false
+                )
+                item.isEnabled = false
             }
             else -> {
                 Log.d("", "")
@@ -559,11 +561,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     private fun scrollToBottom() =
         binding.recyclerView.postDelayed({
+            val recyclerItems = binding.recyclerView.layoutManager?.itemCount ?: 0
+
             binding.recyclerView.layoutManager?.smoothScrollToPosition(
                 binding.recyclerView,
-                RecyclerView.State(), adapter.getListCount() - 1
+                RecyclerView.State(), recyclerItems - 1
             )
         }, 500)
 
 
 }
+
+

@@ -40,7 +40,6 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
     var historyApiKey: String = ""
-    var lastSentMessage: String = ""
 
     /**
      * text -> this value will be shown to user as message (required when showMessage=true)
@@ -67,7 +66,6 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             showLoader.value = true
             Log.d("SendMessage", "delay request 1000 millisecond")
             delay(1000)
-            lastSentMessage = payload
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
                     userId = PhoneUtils.getDeviceId(applicationContext),
