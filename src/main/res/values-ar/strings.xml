@@ -54,5 +54,6 @@
     <string name="main_menu">القائمة الرئيسية</string>
     <string name="show_more">أظهر المزيد (%s)</string>
     <string name="check_internet_connection">الرجاء التأكد من الإتصال بالإنترنت</string>
+    <string name="quick_replies_less">-أقل</string>
 
 </resources>

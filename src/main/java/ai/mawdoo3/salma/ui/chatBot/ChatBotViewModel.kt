@@ -88,22 +88,28 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     val messagesResponse = result.body
                     historyApiKey = result.body.historyApiKey
                     for (message in messagesResponse.messages) {
-                        message.Factory().create()?.let {
+                        message.Factory().create().let {
                             if (!message.ttsId.isNullOrEmpty()) {
                                 messageAudiolist.add(TtsItem(message.ttsId, message.ttsDynamic))
                             }
                             it.forEach { messageUiModel ->
                                 //Aggregation all messages of LocationMessageUiModel in one list
-                                if (messageUiModel is LocationMessageUiModel) {
-                                    locationMessages.add(messageUiModel)
-                                } else if (messageUiModel is CardUiModel) {
-                                    cardsMessages.add(messageUiModel)
-                                } else if (messageUiModel is DeeplinkMessageUiModel) {
-                                    openLink.value = messageUiModel.url
-                                } else if (messageUiModel is KeyPadUiModel) {
-                                    openNumberKeyPad.value = true
-                                } else {
-                                    responseMessages.add(messageUiModel)
+                                when (messageUiModel) {
+                                    is LocationMessageUiModel -> {
+                                        locationMessages.add(messageUiModel)
+                                    }
+                                    is CardUiModel -> {
+                                        cardsMessages.add(messageUiModel)
+                                    }
+                                    is DeeplinkMessageUiModel -> {
+                                        openLink.value = messageUiModel.url
+                                    }
+                                    is KeyPadUiModel -> {
+                                        openNumberKeyPad.value = true
+                                    }
+                                    else -> {
+                                        responseMessages.add(messageUiModel)
+                                    }
                                 }
                             }
 

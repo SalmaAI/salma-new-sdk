@@ -68,6 +68,15 @@
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/quickRepliesLayout"
                 app:layout_constraintTop_toBottomOf="@+id/quickRepliesLayout" />
+            <TextView
+                android:id="@+id/tvLess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quick_replies_less"
+                android:textColor="?attr/titleTextColor"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/quickRepliesLayout"
+                app:layout_constraintTop_toBottomOf="@+id/quickRepliesLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
