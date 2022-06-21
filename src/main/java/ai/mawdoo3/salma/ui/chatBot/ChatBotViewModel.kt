@@ -1,6 +1,7 @@
 package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.MasaSdkInstance
+import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.dataModel.*
@@ -18,6 +19,7 @@ import com.afollestad.assent.Permission
 import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
     BaseViewModel(application) {
@@ -86,22 +88,28 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     val messagesResponse = result.body
                     historyApiKey = result.body.historyApiKey
                     for (message in messagesResponse.messages) {
-                        message.Factory().create()?.let {
+                        message.Factory().create().let {
                             if (!message.ttsId.isNullOrEmpty()) {
                                 messageAudiolist.add(TtsItem(message.ttsId, message.ttsDynamic))
                             }
                             it.forEach { messageUiModel ->
                                 //Aggregation all messages of LocationMessageUiModel in one list
-                                if (messageUiModel is LocationMessageUiModel) {
-                                    locationMessages.add(messageUiModel)
-                                } else if (messageUiModel is CardUiModel) {
-                                    cardsMessages.add(messageUiModel)
-                                } else if (messageUiModel is DeeplinkMessageUiModel) {
-                                    openLink.value = messageUiModel.url
-                                } else if (messageUiModel is KeyPadUiModel) {
-                                    openNumberKeyPad.value = true
-                                } else {
-                                    responseMessages.add(messageUiModel)
+                                when (messageUiModel) {
+                                    is LocationMessageUiModel -> {
+                                        locationMessages.add(messageUiModel)
+                                    }
+                                    is CardUiModel -> {
+                                        cardsMessages.add(messageUiModel)
+                                    }
+                                    is DeeplinkMessageUiModel -> {
+                                        openLink.value = messageUiModel.url
+                                    }
+                                    is KeyPadUiModel -> {
+                                        openNumberKeyPad.value = true
+                                    }
+                                    else -> {
+                                        responseMessages.add(messageUiModel)
+                                    }
                                 }
                             }
 
@@ -125,7 +133,20 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 is RepoErrorResponse -> {
                     Log.d("SendMessage", "Response error")
                     showLoader.value = false
-                    onLoadFailure(result.error, true)
+                    if (result.error is IOException) {
+                        val responseMessages = ArrayList<MessageUiModel>()
+                        responseMessages.add(
+                            TextMessageUiModel(
+                                applicationContext.getString(R.string.check_internet_connection), MessageSender.Masa,
+                                time = AppUtils.getCurrentTime()
+                            )
+                        )
+                        messageResponseList.value = responseMessages
+
+
+                    } else {
+                        onLoadFailure(result.error, true)
+                    }
                 }
                 else -> {
 

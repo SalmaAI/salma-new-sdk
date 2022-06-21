@@ -8,7 +8,7 @@
         android:topRightRadius="@dimen/card_view_radius" />
     <stroke
         android:width="2dp"
-        android:color="#80577CB7" />
+        android:color="#0A417C" />
 
-    <solid android:color="#577CB7" />
+    <solid android:color="#0A417C" />
 </shape>
