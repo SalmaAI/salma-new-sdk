@@ -12,6 +12,7 @@ import ai.mawdoo3.salma.remote.RepoSuccessResponse
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.PhoneUtils
 import android.app.Application
+import android.text.InputType
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -35,6 +36,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val getUserLocation = LiveEvent<Boolean>()
     val openLink = LiveEvent<String>()
     val openNumberKeyPad = LiveEvent<Boolean>()
+    val openTextKeyPad = LiveEvent<Boolean>()
     val openDialUp = LiveEvent<String>()
     val ttsAudioList = LiveEvent<List<TtsItem>>()
     val stopTTS = LiveEvent<Boolean>()
@@ -105,7 +107,11 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                                         openLink.value = messageUiModel.url
                                     }
                                     is KeyPadUiModel -> {
-                                        openNumberKeyPad.value = true
+                                        if (messageUiModel.inputType == InputType.TYPE_CLASS_NUMBER) {
+                                            openNumberKeyPad.value = true
+                                        } else if (messageUiModel.inputType == InputType.TYPE_CLASS_TEXT) {
+                                            openTextKeyPad.value = true
+                                        }
                                     }
                                     else -> {
                                         responseMessages.add(messageUiModel)
@@ -137,7 +143,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                         val responseMessages = ArrayList<MessageUiModel>()
                         responseMessages.add(
                             TextMessageUiModel(
-                                applicationContext.getString(R.string.check_internet_connection), MessageSender.Masa,
+                                applicationContext.getString(R.string.check_internet_connection),
+                                MessageSender.Masa,
                                 time = AppUtils.getCurrentTime()
                             )
                         )

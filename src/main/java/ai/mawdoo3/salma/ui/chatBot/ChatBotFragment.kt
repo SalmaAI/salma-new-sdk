@@ -358,6 +358,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                 scrollToBottom()
             }
         }
+
         viewModel.goToLocation.observe(viewLifecycleOwner) {
             val intent = Intent(
                 Intent.ACTION_VIEW,
@@ -365,8 +366,13 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             )
             startActivity(intent)
         }
+
         viewModel.openNumberKeyPad.observe(this) {
             binding.chatBarView.showNumberKeyPad()
+        }
+
+        viewModel.openTextKeyPad.observe(this) {
+            binding.chatBarView.showTextKeyPad()
         }
 
     }

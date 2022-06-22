@@ -13,5 +13,5 @@ enum class MessageViewType(val value: Int) {
     HeaderMessageViewType(10),
     DropDownMessageViewType(11),
     ListItemMessageViewType(12),
-    CardsListMessageViewType(13),
+    CardsListMessageViewType(13)
 }
