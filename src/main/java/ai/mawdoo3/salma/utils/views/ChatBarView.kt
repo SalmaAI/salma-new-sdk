@@ -283,6 +283,12 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
+    fun showTextKeyPad() {
+        binding.inputLayout.root.makeVisible()
+        binding.inputLayout.etMessage.inputType =
+            InputType.TYPE_CLASS_TEXT
+        AppUtils.requestFocus(context, binding.inputLayout.etMessage)
+    }
 
     fun setInputType(inputType: Int) {
         binding.inputLayout.etMessage.inputType = inputType

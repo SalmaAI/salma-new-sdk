@@ -4,6 +4,7 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.data.enums.MessageType
 import ai.mawdoo3.salma.data.enums.PropertyType
 import ai.mawdoo3.salma.utils.AppUtils
+import android.text.InputType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -79,7 +80,7 @@ data class MessageResponse(
                         showLocation = true
                     )
                 )
-            } else if (messageType == MessageType.NumberKeyPad) {
+            } else if (messageType == MessageType.NumberKeyPad || messageType == MessageType.UnansweredNumberKeyPad) {
                 messages.add(
                     TextMessageUiModel(
                         messageContent.text, MessageSender.Masa,
@@ -87,7 +88,17 @@ data class MessageResponse(
                     )
                 )
                 messages.add(
-                    KeyPadUiModel()
+                    KeyPadUiModel(inputType = InputType.TYPE_CLASS_NUMBER)
+                )
+            } else if (messageType == MessageType.TextKeyPad || messageType == MessageType.UnansweredTextKeyPad) {
+                messages.add(
+                    TextMessageUiModel(
+                        messageContent.text, MessageSender.Masa,
+                        time = AppUtils.getCurrentTime()
+                    )
+                )
+                messages.add(
+                    KeyPadUiModel(inputType = InputType.TYPE_CLASS_TEXT)
                 )
             } else if (messageType == MessageType.QuickReply || messageType == MessageType.UnansweredQuickReply) {
                 messages.add(
@@ -214,7 +225,7 @@ data class MessageResponse(
                     )
                 }
                 if (messageContent.useButtons == true) {//add informational card with global and action buttons
-                    val informationalMessages=ArrayList<InformationalMessageUiModel>()
+                    val informationalMessages = ArrayList<InformationalMessageUiModel>()
                     messageContent.elements?.forEach { element ->
                         var globalButton: ButtonUiModel? = null
                         element.globalButton?.let {
@@ -242,8 +253,13 @@ data class MessageResponse(
                         //add all informational items in one list
                         informationalMessages.add(informationalMessage)
                     }
-                    if (informationalMessages.isNotEmpty()){
-                        messages.add(InformationalListMessageUiModel(informationalMessages,MessageSender.Masa))
+                    if (informationalMessages.isNotEmpty()) {
+                        messages.add(
+                            InformationalListMessageUiModel(
+                                informationalMessages,
+                                MessageSender.Masa
+                            )
+                        )
                     }
                 } else {
                     //clickable cards items for ex: beneficiaries list
