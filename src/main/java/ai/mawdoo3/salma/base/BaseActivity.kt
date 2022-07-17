@@ -27,10 +27,10 @@ open class BaseActivity : AppCompatActivity() {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR;
         }
 
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        );
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_SECURE,
+//            WindowManager.LayoutParams.FLAG_SECURE
+//        );
 
         super.onCreate(savedInstanceState)
     }
