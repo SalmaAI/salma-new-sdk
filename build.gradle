@@ -119,7 +119,8 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
 
     //lottie animation
-    implementation "com.airbnb.android:lottie:$lottieVersion"
+    //ToDo remove lottie after finding alternative library
+//    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
