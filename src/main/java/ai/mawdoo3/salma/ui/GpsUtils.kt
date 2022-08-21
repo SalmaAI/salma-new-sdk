@@ -7,15 +7,16 @@ import android.content.IntentSender.SendIntentException
 import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
+import com.huawei.hms.common.ApiException
+import com.huawei.hms.common.ResolvableApiException
+import com.huawei.hms.location.*
 
 class GpsUtils(private val context: Context) {
-    private val mSettingsClient: SettingsClient
+    private val mSettingsClient: SettingsClient = LocationServices.getSettingsClient(context)
     private val mLocationSettingsRequest: LocationSettingsRequest
-    private val locationManager: LocationManager
-    var locationRequest: LocationRequest
+    private val locationManager: LocationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    var locationRequest: LocationRequest = LocationRequest.create()
 
     // method for turn on GPS
     fun turnGPSOn(onGpsListener: onGpsListener?) {
@@ -58,9 +59,6 @@ class GpsUtils(private val context: Context) {
     }
 
     init {
-        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        mSettingsClient = LocationServices.getSettingsClient(context)
-        locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(10 * 1000);
         locationRequest.setFastestInterval(2 * 1000);

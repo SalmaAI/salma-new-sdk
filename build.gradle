@@ -5,6 +5,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.protobuf'
     id 'kotlin-parcelize'
+    id 'com.huawei.agconnect'
 }
 apply from: "${rootProject.projectDir}/flavors.gradle"
 
@@ -109,8 +110,6 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
 
-    //location services
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     //Dependency ejection
     implementation "org.koin:koin-androidx-scope:$koin_version"
@@ -188,5 +187,7 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-core:$exp_player_version"
     implementation "com.google.android.exoplayer:exoplayer-dash:$exp_player_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exp_player_version"
+
+    implementation 'com.huawei.hms:location:6.4.0.300'
 }
 
