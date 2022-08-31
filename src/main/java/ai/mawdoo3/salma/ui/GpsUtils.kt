@@ -7,9 +7,9 @@ import android.content.IntentSender.SendIntentException
 import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
+import com.huawei.hms.common.ApiException
+import com.huawei.hms.common.ResolvableApiException
+import com.huawei.hms.location.*
 
 class GpsUtils(private val context: Context) {
     private val mSettingsClient: SettingsClient = LocationServices.getSettingsClient(context)
