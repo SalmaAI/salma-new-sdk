@@ -1,12 +1,13 @@
 package ai.mawdoo3.salma.utils.asr
 
+import android.provider.Settings
 import ai.mawdoo3.salma.BuildConfig
 import android.content.Context
 import android.util.Log
 import asr_service.Asr
 import asr_service.asr_serviceGrpc
+import com.google.protobuf.BoolValue
 import com.google.protobuf.BytesValue
-import com.google.protobuf.Empty
 import com.google.protobuf.Int32Value
 import com.google.protobuf.StringValue
 import io.grpc.ManagedChannel
@@ -17,12 +18,13 @@ import java.io.InputStream
  * Created on 3/22/21
  */
 
-const val CERT_NAME = "asr-beta.crt"
+const val CERT_NAME = "asr-alpha.crt"
 
 object GrpcConnector {
 
     private val stub: asr_serviceGrpc.asr_serviceStub? = null
-    private var sessionId: String = ""
+
+    //private var sessionId: String = ""
     var streamObserverSpeakChunk: StreamObserver<Asr.speak>? = null
 
     fun connect(context: Context): ManagedChannel {
@@ -54,24 +56,24 @@ object GrpcConnector {
 
 
     fun startVoiceRecognition(channel: ManagedChannel) {
-        val stub = getASRStub(channel)
-        stub.getSid(Empty.getDefaultInstance(), object : StreamObserver<Asr.session_id> {
-            override fun onNext(value: Asr.session_id?) {
-                sessionId = value?.sid?.value.toString()
-                voiceRecognition?.onSessionIdReceived(sessionId)
-            }
-
-            override fun onError(t: Throwable?) {
-                Log.d("GRPC", t!!.localizedMessage!!)
-            }
-
-            override fun onCompleted() {
-                Log.d("", "")
-            }
-        })
+//        val stub = getASRStub(channel)
+//        stub.getSid(Empty.getDefaultInstance(), object : StreamObserver<Asr.session_id> {
+//            override fun onNext(value: Asr.session_id?) {
+//                sessionId = value?.sid?.value.toString()
+//                voiceRecognition?.onSessionIdReceived(sessionId)
+//            }
+//
+//            override fun onError(t: Throwable?) {
+//                Log.d("GRPC", t!!.localizedMessage!!)
+//            }
+//
+//            override fun onCompleted() {
+//                Log.d("", "")
+//            }
+//        })
     }
 
-    fun sendVoice(channel: ManagedChannel, sessionId: String, voice: BytesValue?) {
+    fun sendVoice(channel: ManagedChannel, sessionId: String, voice: BytesValue?, first: Boolean) {
         val stub = getASRStub(channel)
         streamObserverSpeakChunk =
             stub.transcribeStream(object : StreamObserver<Asr.transcription_stream> {
@@ -105,14 +107,20 @@ object GrpcConnector {
         asrSpearBuilder.sampleRate = Int32Value.of(VoiceRecorder.SAMPLE_RATE)
         asrSpearBuilder.audioBytes = voice
 
-        asrSpearBuilder.sid = StringValue.of(sessionId)
+//        asrSpearBuilder.sid = StringValue.of(sessionId)
+
+        asrSpearBuilder.id = StringValue.of(sessionId)
+        Log.d("userId", asrSpearBuilder.id.value)
+        asrSpearBuilder.first = BoolValue.of(first)
+
+
         streamObserverSpeakChunk?.onNext(asrSpearBuilder.build())
     }
 
     private var voiceRecognition: ITranscriptionStream? = null
 
     interface IVoiceRecognition {
-        fun onSessionIdReceived(sessionId: String)
+        //fun onSessionIdReceived(sessionId: String)
     }
 
     interface ITranscriptionStream : IVoiceRecognition {
@@ -124,6 +132,14 @@ object GrpcConnector {
         this.voiceRecognition = voiceRecognition
     }
 
+
+    fun getID(context: Context?): String {
+        val sID = Settings.Secure.getString(
+            context?.contentResolver,
+            Settings.Secure.ANDROID_ID
+        );
+        return sID
+    }
 
     class FailedChannelConnectionException : Exception()
 }

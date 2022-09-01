@@ -11,9 +11,7 @@ import ai.mawdoo3.salma.utils.asr.VoiceRecorder
 import ai.mawdoo3.salma.utils.makeInvisible
 import ai.mawdoo3.salma.utils.makeVisible
 import android.content.Context
-import android.text.Editable
 import android.text.InputType
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -68,7 +66,6 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             } catch (e: GrpcConnector.FailedChannelConnectionException) {
                 Log.d("failed", "connection failed")
             }
-
         }
         val inflater = LayoutInflater.from(context)
         binding = ChatBarLayoutBinding.inflate(inflater)
@@ -233,11 +230,14 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
 
     }
 
+    var firstTime = true
+
     private fun getVoiceRecorderCallbacks(channel: ManagedChannel): VoiceRecorder.Callback {
         return object : VoiceRecorder.Callback() {
             override fun onVoiceStart() {
                 Log.d("GRPC", "onVoiceStart")
                 cancelCurrentRecord = false
+                firstTime = true
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
@@ -246,7 +246,23 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
                     val stringByte =
                         GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
                             ?.build()
-                    GrpcConnector.sendVoice(channel, sessionId, stringByte)
+                    GrpcConnector.sendVoice(
+                        channel,
+                        GrpcConnector.getID(context),
+                        stringByte,
+                        firstTime
+                    )
+
+
+//                    GrpcConnector.sendVoice(
+//                        channel,
+//                        GrpcConnector.getID(context),
+//                        stringByte,
+//                        firstTime
+//                    )
+                    firstTime = false
+
+
                 }
             }
         }
@@ -271,11 +287,11 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         startNewGrpcSession()
     }
 
-    override fun onSessionIdReceived(sessionId: String) {
-        Log.d("GRPC", "sessionId ->$sessionId")
-        // start voice recorder
-        this.sessionId = sessionId
-    }
+//    override fun onSessionIdReceived(sessionId: String) {
+//        Log.d("GRPC", "sessionId ->$sessionId")
+//        // start voice recorder
+//        this.sessionId = sessionId
+//    }
 
     fun showNumberKeyPad() {
         binding.inputLayout.root.makeVisible()
@@ -283,6 +299,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
+
     fun showTextKeyPad() {
         binding.inputLayout.root.makeVisible()
         binding.inputLayout.etMessage.inputType =

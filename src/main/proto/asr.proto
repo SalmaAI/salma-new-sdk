@@ -2,7 +2,7 @@
 syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 
-import "google/protobuf/empty.proto";
+//import "google/protobuf/empty.proto";
 package asr_service;
 
 //Define the service
@@ -10,21 +10,23 @@ service asr_service {
     rpc transcribe_blob(speak) returns (transcription_blob);
     rpc transcribe_stream(stream speak) returns (stream transcription_stream);
 
-    rpc get_sid(google.protobuf.Empty) returns (session_id);
+   // rpc get_sid(google.protobuf.Empty) returns (session_id);
 }
 
 // Message Request (Both stream and Blob)
 message speak{
     google.protobuf.BytesValue audioBytes = 1;
     google.protobuf.Int32Value sampleRate = 2;
-    google.protobuf.StringValue sid = 3;
+    google.protobuf.StringValue id = 3;
+    google.protobuf.BoolValue first = 4;
+
 }
 
 // Message Reply (Audio STREAM)
 message transcription_stream{
 
     google.protobuf.StringValue text = 1;
-    google.protobuf.StringValue sid = 2;
+    google.protobuf.StringValue id = 2;
     google.protobuf.BoolValue final = 3;
 }
 
@@ -32,8 +34,4 @@ message transcription_stream{
 message transcription_blob{
     google.protobuf.StringValue transcription = 1;
     google.protobuf.Int32Value sampleRate = 2;
-}
-
-message session_id{
-    google.protobuf.StringValue sid = 1;
 }
