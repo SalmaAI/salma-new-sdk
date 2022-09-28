@@ -53,5 +53,7 @@
     <string name="show_more">أظهر المزيد (%s)</string>
     <string name="check_internet_connection">الرجاء التأكد من الإتصال بالإنترنت</string>
     <string name="quick_replies_less">- أقل</string>
+    <string name="session_expired">انتهت الجلسة</string>
+    <string name="ok">حسنا</string>
 
 </resources>
