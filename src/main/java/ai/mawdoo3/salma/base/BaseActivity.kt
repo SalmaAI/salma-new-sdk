@@ -48,8 +48,6 @@ open class BaseActivity : AppCompatActivity(), AppUtils.SessionListener {
     }
 
     override fun onSessionEnded() {
-        Log.i("AHAH", "onSessionEnded")
-
         this.finish()
     }
 
@@ -60,7 +58,7 @@ open class BaseActivity : AppCompatActivity(), AppUtils.SessionListener {
 
     override fun onUserInteraction() {
         super.onUserInteraction()
-        val intent = Intent("data_from_masa")
+        val intent = Intent("BROADCAST_FROM_APP_FOREGROUNDED")
         intent.putExtra("data", "BotMainActivity")
         intent.putExtra("onUserInteractionTriggered", true)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
