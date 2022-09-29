@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -37,7 +38,7 @@ open class BaseActivity : AppCompatActivity(), AppUtils.SessionListener {
                 BROADCAST_SESSION_ENDED -> {
                     AppUtils.sessionEndedDialog(
                         this@BaseActivity,
-                        R.string.general_error_message,
+                        R.string.session_time_title,
                         R.string.session_expired,
                         this@BaseActivity
                     )
@@ -47,6 +48,8 @@ open class BaseActivity : AppCompatActivity(), AppUtils.SessionListener {
     }
 
     override fun onSessionEnded() {
+        Log.i("AHAH", "onSessionEnded")
+
         this.finish()
     }
 
@@ -58,6 +61,7 @@ open class BaseActivity : AppCompatActivity(), AppUtils.SessionListener {
     override fun onUserInteraction() {
         super.onUserInteraction()
         val intent = Intent("data_from_masa")
+        intent.putExtra("data", "BotMainActivity")
         intent.putExtra("onUserInteractionTriggered", true)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }

@@ -55,5 +55,6 @@
     <string name="quick_replies_less">- أقل</string>
     <string name="session_expired">انتهت الجلسة</string>
     <string name="ok">حسنا</string>
+    <string name="session_time_title">خطأ</string>
 
 </resources>
