@@ -13,6 +13,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.util.DisplayMetrics
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -22,10 +23,31 @@ import androidx.annotation.StringRes
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 
 
 object AppUtils {
+
+    private var snackbar: Snackbar? = null
+
+
+    fun showSnackbarMessage(msg: String, activity: Activity, view: View?) {
+        hideKeyboard(activity, view)
+        view?.let {
+            snackbar = Snackbar.make(it, msg, Snackbar.LENGTH_INDEFINITE)
+                .setAction(activity.getString(R.string.general_error_message)) {
+                    Log.d("", "")
+                }
+            snackbar?.setActionTextColor(
+                getColorFromAttr(
+                    activity,
+                    R.attr.actionMenuTextColor
+                )
+            )
+            snackbar?.show()
+        }
+    }
 
     fun showSettingsDialog(context: Context, @StringRes message: Int) {
         val alertDialogBuilder = MaterialAlertDialogBuilder(
@@ -48,6 +70,28 @@ object AppUtils {
                 dialog.dismiss()
             }
         alertDialogBuilder.show()
+    }
+
+
+    fun sessionEndedDialog(
+        context: Context,
+        @StringRes title: Int,
+        @StringRes message: Int,
+        listener: SessionListener?
+    ) {
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(context, R.style.Theme_Salma_MaterialAlertDialog)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    listener?.onSessionEnded()
+                }
+        alertDialogBuilder.show()
+    }
+
+    interface SessionListener {
+        fun onSessionEnded()
     }
 
     fun getColorFromAttr(context: Context, colorAttr: Int): Int {
