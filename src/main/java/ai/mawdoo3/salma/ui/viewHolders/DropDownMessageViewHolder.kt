@@ -6,6 +6,7 @@ import ai.mawdoo3.salma.data.dataModel.MessageUiModel
 import ai.mawdoo3.salma.databinding.DropdownMessageItemBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
 import ai.mawdoo3.salma.ui.chatBot.ListBottomSheetFragment
+import ai.mawdoo3.salma.utils.disableWithDelay
 import androidx.appcompat.app.AppCompatActivity
 
 class DropDownMessageViewHolder(
@@ -17,6 +18,7 @@ class DropDownMessageViewHolder(
             val listItems = item as DropdownListUiModel?
             binding.tvMessage.text = listItems?.title
             binding.tvMessage.setOnClickListener {
+                it.disableWithDelay()
                 val listDialog =
                     ListBottomSheetFragment.newInstance(listItems!!.title, listItems!!.items,
                         object : ListBottomSheetFragment.Companion.ListListener {

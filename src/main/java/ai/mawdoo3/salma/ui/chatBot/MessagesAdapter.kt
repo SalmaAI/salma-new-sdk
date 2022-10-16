@@ -100,9 +100,9 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
-            MessageViewType.InformationalMessageViewType.value -> {
-                return InComingInformationalMessageViewHolder(
-                    InformationalMessageItemBinding.inflate(
+            MessageViewType.InformationalListMessageViewType.value -> {
+                return InformationalListMessageViewHolder(
+                    InformationalListMessageItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -112,6 +112,24 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             MessageViewType.DropDownMessageViewType.value -> {
                 return DropDownMessageViewHolder(
                     DropdownMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
+            MessageViewType.ListItemMessageViewType.value -> {
+                return ListItemMessageViewHolder(
+                    ListMessageItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ), viewModel
+                )
+            }
+            MessageViewType.CardsListMessageViewType.value -> {
+                return CardsListMessageViewHolder(
+                    CardsListMessageItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -148,8 +166,10 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             is BillsMessageUiModel -> return MessageViewType.InComingBillMessageViewType.value
             is ImageMessageUiModel -> return MessageViewType.InComingImageMessageViewType.value
             is CurrencyMessageUiModel -> return MessageViewType.CurrencyConvertorMessageViewType.value
-            is InformationalMessageUiModel -> return MessageViewType.InformationalMessageViewType.value
+            is InformationalListMessageUiModel -> return MessageViewType.InformationalListMessageViewType.value
             is DropdownListUiModel -> return MessageViewType.DropDownMessageViewType.value
+            is ListItemMessageUiModel -> return MessageViewType.ListItemMessageViewType.value
+            is CardsListMessageUiModel -> return MessageViewType.CardsListMessageViewType.value
             else -> return 0
         }
     }

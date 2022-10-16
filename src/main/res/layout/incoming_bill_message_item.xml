@@ -49,6 +49,7 @@
                 android:text="@{message.title}"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_text_size"
+                android:textAlignment="viewStart"
                 android:layout_marginEnd="@dimen/small_margin"
                 app:layout_constraintBottom_toTopOf="@+id/tvDetails"
                 app:layout_constraintEnd_toStartOf="@+id/tvAmount"

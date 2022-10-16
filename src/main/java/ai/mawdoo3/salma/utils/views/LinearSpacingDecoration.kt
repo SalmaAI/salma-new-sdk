@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * Created by iSaleem on 2/2/21
+ * Created on 2/2/21
  */
 class LinearSpacingDecoration(
     @Px private val itemSpacing: Int,

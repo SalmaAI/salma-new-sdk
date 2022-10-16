@@ -10,6 +10,7 @@ data class TextMessageUiModel(
     val messageSender: MessageSender,
     val showLogo: Boolean = false,
     val time: String,
+    val showLocation: Boolean = false,
 ) :
     MessageUiModel {
     override var sender = messageSender

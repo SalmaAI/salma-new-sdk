@@ -17,7 +17,7 @@ import ai.mawdoo3.salma.R;
 import ai.mawdoo3.salma.utils.AppUtils;
 
 /**
- * Created by iSaleem on 12/21/20
+ * Created on 12/21/20
  */
 public class MasaAmountTextView extends AppCompatTextView {
 

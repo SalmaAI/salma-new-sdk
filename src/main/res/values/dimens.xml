@@ -22,5 +22,6 @@
     <dimen name="message_time_text_size">13sp</dimen>
     <dimen name="bottom_sheet_peek_height">200dp</dimen>
     <dimen name="textFiled_radius">8dp</dimen>
+    <dimen name="x_small_margin">4dp</dimen>
 
 </resources>

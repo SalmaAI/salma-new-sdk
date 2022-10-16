@@ -11,8 +11,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
-
 
 class BotMainActivity : BaseActivity() {
     private lateinit var navController: NavController
@@ -35,8 +33,6 @@ class BotMainActivity : BaseActivity() {
                 this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_chatbot_close);
             }
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
