@@ -5,7 +5,6 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.protobuf'
     id 'kotlin-parcelize'
-    id 'com.huawei.agconnect'
 }
 apply from: "${rootProject.projectDir}/flavors.gradle"
 
@@ -67,16 +66,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://ingress.alpha.mawdu.com/flowtron-api-v0-4-1/tts"')
+            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-4-1/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
         debug {
             shrinkResources false
             minifyEnabled false
             //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://ingress.alpha.mawdu.com/flowtron-api-v0-4-1/tts"')
+            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-4-1/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
         }
     }
@@ -119,7 +118,7 @@ dependencies {
 
     //lottie animation
     //ToDo remove lottie after finding alternative library
-    //implementation "com.airbnb.android:lottie:$lottieVersion"
+//    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -188,6 +187,7 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-dash:$exp_player_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exp_player_version"
 
+    //location services
     implementation 'com.huawei.hms:location:6.4.0.300'
 }
 
