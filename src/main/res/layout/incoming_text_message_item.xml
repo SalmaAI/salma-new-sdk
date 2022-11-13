@@ -46,11 +46,9 @@
                     android:layout_margin="@dimen/small_margin">
 
                     <TextView
-
                         android:id="@+id/tvMessage"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:autoLink="phone|email|web"
                         android:lineSpacingExtra="5dp"
                         android:linksClickable="true"
                         android:maxLines="3"

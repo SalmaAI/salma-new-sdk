@@ -291,13 +291,14 @@ data class MessageResponse(
                         PropertyType.CurrencyToValue -> {
                             currencyMessageUiModel.toValue = property.value.toString()
                         }
-
-                        else -> {}
+                        PropertyType.CurrencyExchangeRate -> {
+                            currencyMessageUiModel.exchangeRate = property.value.toString()
+                        }
+                        else -> {
+                        }
                     }
                 }
-                messageContent.text?.let { exchangeRate ->
-                    currencyMessageUiModel.exchangeRate = exchangeRate
-                }
+
                 messages.add(currencyMessageUiModel)
             } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredKeyValueList) {
                 //create items list UI model
