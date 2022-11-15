@@ -58,13 +58,13 @@ public class TTSStreamHelper {
         releasePlayer();
     }
 
-    public void startStreaming(String ttsId, boolean ttsDynamic) {
+    public void startStreaming(String ttsId, boolean ttsDynamic, String ttsText) {
         if (isPlaying) {
             stopStream();
         }
         isPlaying = true;
 
-        initializePlayer(ttsId, ttsDynamic);
+        initializePlayer(ttsId, ttsDynamic, ttsText);
     }
 
 
@@ -72,20 +72,26 @@ public class TTSStreamHelper {
         void onCompletedListener();
     }
 
-    private void initializePlayer(String ttsId, boolean ttsDynamic) {
+    private void initializePlayer(String ttsId, boolean ttsDynamic, String ttsText) {
         if (context.get() != null) {
             String ttsParams;
             if (ttsDynamic)
-                ttsParams = "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=mp3&normalize_text=true&transfer=false&tempo=0";
+//                ttsParams = "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=mp3&normalize_text=true&transfer=false&tempo=0";
+                ttsParams = "text=" + ttsText + "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=mp3&normalize_text=true&transfer=false&tempo=0";
             else {
-                ttsParams = "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=mp3&transfer=false&tempo=0";
+                ttsParams = "key=" + ttsId + "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=mp3&transfer=false&tempo=0";
             }
 
-            player = new SimpleExoPlayer.Builder(context.get()).build();
+//            player = new SimpleExoPlayer.Builder(context.get()).build();
+//            player.setPlayWhenReady(true);
+//            MediaItem mediaItem = new MediaItem.Builder()
+//                    .setUri(BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams)
+//                    .build();
 
+            player = new SimpleExoPlayer.Builder(context.get()).build();
             player.setPlayWhenReady(true);
             MediaItem mediaItem = new MediaItem.Builder()
-                    .setUri(BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams)
+                    .setUri(BuildConfig.TTS_URL + "?" + ttsParams)
                     .build();
 
             player.setMediaItem(mediaItem);

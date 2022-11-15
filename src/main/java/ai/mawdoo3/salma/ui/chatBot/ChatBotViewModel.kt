@@ -92,7 +92,13 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     for (message in messagesResponse.messages) {
                         message.Factory().create().let {
                             if (!message.ttsId.isNullOrEmpty()) {
-                                messageAudiolist.add(TtsItem(message.ttsId, message.ttsDynamic))
+                                messageAudiolist.add(
+                                    TtsItem(
+                                        message.ttsId,
+                                        message.ttsDynamic,
+                                        message.ttsText
+                                    )
+                                )
                             }
                             it.forEach { messageUiModel ->
                                 //Aggregation all messages of LocationMessageUiModel in one list

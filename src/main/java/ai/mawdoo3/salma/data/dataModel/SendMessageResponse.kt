@@ -21,6 +21,7 @@ data class MessageResponse(
     @Json(name = "messageType") val type: String,
     @Json(name = "ttsId") val ttsId: String?,
     @Json(name = "ttsDynamic") val ttsDynamic: Boolean,
+    @Json(name = "ttsText") val ttsText: String?,
     @Json(name = "content") val messageContent: MessageContentResponse
 ) {
     @JsonClass(generateAdapter = true)
