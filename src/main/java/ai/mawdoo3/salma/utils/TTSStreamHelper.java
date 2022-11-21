@@ -76,17 +76,10 @@ public class TTSStreamHelper {
         if (context.get() != null) {
             String ttsParams;
             if (ttsDynamic)
-//                ttsParams = "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=mp3&normalize_text=true&transfer=false&tempo=0";
                 ttsParams = "text=" + ttsText + "&diacritize_text=true&override_diacritics=false&streaming=true&encoding=mp3&normalize_text=true&transfer=false&tempo=0";
             else {
                 ttsParams = "key=" + ttsId + "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=mp3&transfer=false&tempo=0";
             }
-
-//            player = new SimpleExoPlayer.Builder(context.get()).build();
-//            player.setPlayWhenReady(true);
-//            MediaItem mediaItem = new MediaItem.Builder()
-//                    .setUri(BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams)
-//                    .build();
 
             player = new SimpleExoPlayer.Builder(context.get()).build();
             player.setPlayWhenReady(true);
@@ -96,7 +89,7 @@ public class TTSStreamHelper {
 
             player.setMediaItem(mediaItem);
             player.prepare();
-            Log.d("TTS", BuildConfig.TTS_URL + "?key=" + ttsId + ttsParams);
+            Log.d("TTS", BuildConfig.TTS_URL + "?" + ttsParams);
             player.addListener(new Player.EventListener() {
                 @Override
                 public void onPlayerError(@NonNull ExoPlaybackException error) {
