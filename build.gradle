@@ -189,6 +189,8 @@ dependencies {
 
     //location services
     implementation 'com.huawei.hms:location:6.4.0.300'
-    
+
+    implementation 'me.saket:better-link-movement-method:2.2.0'
+
 }
 
