@@ -5,5 +5,6 @@ package ai.mawdoo3.salma.data
  */
 data class TtsItem(
     val ttsId: String,
-    val isDynamic: Boolean
+    val isDynamic: Boolean,
+    val ttsText: String?
 )

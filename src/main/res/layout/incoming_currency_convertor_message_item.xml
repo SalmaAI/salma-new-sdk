@@ -17,8 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/medium_margin"
-        android:layout_marginEnd="@dimen/medium_margin"
         android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rippleColor="@android:color/transparent">
@@ -38,6 +38,7 @@
                 android:text='@{message.fromValue +" "+ message.fromCurrency.description+" "+ @string/equals}'
                 android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_text_size"
+                android:visibility="gone"
                 app:fontFamily="@font/font_regular"
                 app:layout_constraintBottom_toTopOf="@+id/tvDetails"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +54,7 @@
                 android:text="@{message.toValue+' '+message.toCurrency.description}"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/header_text_size"
+                android:visibility="gone"
                 app:fontFamily="@font/font_extra_bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
                 app:layout_constraintStart_toStartOf="@+id/tvTitle"
@@ -124,8 +126,8 @@
                     android:layout_width="1dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/small_margin"
-                    android:visibility="gone"
                     android:background="?attr/currencyFieldBorderColor"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/tvFromCurrencyDescription"
                     app:layout_constraintEnd_toStartOf="@+id/tvFromCurrencyDescription"
                     app:layout_constraintTop_toTopOf="@+id/tvFromCurrencyCode" />
@@ -196,8 +198,8 @@
                     android:layout_width="1dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/small_margin"
-                    android:visibility="gone"
                     android:background="?attr/currencyFieldBorderColor"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/tvToCurrencyDescription"
                     app:layout_constraintEnd_toStartOf="@+id/tvToCurrencyDescription"
                     app:layout_constraintTop_toTopOf="@+id/tvToCurrencyCode" />
@@ -211,11 +213,11 @@
                 android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginBottom="@dimen/medium_margin"
                 android:paddingEnd="@dimen/small_margin"
-                android:text='@{message.exchangeRate}'
+                android:text='@{`1 `+ message.fromCurrency.description +` = ` + message.exchangeRate + ` ` + message.toCurrency.description }'
                 android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_text_size"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:fontFamily="@font/font_regular"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toAmountLayout"
                 tools:text="١ دينار أردني تساوي ١.٢٧ يورو" />
@@ -227,13 +229,12 @@
                 android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/medium_margin"
-                android:visibility="gone"
                 android:background="?attr/currencyFieldBorderColor"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tvExchangeRate" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvLink"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/medium_margin"
@@ -244,6 +245,7 @@
                 android:text="currencyconverterapi.com"
                 android:textAlignment="viewStart"
                 android:textColor="?attr/subTitleTextColor"
+                android:visibility="gone"
                 app:fontFamily="@font/font_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

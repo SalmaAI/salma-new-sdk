@@ -11,8 +11,8 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/constraintView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
@@ -26,7 +26,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
-
             android:layout_marginEnd="@dimen/card_view_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline"
@@ -46,11 +45,9 @@
                     android:layout_margin="@dimen/small_margin">
 
                     <TextView
-
                         android:id="@+id/tvMessage"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:autoLink="phone|email|web"
                         android:lineSpacingExtra="5dp"
                         android:linksClickable="true"
                         android:maxLines="3"
