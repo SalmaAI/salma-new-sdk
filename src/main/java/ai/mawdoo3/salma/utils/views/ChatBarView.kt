@@ -102,7 +102,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
                 } else {
                     // show tooltip
                     val balloon = Balloon.Builder(context!!)
-                        .setWidthRatio(1.0f)
+                        .setWidthRatio(0.9f)
                         .setHeight(BalloonSizeSpec.WRAP)
                         .setText(listener?.getAsrDisabledMessage() ?: "")
                         .setTextColorResource(R.color.masaPrimaryColor)
@@ -110,10 +110,10 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
                         .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
                         .setArrowSize(10)
                         .setArrowPosition(0.5f)
-                        .setPadding(12)
+                        .setPadding(8)
                         .setCornerRadius(8f)
                         .setBackgroundColorResource(R.color.masaSecondaryColor)
-                        .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                        .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                         .build()
                     balloon.showAlignTop(binding.inputLayout.imgAction)
 
