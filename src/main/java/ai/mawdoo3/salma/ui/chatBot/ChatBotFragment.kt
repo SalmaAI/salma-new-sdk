@@ -544,6 +544,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
      * this method will be called when user click send button
      */
     override fun sendMessage(messageText: String) {
+
         binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
         AppUtils.hideKeyboard(activity, binding.chatBarView)
         viewModel.sendMessage(text = messageText, payload = messageText)
@@ -562,6 +563,14 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun showError(connectionFailedError: Int) =
         showSnackbarMessage(connectionFailedError)
+
+    override fun checkAsrEnabled(): Boolean {
+        return viewModel.asrEnabled
+    }
+
+    override fun getAsrDisabledMessage(): String {
+        return viewModel.asrDisabledMessage
+    }
 
 
     private fun scrollToBottom() =

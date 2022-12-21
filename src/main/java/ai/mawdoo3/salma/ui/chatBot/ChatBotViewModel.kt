@@ -43,6 +43,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
     var historyApiKey: String = ""
+    var asrEnabled: Boolean = true
+    var asrDisabledMessage: String = ""
 
     /**
      * text -> this value will be shown to user as message (required when showMessage=true)
@@ -91,6 +93,9 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     val messagesResponse = result.body
                     var locationsPos = 0
                     historyApiKey = result.body.historyApiKey
+                    asrEnabled = result.body.asrEnabled
+                    asrDisabledMessage = result.body.asrDisabledMessage
+
                     for (message in messagesResponse.messages) {
 
                         if (message.type == MessageType.TextLocation.value && locationsPos == 0) {
