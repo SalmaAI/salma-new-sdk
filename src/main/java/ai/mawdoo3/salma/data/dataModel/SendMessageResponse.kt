@@ -13,8 +13,8 @@ data class SendMessageResponse(
     @Json(name = "date") val date: String,
     @Json(name = "requestText") val requestText: String,
     @Json(name = "historyApiKey") val historyApiKey: String,
-    @Json(name = "asrDisabledMessage") val asrDisabledMessage: String,
-    @Json(name = "asrEnabled") val asrEnabled: Boolean,
+    @Json(name = "asrDisabledMessage") val asrDisabledMessage: String?,
+    @Json(name = "asrEnabled") val asrEnabled: Boolean?,
     @Json(name = "messages") val messages: List<MessageResponse>
 )
 

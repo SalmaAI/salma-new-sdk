@@ -93,8 +93,9 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     val messagesResponse = result.body
                     var locationsPos = 0
                     historyApiKey = result.body.historyApiKey
-                    asrEnabled = result.body.asrEnabled
-                    asrDisabledMessage = result.body.asrDisabledMessage
+
+                    asrEnabled = result.body.asrEnabled ?: true
+                    asrDisabledMessage = result.body.asrDisabledMessage ?: ""
 
                     for (message in messagesResponse.messages) {
 
