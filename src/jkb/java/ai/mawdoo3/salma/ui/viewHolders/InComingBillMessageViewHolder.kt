@@ -61,7 +61,7 @@ class InComingBillMessageViewHolder(
                 if (buttonIndex > 0 && buttonIndex == billMessageItem?.buttons.size - 1) {
                     textColor = ContextCompat.getColor(
                         this.root.context,
-                        R.color.masaSecondaryActionColor
+                        R.color.masaPrimaryActionColor
                     )
                 }
                 actionButton.setTextColor(textColor)

@@ -21,10 +21,15 @@ import androidx.core.widget.doAfterTextChanged
 import com.afollestad.assent.Permission
 import com.afollestad.assent.isAllGranted
 import com.google.protobuf.ByteString
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs),
     GrpcConnector.ITranscriptionStream {
@@ -42,6 +47,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         fun sendMessage(messageText: String)
         fun requestMicPermission()
         fun showError(connectionFailedError: Int)
+        fun checkAsrEnabled(): Boolean
+        fun getAsrDisabledMessage(): String
     }
 
     init {
@@ -88,11 +95,36 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             resetLayoutState()
         }
         binding.inputLayout.imgAction.setOnClickListener {
+
             if (binding.inputLayout.etMessage.text.isNullOrEmpty()) {
-                checkPermissionAndStartListening()
+                if (listener?.checkAsrEnabled() == true) {
+                    checkPermissionAndStartListening()
+                } else {
+                    // show tooltip
+                    val balloon = Balloon.Builder(context!!)
+                        .setWidthRatio(0.9f)
+                        .setHeight(BalloonSizeSpec.WRAP)
+                        .setText(listener?.getAsrDisabledMessage() ?: "")
+                        .setTextColorResource(R.color.masaPrimaryColor)
+                        .setTextSize(15f)
+                        .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                        .setArrowSize(10)
+                        .setArrowPosition(0.5f)
+                        .setPadding(8)
+                        .setCornerRadius(8f)
+                        .setBackgroundColorResource(R.color.masaSecondaryColor)
+                        .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
+                        .build()
+                    balloon.showAlignTop(binding.inputLayout.imgAction)
+
+
+                    balloon.dismissWithDelay(2000L)
+                }
             } else {
                 sendMessage()
             }
+
+
         }
         binding.listenLayout.root.setOnClickListener {
             resetLayoutState()
