@@ -426,7 +426,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
      * otherwise will show message for user to request location permission
      */
     private fun checkLocationPermission() {
-        val permissionsGranted: Boolean = isAllGranted(Permission.ACCESS_FINE_LOCATION)
+        val permissionsGranted: Boolean =
+            isAllGranted(Permission.ACCESS_FINE_LOCATION) || isAllGranted(Permission.ACCESS_COARSE_LOCATION)
         if (permissionsGranted) {
             requestCurrentLocation()
         } else {//show location permission card
@@ -505,7 +506,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.CALL_PHONE -> {
                             makeCall()
                         }
-                        Permission.ACCESS_FINE_LOCATION -> {
+                        Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION -> {
                             requestCurrentLocation()
                         }
                         else -> {
@@ -521,7 +522,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.CALL_PHONE -> {
                             R.string.call_permission_message
                         }
-                        Permission.ACCESS_FINE_LOCATION -> {
+                        Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION -> {
                             R.string.location_permission_message
                         }
                         else -> {
