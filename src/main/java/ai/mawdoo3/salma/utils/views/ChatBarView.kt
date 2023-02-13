@@ -216,7 +216,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     }
 
     private fun playAudio(ttsItem: TtsItem) {
-        TTSStreamHelper.getInstance(this.context).startStreaming(ttsItem.ttsId, ttsItem.isDynamic,ttsItem.ttsText)
+        TTSStreamHelper.getInstance(this.context)
+            .startStreaming(ttsItem.ttsId, ttsItem.isDynamic, ttsItem.ttsText)
         CoroutineScope(Dispatchers.Main).launch {
             mVoiceRecorder?.stop()
             actionStatus = ChatBarStatus.PlayingAudio
