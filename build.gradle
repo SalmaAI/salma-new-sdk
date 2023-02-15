@@ -116,10 +116,6 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
 
-    //lottie animation
-    //ToDo remove lottie after finding alternative library
-    implementation "com.airbnb.android:lottie:$lottieVersion"
-
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -192,12 +188,7 @@ dependencies {
 
     implementation 'me.saket:better-link-movement-method:2.2.0'
 
-
     implementation "com.github.skydoves:balloon:1.4.1"
-
-
-    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.22"
-
 
 }
 
