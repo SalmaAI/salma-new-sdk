@@ -69,6 +69,7 @@ android {
             buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
             buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-4-1/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
+            buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
         }
         debug {
             shrinkResources false
@@ -77,6 +78,7 @@ android {
             buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
             buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-4-1/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
+            buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
         }
     }
 

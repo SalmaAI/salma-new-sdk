@@ -28,7 +28,7 @@ val remoteModule = module {
         //adapter
     }
     single(named("masaAuthInterceptor")) {
-        AuthorizationInterceptor()
+        AuthorizationInterceptor(get())
     }
 
     single(named("masaAuth")) {
