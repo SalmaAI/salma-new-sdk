@@ -1,6 +1,5 @@
 package ai.mawdoo3.salma.remote
 
-import ai.mawdoo3.salma.utils.SecurityUtils
 import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -16,13 +15,13 @@ class AuthorizationInterceptor(val context: Context) : Interceptor,
             newBuilder.addHeader("Content-Type", "multipart/form-data")
         }
         newBuilder.addHeader("accept", "application/json")
-        newBuilder.addHeader(
-            "Authorization",
-            SecurityUtils.rsaEncrypt(
-                "4Eyugb2qVEYcQOyOCUYqmNY8xO8I7W7xf9kaJYlpI8ER7kOnVo0Z3CustWiO0Phtm5OBqMhOU8WLbajvttLv98s6c1ww0TDUKWvD6Jy6f-bh1o_LrewgKNF6o5qjeXjovkl1vjk0mgAHif88d6RRaYsBRIKbwC53Zi9KspKrF1Y",
-                context
-            )
-        )
+//        newBuilder.addHeader(
+//            "Authorization",
+//            SecurityUtils.rsaEncrypt(
+//                "4Eyugb2qVEYcQOyOCUYqmNY8xO8I7W7xf9kaJYlpI8ER7kOnVo0Z3CustWiO0Phtm5OBqMhOU8WLbajvttLv98s6c1ww0TDUKWvD6Jy6f-bh1o_LrewgKNF6o5qjeXjovkl1vjk0mgAHif88d6RRaYsBRIKbwC53Zi9KspKrF1Y",
+//                context
+//            )
+//        )
         newBuilder.method(original.method, original.body)
         val request = newBuilder.build()
         return chain.proceed(request)

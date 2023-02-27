@@ -72,6 +72,7 @@ public class TTSStreamHelper {
         void onCompletedListener();
     }
 
+
     private void initializePlayer(String ttsId, boolean ttsDynamic, String ttsText) {
         if (context.get() != null) {
             String ttsParams;
@@ -86,6 +87,11 @@ public class TTSStreamHelper {
             MediaItem mediaItem = new MediaItem.Builder()
                     .setUri(BuildConfig.TTS_URL + "?" + ttsParams)
                     .build();
+
+//            SecurityUtils.rsaEncrypt(
+//                    "4Eyugb2qVEYcQOyOCUYqmNY8xO8I7W7xf9kaJYlpI8ER7kOnVo0Z3CustWiO0Phtm5OBqMhOU8WLbajvttLv98s6c1ww0TDUKWvD6Jy6f-bh1o_LrewgKNF6o5qjeXjovkl1vjk0mgAHif88d6RRaYsBRIKbwC53Zi9KspKrF1Y",
+//                    context
+//            )
 
             player.setMediaItem(mediaItem);
             player.prepare();
