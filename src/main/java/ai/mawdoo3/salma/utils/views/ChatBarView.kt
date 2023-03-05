@@ -239,6 +239,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         }
         audioList?.clear()
         TTSStreamHelper.getInstance(this.context).stopStream()
+        AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
