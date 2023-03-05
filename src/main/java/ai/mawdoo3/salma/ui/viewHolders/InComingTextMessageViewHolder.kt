@@ -41,7 +41,7 @@ class InComingTextMessageViewHolder(
             binding.tvMore.setOnClickListener {
                 binding.tvMessage.maxLines = Int.MAX_VALUE
                 binding.tvMore.makeGone()
-                Linkify.addLinks(binding.tvMessage, Linkify.PHONE_NUMBERS)
+                Linkify.addLinks(binding.tvMessage, Linkify.ALL)
                 binding.tvMessage.movementMethod = BetterLinkMovementMethod.newInstance().apply {
                     setOnLinkClickListener { _, _ ->
                         false
@@ -50,7 +50,7 @@ class InComingTextMessageViewHolder(
             }
 
             Handler().postDelayed({
-                Linkify.addLinks(binding.tvMessage, Linkify.PHONE_NUMBERS)
+                Linkify.addLinks(binding.tvMessage, Linkify.ALL)
                 binding.tvMessage.movementMethod = BetterLinkMovementMethod.newInstance().apply {
                     setOnLinkClickListener { _, _ ->
                         false
