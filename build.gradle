@@ -67,16 +67,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
             buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-4-1/tts"')
+            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
+            buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
         }
         debug {
             shrinkResources false
             minifyEnabled false
             //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
             buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-4-1/tts"')
+            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
+            buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
         }
     }
 
@@ -115,10 +117,6 @@ dependencies {
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
-
-    //lottie animation
-    //ToDo remove lottie after finding alternative library
-    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -191,7 +189,6 @@ dependencies {
     implementation 'com.huawei.hms:location:6.4.0.300'
 
     implementation 'me.saket:better-link-movement-method:2.2.0'
-
 
     implementation "com.github.skydoves:balloon:1.4.1"
 

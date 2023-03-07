@@ -216,7 +216,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     }
 
     private fun playAudio(ttsItem: TtsItem) {
-        TTSStreamHelper.getInstance(this.context).startStreaming(ttsItem.ttsId, ttsItem.isDynamic,ttsItem.ttsText)
+        TTSStreamHelper.getInstance(this.context)
+            .startStreaming(ttsItem.ttsId, ttsItem.isDynamic, ttsItem.ttsText)
         CoroutineScope(Dispatchers.Main).launch {
             mVoiceRecorder?.stop()
             actionStatus = ChatBarStatus.PlayingAudio
@@ -238,6 +239,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         }
         audioList?.clear()
         TTSStreamHelper.getInstance(this.context).stopStream()
+        AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
