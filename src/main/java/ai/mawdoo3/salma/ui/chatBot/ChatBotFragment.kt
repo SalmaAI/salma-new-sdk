@@ -374,6 +374,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             binding.chatBarView.showTextKeyPad()
         }
 
+        binding.chatBarView.resultListener = { item ->
+            if (viewModel.openNumberKeyPad.value == true) {
+                binding.chatBarView.requestEditTextFocus()
+            }
+        }
     }
 
     override fun onPause() {
