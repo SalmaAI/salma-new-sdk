@@ -95,6 +95,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+    namespace 'ai.mawdoo3.salma'
 }
 
 dependencies {
