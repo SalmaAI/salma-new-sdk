@@ -7,6 +7,7 @@ import ai.mawdoo3.salma.data.TtsItem
 import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.MessageSender
+import ai.mawdoo3.salma.data.enums.MessageType
 import ai.mawdoo3.salma.remote.RepoErrorResponse
 import ai.mawdoo3.salma.remote.RepoSuccessResponse
 import ai.mawdoo3.salma.utils.AppUtils
@@ -42,6 +43,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
     val stopTTS = LiveEvent<Boolean>()
     val requestPermission = LiveEvent<Permission>()
     var historyApiKey: String = ""
+    var asrEnabled: Boolean = true
+    var asrDisabledMessage: String = ""
 
     /**
      * text -> this value will be shown to user as message (required when showMessage=true)
@@ -88,11 +91,27 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     val cardsMessages = ArrayList<CardUiModel>()
                     val messageAudiolist = ArrayList<TtsItem>()
                     val messagesResponse = result.body
+                    var locationsPos = 0
                     historyApiKey = result.body.historyApiKey
+
+                    asrEnabled = result.body.asrEnabled ?: true
+                    asrDisabledMessage = result.body.asrDisabledMessage ?: ""
+
                     for (message in messagesResponse.messages) {
+
+                        if (message.type == MessageType.TextLocation.value && locationsPos == 0) {
+                            locationsPos = messagesResponse.messages.indexOf(message)
+                        }
+
                         message.Factory().create().let {
                             if (!message.ttsId.isNullOrEmpty()) {
-                                messageAudiolist.add(TtsItem(message.ttsId, message.ttsDynamic))
+                                messageAudiolist.add(
+                                    TtsItem(
+                                        message.ttsId,
+                                        message.ttsDynamic,
+                                        message.ttsText
+                                    )
+                                )
                             }
                             it.forEach { messageUiModel ->
                                 //Aggregation all messages of LocationMessageUiModel in one list
@@ -123,7 +142,11 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                     }
                     if (locationMessages.isNotEmpty()) {//add locations messages to messages list
                         val locationsListUiModel = LocationsListUiModel(locationMessages)
-                        responseMessages.add(locationsListUiModel)
+                        if (responseMessages.size > locationsPos) {
+                            responseMessages.add(locationsPos, locationsListUiModel)
+                        } else {
+                            responseMessages.add(locationsListUiModel)
+                        }
                     }
                     if (cardsMessages.isNotEmpty()) {//add cards list messages to messages list
                         val cardsListUiModel = CardsListMessageUiModel(cardsMessages)

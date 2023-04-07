@@ -9,6 +9,9 @@ import ai.mawdoo3.salma.utils.disableWithDelay
 import ai.mawdoo3.salma.utils.getTextLineCount
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
+import android.os.Handler
+import android.text.util.Linkify
+import me.saket.bettermovementmethod.BetterLinkMovementMethod
 
 class InComingTextMessageViewHolder(
     val binding: IncomingTextMessageItemBinding,
@@ -38,7 +41,22 @@ class InComingTextMessageViewHolder(
             binding.tvMore.setOnClickListener {
                 binding.tvMessage.maxLines = Int.MAX_VALUE
                 binding.tvMore.makeGone()
+                Linkify.addLinks(binding.tvMessage, Linkify.ALL)
+                binding.tvMessage.movementMethod = BetterLinkMovementMethod.newInstance().apply {
+                    setOnLinkClickListener { _, _ ->
+                        false
+                    }
+                }
             }
+
+            Handler().postDelayed({
+                Linkify.addLinks(binding.tvMessage, Linkify.ALL)
+                binding.tvMessage.movementMethod = BetterLinkMovementMethod.newInstance().apply {
+                    setOnLinkClickListener { _, _ ->
+                        false
+                    }
+                }
+            }, 200)
 
             if (item?.showLocation == true) {
                 binding.tvLocation.makeVisible()

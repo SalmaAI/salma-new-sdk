@@ -21,10 +21,15 @@ import androidx.core.widget.doAfterTextChanged
 import com.afollestad.assent.Permission
 import com.afollestad.assent.isAllGranted
 import com.google.protobuf.ByteString
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import io.grpc.ManagedChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs),
     GrpcConnector.ITranscriptionStream {
@@ -38,10 +43,14 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     private var audioList: ArrayList<TtsItem>? = null
     private var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
 
+    var resultListener: ((result: Boolean?) -> Unit)? = null
+
     interface ChatBarListener {
         fun sendMessage(messageText: String)
         fun requestMicPermission()
         fun showError(connectionFailedError: Int)
+        fun checkAsrEnabled(): Boolean
+        fun getAsrDisabledMessage(): String
     }
 
     init {
@@ -88,11 +97,36 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             resetLayoutState()
         }
         binding.inputLayout.imgAction.setOnClickListener {
+
             if (binding.inputLayout.etMessage.text.isNullOrEmpty()) {
-                checkPermissionAndStartListening()
+                if (listener?.checkAsrEnabled() == true) {
+                    checkPermissionAndStartListening()
+                } else {
+                    // show tooltip
+                    val balloon = Balloon.Builder(context!!)
+                        .setWidthRatio(0.9f)
+                        .setHeight(BalloonSizeSpec.WRAP)
+                        .setText(listener?.getAsrDisabledMessage() ?: "")
+                        .setTextColorResource(R.color.masaPrimaryColor)
+                        .setTextSize(15f)
+                        .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                        .setArrowSize(10)
+                        .setArrowPosition(0.5f)
+                        .setPadding(8)
+                        .setCornerRadius(8f)
+                        .setBackgroundColorResource(R.color.masaSecondaryColor)
+                        .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
+                        .build()
+                    balloon.showAlignTop(binding.inputLayout.imgAction)
+
+
+                    balloon.dismissWithDelay(2000L)
+                }
             } else {
                 sendMessage()
             }
+
+
         }
         binding.listenLayout.root.setOnClickListener {
             resetLayoutState()
@@ -184,7 +218,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     }
 
     private fun playAudio(ttsItem: TtsItem) {
-        TTSStreamHelper.getInstance(this.context).startStreaming(ttsItem.ttsId, ttsItem.isDynamic)
+        TTSStreamHelper.getInstance(this.context)
+            .startStreaming(ttsItem.ttsId, ttsItem.isDynamic, ttsItem.ttsText)
         CoroutineScope(Dispatchers.Main).launch {
             mVoiceRecorder?.stop()
             actionStatus = ChatBarStatus.PlayingAudio
@@ -206,6 +241,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         }
         audioList?.clear()
         TTSStreamHelper.getInstance(this.context).stopStream()
+        resultListener?.invoke(true)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -275,6 +311,10 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         binding.inputLayout.root.makeVisible()
         binding.inputLayout.etMessage.inputType =
             InputType.TYPE_CLASS_TEXT
+        AppUtils.requestFocus(context, binding.inputLayout.etMessage)
+    }
+
+    fun requestEditTextFocus() {
         AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
 

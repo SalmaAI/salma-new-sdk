@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="60dp">
 
-
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/aviListening"
         style="@style/AVLoadingIndicatorView"
@@ -18,28 +17,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvSpeak"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/speak_im_listening"
-        android:textColor="?attr/textFieldTextColor"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/small_margin"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSpeak"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/progress_listen" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvSpeak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speak_im_listening"
+            android:textColor="?attr/textFieldTextColor"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/imageView"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            app:indicatorColor="@android:color/white"
+            app:indicatorName="BallPulseIndicator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSpeak" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

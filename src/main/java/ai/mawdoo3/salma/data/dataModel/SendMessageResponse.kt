@@ -13,6 +13,8 @@ data class SendMessageResponse(
     @Json(name = "date") val date: String,
     @Json(name = "requestText") val requestText: String,
     @Json(name = "historyApiKey") val historyApiKey: String,
+    @Json(name = "asrDisabledMessage") val asrDisabledMessage: String?,
+    @Json(name = "asrEnabled") val asrEnabled: Boolean?,
     @Json(name = "messages") val messages: List<MessageResponse>
 )
 
@@ -21,6 +23,7 @@ data class MessageResponse(
     @Json(name = "messageType") val type: String,
     @Json(name = "ttsId") val ttsId: String?,
     @Json(name = "ttsDynamic") val ttsDynamic: Boolean,
+    @Json(name = "ttsText") val ttsText: String?,
     @Json(name = "content") val messageContent: MessageContentResponse
 ) {
     @JsonClass(generateAdapter = true)
@@ -291,13 +294,14 @@ data class MessageResponse(
                         PropertyType.CurrencyToValue -> {
                             currencyMessageUiModel.toValue = property.value.toString()
                         }
-
-                        else -> {}
+                        PropertyType.CurrencyExchangeRate -> {
+                            currencyMessageUiModel.exchangeRate = property.value.toString()
+                        }
+                        else -> {
+                        }
                     }
                 }
-                messageContent.text?.let { exchangeRate ->
-                    currencyMessageUiModel.exchangeRate = exchangeRate
-                }
+
                 messages.add(currencyMessageUiModel)
             } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredKeyValueList) {
                 //create items list UI model

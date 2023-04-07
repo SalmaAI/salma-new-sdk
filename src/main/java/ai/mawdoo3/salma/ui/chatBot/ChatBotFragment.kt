@@ -374,6 +374,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             binding.chatBarView.showTextKeyPad()
         }
 
+        binding.chatBarView.resultListener = { item ->
+            if (viewModel.openNumberKeyPad.value == true) {
+                binding.chatBarView.requestEditTextFocus()
+            }
+        }
     }
 
     override fun onPause() {
@@ -426,7 +431,8 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
      * otherwise will show message for user to request location permission
      */
     private fun checkLocationPermission() {
-        val permissionsGranted: Boolean = isAllGranted(Permission.ACCESS_FINE_LOCATION)
+        val permissionsGranted: Boolean =
+            isAllGranted(Permission.ACCESS_FINE_LOCATION) || isAllGranted(Permission.ACCESS_COARSE_LOCATION)
         if (permissionsGranted) {
             requestCurrentLocation()
         } else {//show location permission card
@@ -505,7 +511,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.CALL_PHONE -> {
                             makeCall()
                         }
-                        Permission.ACCESS_FINE_LOCATION -> {
+                        Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION -> {
                             requestCurrentLocation()
                         }
                         else -> {
@@ -521,7 +527,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.CALL_PHONE -> {
                             R.string.call_permission_message
                         }
-                        Permission.ACCESS_FINE_LOCATION -> {
+                        Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION -> {
                             R.string.location_permission_message
                         }
                         else -> {
@@ -544,6 +550,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
      * this method will be called when user click send button
      */
     override fun sendMessage(messageText: String) {
+
         binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
         AppUtils.hideKeyboard(activity, binding.chatBarView)
         viewModel.sendMessage(text = messageText, payload = messageText)
@@ -562,6 +569,14 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun showError(connectionFailedError: Int) =
         showSnackbarMessage(connectionFailedError)
+
+    override fun checkAsrEnabled(): Boolean {
+        return viewModel.asrEnabled
+    }
+
+    override fun getAsrDisabledMessage(): String {
+        return viewModel.asrDisabledMessage
+    }
 
 
     private fun scrollToBottom() =

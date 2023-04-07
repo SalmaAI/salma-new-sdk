@@ -28,6 +28,7 @@ class InformationalListMessageViewHolder(
                 )
                 adapter.setItems(items.subList(0, 2))
             } else {
+                btnMore.makeGone()
                 adapter.setItems(items)
             }
             btnMore.setOnClickListener {
