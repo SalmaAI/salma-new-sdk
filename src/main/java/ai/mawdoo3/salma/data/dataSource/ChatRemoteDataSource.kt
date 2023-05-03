@@ -1,6 +1,8 @@
 package ai.mawdoo3.salma.data.dataSource
 
 import ai.mawdoo3.salma.MasaSdkInstance
+import ai.mawdoo3.salma.data.dataModel.HistoryResponse
+import ai.mawdoo3.salma.data.dataModel.MessagesHistoryRequest
 import ai.mawdoo3.salma.data.dataModel.SendMessageRequest
 import ai.mawdoo3.salma.data.dataModel.SendMessageResponse
 import ai.mawdoo3.salma.remote.MasaApiEndpoints
@@ -23,12 +25,30 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
                 .build()
 
             val result = endpoints.sendMessage(
-                MasaSdkInstance.botId,
-                MasaSdkInstance.botChannelId,
-                body.part(0),
-                body.part(1),
-                body.part(2),
-                body.part(3)
+                botId = MasaSdkInstance.botId,
+                botChannelId = MasaSdkInstance.botChannelId,
+                userId = body.part(0),
+                message = body.part(1),
+                secretKey = body.part(2),
+                mobileJWT = body.part(3),
+                newSession = sendMessageRequest.newSession
+            )
+            RepoResponse.create(result)
+        } catch (e: Exception) {
+            RepoResponse.create(e)
+        }
+    }
+
+    suspend fun getHistory(
+        request: MessagesHistoryRequest,
+        userId: String
+    ): RepoResponse<List<HistoryResponse>>? {
+        return try {
+            val result = endpoints.getHistory(
+                botId = MasaSdkInstance.botId,
+                botChannelId = MasaSdkInstance.botChannelId,
+                userId = userId,
+                body = request
             )
             RepoResponse.create(result)
         } catch (e: Exception) {

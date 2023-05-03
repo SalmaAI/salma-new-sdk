@@ -1,7 +1,10 @@
-package ai.mawdoo3.salma.remote
+package ai.mawdoo3.salma.module
 
 
 import ai.mawdoo3.salma.BuildConfig
+import ai.mawdoo3.salma.remote.AppAuthenticator
+import ai.mawdoo3.salma.remote.AuthorizationInterceptor
+import ai.mawdoo3.salma.remote.MasaApiEndpoints
 import ai.mawdoo3.salma.utils.DefaultIfNullFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -11,6 +14,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 @JvmField
@@ -24,7 +28,7 @@ val remoteModule = module {
         //adapter
     }
     single(named("masaAuthInterceptor")) {
-        AuthorizationInterceptor()
+        AuthorizationInterceptor(get())
     }
 
     single(named("masaAuth")) {
@@ -34,9 +38,10 @@ val remoteModule = module {
     //create OkHttpClient
     single(named("masaOkhttpClient")) {
         val builder = OkHttpClient.Builder()
-//            .readTimeout(20, TimeUnit.SECONDS)
-//            .writeTimeout(20, TimeUnit.SECONDS)
-//            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(6, TimeUnit.MINUTES)
+            .writeTimeout(6, TimeUnit.MINUTES)
+            .connectTimeout(6, TimeUnit.MINUTES)
+            .callTimeout(6, TimeUnit.MINUTES)
 
         builder.addInterceptor(get<AuthorizationInterceptor>(named("masaAuthInterceptor")))
         builder.authenticator(get<AppAuthenticator>(named("masaAuth")))

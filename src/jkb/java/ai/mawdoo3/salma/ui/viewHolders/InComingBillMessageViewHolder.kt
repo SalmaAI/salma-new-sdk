@@ -61,17 +61,23 @@ class InComingBillMessageViewHolder(
                 if (buttonIndex > 0 && buttonIndex == billMessageItem?.buttons.size - 1) {
                     textColor = ContextCompat.getColor(
                         this.root.context,
-                        R.color.masaSecondaryActionColor
+                        R.color.masaPrimaryActionColor
                     )
                 }
                 actionButton.setTextColor(textColor)
-                actionButton.setOnClickListener {
-                    if (ButtonType.from(button.type) == ButtonType.PhoneNumber) {
-                        viewModel.openDialUp.postValue(button.value)
-                    } else if (ButtonType.from(button.type) == ButtonType.WebUrl) {
-                        viewModel.openLink.postValue(button.value)
-                    } else if (ButtonType.from(button.type) == ButtonType.PostBack) {
-                        viewModel.sendMessage(text = button.title, payload = button.value)
+                if (!billMessageItem.isHistory) {
+                    actionButton.setOnClickListener {
+                        when {
+                            ButtonType.from(button.type) == ButtonType.PhoneNumber -> {
+                                viewModel.openDialUp.postValue(button.value)
+                            }
+                            ButtonType.from(button.type) == ButtonType.WebUrl -> {
+                                viewModel.openLink.postValue(button.value)
+                            }
+                            ButtonType.from(button.type) == ButtonType.PostBack -> {
+                                viewModel.sendMessage(text = button.title, payload = button.value)
+                            }
+                        }
                     }
                 }
 

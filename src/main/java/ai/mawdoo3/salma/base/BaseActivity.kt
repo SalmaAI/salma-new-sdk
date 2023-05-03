@@ -1,24 +1,71 @@
 package ai.mawdoo3.salma.base
 
 import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.base.BaseActivity.Constants.BROADCAST_SESSION_ENDED
+import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.LocalizationHelper
+import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import org.koin.android.ext.android.inject
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
+open class BaseActivity : AppCompatActivity(), AppUtils.SessionListener {
 
-open class BaseActivity : AppCompatActivity() {
-    private val preferencesHelper: SharedPreferences by inject()
     var currentLanguage: String = ""
 
+    object Constants {
+        const val BROADCAST_SESSION_ENDED = "BROADCAST_SESSION_ENDED"
+    }
+
+    private fun registerBroadcast() {
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(broadCastReceiver, IntentFilter(BROADCAST_SESSION_ENDED))
+    }
+
+    private fun unregisterBroadcast() {
+        LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(broadCastReceiver)
+    }
+
+    private val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            when (intent?.action) {
+                BROADCAST_SESSION_ENDED -> {
+                    AppUtils.sessionEndedDialog(
+                        this@BaseActivity,
+                        R.string.session_time_title,
+                        R.string.session_expired,
+                        this@BaseActivity
+                    )
+                }
+            }
+        }
+    }
+
+    override fun onSessionEnded() {
+        this.finish()
+    }
+
+    override fun onDestroy() {
+        unregisterBroadcast()
+        super.onDestroy()
+    }
+
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        val intent = Intent("BROADCAST_FROM_APP_FOREGROUNDED")
+        intent.putExtra("data", "BotMainActivity")
+        intent.putExtra("onUserInteractionTriggered", true)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         theme.applyStyle(R.style.Theme_Banking_Masa, true)
-        //enable this if we want to support arabic/english localization in salma library
-//        currentLanguage = LocalizationHelper.getCurrentLocale(this)
         currentLanguage = LocalizationHelper.LANG_ARABIC
         if (currentLanguage == LocalizationHelper.LANG_ARABIC) {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL;
@@ -26,21 +73,11 @@ open class BaseActivity : AppCompatActivity() {
             window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR;
         }
         super.onCreate(savedInstanceState)
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-//        val language = LocalizationHelper.getCurrentLocale(this)
-//        if (currentLanguage != language) {
-//            recreate()
-//        }
+        registerBroadcast()
     }
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocalizationHelper.onAttach(newBase))
     }
-
-
 }
 

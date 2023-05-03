@@ -40,7 +40,7 @@ fun TextView.getTextLineCount(text: String, lineCount: (Int) -> (Unit)) {
                     TextViewCompat.setPrecomputedText(textView, text)
                     lineCount.invoke(textView.lineCount)
                 } catch (e: Exception) {
-
+                    e.printStackTrace()
                 }
             }
         }

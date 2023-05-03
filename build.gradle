@@ -16,11 +16,21 @@ ext.exp_player_version = "2.13.2"
 protobuf {
     protoc {
         // must match protobuf-javalite version
-        artifact = 'com.google.protobuf:protoc:3.11.0'
+        if (osdetector.os == "osx") {
+            artifact = 'com.google.protobuf:protoc:3.14.0:osx-x86_64'
+        } else {
+            artifact = 'com.google.protobuf:protoc:3.14.0'
+        }
     }
     plugins {
         grpc {
-            artifact = "io.grpc:protoc-gen-grpc-java:$grpc_lib"
+
+
+            if (osdetector.os == "osx") {
+                artifact = 'io.grpc:protoc-gen-grpc-java:1.35.0:osx-x86_64'
+            } else {
+                artifact = "io.grpc:protoc-gen-grpc-java:$grpc_lib"
+            }
         }
     }
     generateProtoTasks {
@@ -38,14 +48,12 @@ protobuf {
 
 android {
     with flavorConfig
-    compileSdkVersion 30
+    compileSdkVersion 32
 
     defaultConfig {
         //applicationId "ai.mawdoo3.salma"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 32
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -56,23 +64,21 @@ android {
         release {
             shrinkResources false
             minifyEnabled false
-            useProguard true
-            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://beta.stg-salma-ai.com/tts"')
-            buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
+            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
+            buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
+            buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
         }
         debug {
             shrinkResources false
             minifyEnabled false
-            useProguard false
-            debuggable true
-//            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr.ingress.beta.mawdu.com"') // production
-            buildConfigField("String", "TTS_URL", '"https://beta.stg-salma-ai.com/tts"')
-            buildConfigField("String", "BOT_API_BASE_URL", '"https://jkb-chatbot-builder.mawdu.com/webhook/mobile/"')
+            //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
+            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
+            buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
+            buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
         }
     }
 
@@ -105,17 +111,12 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
 
-    //location services
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     //Dependency ejection
     implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
-
-    //lottie animation
-    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -135,8 +136,8 @@ dependencies {
 
     //Networking
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.2.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
     //Moshi
     implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
@@ -183,5 +184,13 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-core:$exp_player_version"
     implementation "com.google.android.exoplayer:exoplayer-dash:$exp_player_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exp_player_version"
+
+    //location services
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    implementation 'me.saket:better-link-movement-method:2.2.0'
+
+    implementation "com.github.skydoves:balloon:1.4.1"
+
 }
 

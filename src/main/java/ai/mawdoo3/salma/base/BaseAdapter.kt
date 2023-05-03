@@ -2,6 +2,7 @@ package ai.mawdoo3.salma.base
 
 import ai.mawdoo3.salma.databinding.MasaLoaderRowBinding
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,19 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>() {
 
-    private var currentState: EnumState = EnumState.STATE_NORMAL
+    internal var currentState: EnumState = EnumState.STATE_NORMAL
     protected var list = mutableListOf<M>()
-    private var rvHandler: Handler = Handler()
+    var rvHandler: Handler = Handler()
     protected var onItemClickListener: OnItemClickListener<M>? = null
 
 
-    fun isEmpty(): Boolean {
-        return list.isEmpty()
-    }
+    open fun isEmpty(): Boolean = list.isEmpty()
 
-    fun isLastItem(position: Int): Boolean {
-        return (position == list.size - 1)
-    }
+
+    open fun isLastItem(position: Int): Boolean = (position == list.size - 1)
 
 
 /*
@@ -52,20 +50,22 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
                 currentState = EnumState.STATE_NORMAL
                 removeItem(list.size)
                 notifyItemRemoved(list.size)
+            } else {
+                Log.d("", "")
             }
         }
     }
 
-    fun isLoading(): Boolean {
-        return currentState == EnumState.STATE_LOADING
-    }
+    fun isLoading(): Boolean = currentState == EnumState.STATE_LOADING
 
-    fun addItem(item: M) {
+
+    open fun addItem(item: M) {
         rvHandler.post {
             list.add(item)
             notifyItemChanged(list.size - 1)
         }
     }
+
 
     fun addItems(items: List<M>) {
         rvHandler.post {
@@ -74,7 +74,14 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun removeItem(position: Int) {
+    fun addItems(items: List<M>, position: Int) {
+        rvHandler.post {
+            list.addAll(position, items)
+            notifyItemRangeInserted(position, items.size - 1)
+        }
+    }
+
+    open fun removeItem(position: Int) {
         if (list.size > position) {
             rvHandler.post {
                 list.removeAt(position)
@@ -83,7 +90,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun updateItem(item: M, position: Int) {
+    open fun updateItem(item: M, position: Int) {
         rvHandler.post {
             if (position >= 0 && position < list.size) {
                 list.add(position, item)
@@ -92,7 +99,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun clear() {
+    open fun clear() {
         rvHandler.post {
             currentState = EnumState.STATE_NORMAL
             list.clear()
@@ -100,34 +107,31 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
         }
     }
 
-    fun getItem(position: Int): M? {
-        return if (position >= 0 && position < list.size) {
-            list[position]
-        } else {
-            null
-        }
+
+    open fun getItem(position: Int): M? = if (position >= 0 && position < list.size) {
+        list[position]
+    } else {
+        null
     }
 
-    override fun getItemCount(): Int {
-        if (currentState == EnumState.STATE_LOADING) {
-            return list.size + 1
-        } else {
-            return list.size
-        }
+
+    override fun getItemCount(): Int = if (currentState == EnumState.STATE_LOADING) {
+        list.size + 1
+    } else {
+        list.size
     }
 
-    fun getListCount(): Int {
-        return list.size
-    }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (position >= list.size)
-            EnumState.STATE_LOADING.viewType()
-        else EnumState.STATE_NORMAL.viewType()
-    }
+    fun getListCount(): Int = list.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): V {
-        return if (viewType == EnumState.STATE_LOADING.viewType()) {
+
+    override fun getItemViewType(position: Int): Int = if (position >= list.size)
+        EnumState.STATE_LOADING.viewType()
+    else EnumState.STATE_NORMAL.viewType()
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): V =
+        if (viewType == EnumState.STATE_LOADING.viewType()) {
             LoaderViewHolder(
                 MasaLoaderRowBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -136,7 +140,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
                 )
             ) as (V)
         } else getViewHolder(parent, viewType)
-    }
+
 
     override fun onBindViewHolder(holder: V, position: Int) {
         if (holder is LoaderViewHolder) {
@@ -163,6 +167,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     //todo should be inner class
     class LoaderViewHolder(binding: MasaLoaderRowBinding) : BaseViewHolder<Nothing>(binding) {
         override fun bind(position: Int, item: Nothing?) = bind<MasaLoaderRowBinding> {
+            Log.d("", "$position $item")
         }
     }
 

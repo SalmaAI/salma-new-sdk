@@ -4,6 +4,7 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.data.enums.MessageType
 import ai.mawdoo3.salma.data.enums.PropertyType
 import ai.mawdoo3.salma.utils.AppUtils
+import android.text.InputType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -11,6 +12,9 @@ import com.squareup.moshi.JsonClass
 data class SendMessageResponse(
     @Json(name = "date") val date: String,
     @Json(name = "requestText") val requestText: String,
+    @Json(name = "historyApiKey") val historyApiKey: String,
+    @Json(name = "asrDisabledMessage") val asrDisabledMessage: String?,
+    @Json(name = "asrEnabled") val asrEnabled: Boolean?,
     @Json(name = "messages") val messages: List<MessageResponse>
 )
 
@@ -19,12 +23,14 @@ data class MessageResponse(
     @Json(name = "messageType") val type: String,
     @Json(name = "ttsId") val ttsId: String?,
     @Json(name = "ttsDynamic") val ttsDynamic: Boolean,
+    @Json(name = "ttsText") val ttsText: String?,
     @Json(name = "content") val messageContent: MessageContentResponse
 ) {
     @JsonClass(generateAdapter = true)
     data class MessageContentResponse(
         @Json(name = "text") val text: String?,
         @Json(name = "url") val url: String?,
+        @Json(name = "useButtons") val useButtons: Boolean?,
         @Json(name = "elements") val elements: List<Element>?,
         @Json(name = "properties") val properties: List<Property>?,
         @Json(name = "attachmentId") val attachmentId: String?
@@ -38,7 +44,8 @@ data class MessageResponse(
             @Json(name = "buttons") val buttons: List<ActionButton>?,
             @Json(name = "globalButton") val globalButton: ActionButton?,
             @Json(name = "quickReplyPayload") val quickReplyPayload: String?,
-            @Json(name = "quickReplyType") val quickReplyType: String?
+            @Json(name = "quickReplyType") val quickReplyType: String?,
+            @Json(name = "payload") val payload: String?
         ) {
             @JsonClass(generateAdapter = true)
             data class ActionButton(
@@ -58,7 +65,7 @@ data class MessageResponse(
     }
 
     inner class Factory {
-        fun create(): List<MessageUiModel>? {
+        fun create(): List<MessageUiModel> {
             val messageType = MessageType.from(type)
             val messages = ArrayList<MessageUiModel>()
             if (messageType == MessageType.Text || messageType == MessageType.UnansweredText) {
@@ -68,7 +75,15 @@ data class MessageResponse(
                         time = AppUtils.getCurrentTime()
                     )
                 )
-            } else if (messageType == MessageType.NumberKeyPad) {
+            } else if (messageType == MessageType.Location || messageType == MessageType.UnansweredLocation) {
+                messages.add(
+                    TextMessageUiModel(
+                        messageContent.text, MessageSender.Masa,
+                        time = AppUtils.getCurrentTime(),
+                        showLocation = true
+                    )
+                )
+            } else if (messageType == MessageType.NumberKeyPad || messageType == MessageType.UnansweredNumberKeyPad) {
                 messages.add(
                     TextMessageUiModel(
                         messageContent.text, MessageSender.Masa,
@@ -76,7 +91,17 @@ data class MessageResponse(
                     )
                 )
                 messages.add(
-                    KeyPadUiModel()
+                    KeyPadUiModel(inputType = InputType.TYPE_CLASS_NUMBER)
+                )
+            } else if (messageType == MessageType.TextKeyPad || messageType == MessageType.UnansweredTextKeyPad) {
+                messages.add(
+                    TextMessageUiModel(
+                        messageContent.text, MessageSender.Masa,
+                        time = AppUtils.getCurrentTime()
+                    )
+                )
+                messages.add(
+                    KeyPadUiModel(inputType = InputType.TYPE_CLASS_TEXT)
                 )
             } else if (messageType == MessageType.QuickReply || messageType == MessageType.UnansweredQuickReply) {
                 messages.add(
@@ -140,15 +165,42 @@ data class MessageResponse(
                     element.buttons?.forEach {
                         buttons.add(ButtonUiModel(it.type, it.title, it.value ?: "", it.function))
                     }
-                    val date = element.subTitle?.split("\\n\\n")?.get(0)
-                    val amount = element.subTitle?.split("\\n\\n")?.get(1)
+
+//                    val date = element.subTitle?.split("\\n\\n")?.get(0)
+                    val amount = element.subTitle
                     messages.add(
                         BillsMessageUiModel(
                             title = element.title,
                             image = element.image,
-                            date = date,
+                            date = null,
                             amount = amount,
                             buttons = buttons,
+                            messageSender = MessageSender.Masa
+                        )
+                    )
+                }
+
+            } else if (messageType == MessageType.CardsList || messageType == MessageType.UnansweredCardsList) {
+                //if there is text for content add text message before cards
+                messageContent.text?.let {
+                    messages.add(
+                        TextMessageUiModel(
+                            messageContent.text,
+                            MessageSender.Masa,
+                            time = AppUtils.getCurrentTime()
+                        )
+                    )
+                }
+                //add cards(credit, debit, prepaid) UI model to messages list
+                messageContent.elements?.forEach { element ->
+                    messages.add(
+                        CardUiModel(
+                            cardNumber = element.title,
+                            image = element.image?.toInt(),
+                            holderName = element.subTitle,
+                            expiryDate = element.optionalInfo,
+                            cardId = element.payload,
+                            name = null,
                             messageSender = MessageSender.Masa
                         )
                     )
@@ -175,23 +227,54 @@ data class MessageResponse(
                         )
                     )
                 }
-                messageContent.elements?.forEach { element ->
-                    var globalButton: ButtonUiModel? = null
-                    element.globalButton?.let {
-                        globalButton = ButtonUiModel(it.type, it.title, it.value ?: "", it.function)
+                if (messageContent.useButtons == true) {//add informational card with global and action buttons
+                    val informationalMessages = ArrayList<InformationalMessageUiModel>()
+                    messageContent.elements?.forEach { element ->
+                        var globalButton: ButtonUiModel? = null
+                        element.globalButton?.let {
+                            globalButton =
+                                ButtonUiModel(it.type, it.title, it.value ?: "", it.function)
+                        }
+                        val buttons = ArrayList<ButtonUiModel>()
+                        element.buttons?.forEach {
+                            buttons.add(
+                                ButtonUiModel(
+                                    it.type,
+                                    it.title,
+                                    it.value ?: "",
+                                    it.function
+                                )
+                            )
+                        }
+                        val informationalMessage = InformationalMessageUiModel(
+                            element.title,
+                            element.subTitle,
+                            element.optionalInfo,
+                            globalButton,
+                            buttons, MessageSender.Masa
+                        )
+                        //add all informational items in one list
+                        informationalMessages.add(informationalMessage)
                     }
-                    val buttons = ArrayList<ButtonUiModel>()
-                    element.buttons?.forEach {
-                        buttons.add(ButtonUiModel(it.type, it.title, it.value ?: "", it.function))
+                    if (informationalMessages.isNotEmpty()) {
+                        messages.add(
+                            InformationalListMessageUiModel(
+                                informationalMessages,
+                                MessageSender.Masa
+                            )
+                        )
                     }
-                    val informationalMessage = InformationalMessageUiModel(
-                        element.title,
-                        element.subTitle,
-                        element.optionalInfo,
-                        globalButton,
-                        buttons, MessageSender.Masa
-                    )
-                    messages.add(informationalMessage)
+                } else {
+                    //clickable cards items for ex: beneficiaries list
+                    messageContent.elements?.forEach { element ->
+                        val listItemMessage = ListItemMessageUiModel(
+                            element.title,
+                            element.subTitle,
+                            element.optionalInfo,
+                            element.payload
+                        )
+                        messages.add(listItemMessage)
+                    }
                 }
             } else if (messageType == MessageType.PropertiesCard || messageType == MessageType.UnansweredPropertiesCard) {
                 val currencyMessageUiModel = CurrencyMessageUiModel(MessageSender.Masa)
@@ -211,13 +294,27 @@ data class MessageResponse(
                         PropertyType.CurrencyToValue -> {
                             currencyMessageUiModel.toValue = property.value.toString()
                         }
-
+                        PropertyType.CurrencyExchangeRate -> {
+                            currencyMessageUiModel.exchangeRate = property.value.toString()
+                        }
+                        else -> {
+                        }
                     }
                 }
-                messageContent.text?.let { exchangeRate ->
-                    currencyMessageUiModel.exchangeRate = exchangeRate
-                }
+
                 messages.add(currencyMessageUiModel)
+            } else if (messageType == MessageType.KeyValueList || messageType == MessageType.UnansweredKeyValueList) {
+                //create items list UI model
+                val items = ArrayList<DropdownListItem>()
+                messageContent.elements?.forEach { element ->
+                    items.add(DropdownListItem(element.title, element.payload))
+                }
+                //if there is text for content add it as title of list
+                var title = ""
+                messageContent.text?.let {
+                    title = messageContent.text
+                }
+                messages.add(DropdownListUiModel(title = title, items = items))
             }
 
             return messages

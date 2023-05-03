@@ -107,7 +107,7 @@ class MyBindingAdapters {
                     }
                 }
                 if (!name.isNullOrEmpty()) {
-                    welcomeMessage += "{ $name}"
+                    welcomeMessage += " $name"
                 }
             } else {
                 var newName = ""

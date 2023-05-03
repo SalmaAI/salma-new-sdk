@@ -8,22 +8,30 @@
     <fragment
         android:id="@+id/chatBotFragment"
         android:name="ai.mawdoo3.salma.ui.chatBot.ChatBotFragment"
-        android:label="fragment_chat_bot"
+        android:label="@string/app_title"
         tools:layout="@layout/fragment_chat_bot">
         <action
             android:id="@+id/action_chatBotFragment_to_rateAnswerDialogFragment"
             app:destination="@id/rateAnswerDialogFragment" />
+        <action
+            android:id="@+id/action_chatBotFragment_to_helpFragment"
+            app:destination="@id/helpFragment" />
     </fragment>
 
     <dialog
         android:id="@+id/rateAnswerDialogFragment"
         android:name="ai.mawdoo3.salma.ui.RateAnswerDialogFragment"
-        android:label="RateAnswerDialogFragment"
+        android:label="@string/app_title"
         tools:layout="@layout/rate_answer_dialog">
 
         <argument
             android:name="answerID"
             app:argType="string" />
     </dialog>
+    <fragment
+        android:id="@+id/helpFragment"
+        tools:layout="@layout/fragment_help"
+        android:name="ai.mawdoo3.salma.ui.chatBot.HelpFragment"
+        android:label="@string/about_app_title" />
 
 </navigation>

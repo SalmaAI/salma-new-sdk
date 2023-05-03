@@ -10,6 +10,7 @@ import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
 import android.view.LayoutInflater
+import android.view.View
 
 class QuickRepliesMessageViewHolder(
     val binding: QuickRepliesMessageItemBinding,
@@ -20,6 +21,7 @@ class QuickRepliesMessageViewHolder(
         return bind<QuickRepliesMessageItemBinding> {
             binding.root.makeVisible()
             this.tvMore.makeGone()
+            this.tvLess.makeGone()
             this.message = item as QuickReplyMessageUiModel?
             binding.quickRepliesLayout.removeAllViews()
             var totalRepliesChar = 0
@@ -32,12 +34,14 @@ class QuickRepliesMessageViewHolder(
                         false
                     ).apply {
                         this.quickReply = quickReplyElement
-                        this.tvText.setOnClickListener {
-                            viewModel.sendMessage(
-                                text = quickReplyElement.title,
-                                payload = quickReplyElement.quickReplyPayload!!
-                            )
-                            binding.root.makeGone()
+                        if (!item.isHistory) {
+                            this.tvText.setOnClickListener {
+                                viewModel.sendMessage(
+                                    text = quickReplyElement.title,
+                                    payload = quickReplyElement.quickReplyPayload!!
+                                )
+                                binding.root.makeGone()
+                            }
                         }
                     }
                     binding.quickRepliesLayout.addView(quickReplyItem.root)
@@ -48,11 +52,12 @@ class QuickRepliesMessageViewHolder(
                         this.tvMore.makeVisible()
                         this.tvMore.setOnClickListener {
                             it.makeGone()
+                            this.tvLess.makeVisible()
                             loadMoreOptions(
                                 item.replies.subList(
                                     quickReplyIndex + 1,
                                     item.replies.size
-                                )
+                                ), item.isHistory
                             )
                         }
                         break
@@ -64,24 +69,35 @@ class QuickRepliesMessageViewHolder(
     }
 
     private fun loadMoreOptions(
-        subList: List<MessageResponse.MessageContentResponse.Element>
+        subList: List<MessageResponse.MessageContentResponse.Element>, isHistory: Boolean
     ) {
+        val moreOptionsList = ArrayList<View>()
         subList.forEach { quickReplyElement ->
-            binding.quickRepliesLayout.addView(
-                QuickReplyItemBinding.inflate(
-                    LayoutInflater.from(binding.quickRepliesLayout.context),
-                    null,
-                    false
-                ).apply {
-                    this.quickReply = quickReplyElement
+            val quickReplyItem = QuickReplyItemBinding.inflate(
+                LayoutInflater.from(binding.quickRepliesLayout.context),
+                null,
+                false
+            ).apply {
+                this.quickReply = quickReplyElement
+                if (!isHistory) {
                     this.root.setOnClickListener {
                         viewModel.sendMessage(
                             text = quickReplyElement.title,
                             payload = quickReplyElement.quickReplyPayload!!
                         )
                     }
-                }.root
-            )
+                }
+            }.root
+            binding.quickRepliesLayout.addView(quickReplyItem)
+            moreOptionsList.add(quickReplyItem)
+
+        }
+        binding.tvLess.setOnClickListener {
+            binding.tvLess.makeGone()
+            moreOptionsList.forEach {
+                binding.quickRepliesLayout.removeView(it)
+            }
+            binding.tvMore.makeVisible()
         }
     }
 }

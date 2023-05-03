@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="quickReply"
+            type="ai.mawdoo3.salma.data.dataModel.MessageResponse.MessageContentResponse.Element" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{quickReply.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAlignment="viewStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="كيف تعمل ماسة؟"
+            app:fontFamily="@font/font_bold"
+            android:textColor="?attr/titleTextColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="@dimen/large_margin"
+             />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

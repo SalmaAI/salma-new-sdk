@@ -27,7 +27,7 @@
                 android:id="@+id/tvName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableStart='@{location.type=="branch"?@drawable/ic_branch:@drawable/ic_withdraw}'
+                android:drawableStart='@{location.type=="branch"?@drawable/ic_chatbot_branch:@drawable/ic_chatbot_withdraw}'
                 android:drawablePadding="@dimen/small_margin"
                 android:fontFamily="@font/font_bold"
                 android:text="@{location.name}"
@@ -83,7 +83,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="@string/directions"
-                    app:icon="@drawable/ic_directions"
+                    app:icon="@drawable/ic_chatbot_directions"
                     app:iconGravity="textStart" />
 
                 <com.google.android.material.button.MaterialButton
@@ -98,7 +98,7 @@
                     android:singleLine="true"
                     android:text="@string/call"
                     android:visibility="@{location.phone!=null?View.VISIBLE:View.GONE }"
-                    app:icon="@drawable/ic_call"
+                    app:icon="@drawable/ic_chatbot_call"
                     app:iconGravity="textStart" />
             </LinearLayout>
 

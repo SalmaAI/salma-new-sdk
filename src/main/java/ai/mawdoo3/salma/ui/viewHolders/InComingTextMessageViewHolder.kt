@@ -5,9 +5,13 @@ import ai.mawdoo3.salma.data.dataModel.MessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.databinding.IncomingTextMessageItemBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
+import ai.mawdoo3.salma.utils.disableWithDelay
 import ai.mawdoo3.salma.utils.getTextLineCount
 import ai.mawdoo3.salma.utils.makeGone
 import ai.mawdoo3.salma.utils.makeVisible
+import android.os.Handler
+import android.text.util.Linkify
+import me.saket.bettermovementmethod.BetterLinkMovementMethod
 
 class InComingTextMessageViewHolder(
     val binding: IncomingTextMessageItemBinding,
@@ -31,22 +35,37 @@ class InComingTextMessageViewHolder(
                             binding.tvMore.makeGone()
                     }
                 }
-            }?: run {
+            } ?: run {
                 binding.constraintView.makeGone()
             }
             binding.tvMore.setOnClickListener {
                 binding.tvMessage.maxLines = Int.MAX_VALUE
                 binding.tvMore.makeGone()
-            }
-
-            item?.text?.let {
-                if (it.contains("يرجى ارسال موقعك") || it.contains("ابعتلي موقعك")) {
-                    binding.tvLocation.makeVisible()
-                } else {
-                    binding.tvLocation.makeGone()
+                Linkify.addLinks(binding.tvMessage, Linkify.ALL)
+                binding.tvMessage.movementMethod = BetterLinkMovementMethod.newInstance().apply {
+                    setOnLinkClickListener { _, _ ->
+                        false
+                    }
                 }
             }
+
+            Handler().postDelayed({
+                Linkify.addLinks(binding.tvMessage, Linkify.ALL)
+                binding.tvMessage.movementMethod = BetterLinkMovementMethod.newInstance().apply {
+                    setOnLinkClickListener { _, _ ->
+                        false
+                    }
+                }
+            }, 200)
+
+            if (item?.showLocation == true) {
+                binding.tvLocation.makeVisible()
+            } else {
+                binding.tvLocation.makeGone()
+            }
+
             binding.tvRate.setOnClickListener {
+                binding.tvRate.disableWithDelay()
                 viewModel.rateAnswer.postValue("1")
             }
             binding.tvLocation.setOnClickListener {
