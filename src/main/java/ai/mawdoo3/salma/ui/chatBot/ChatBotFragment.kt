@@ -138,7 +138,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             gestureDetector = GestureDetector(ctx, GestureListener())
         }
 
-        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        override fun onTouch(v: View?, event: MotionEvent): Boolean {
             return gestureDetector.onTouchEvent(event)
         }
 
