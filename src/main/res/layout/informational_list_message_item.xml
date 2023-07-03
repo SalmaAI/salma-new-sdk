@@ -23,16 +23,13 @@
             tools:listitem="@layout/informational_message_item" />
 
         <com.google.android.material.button.MaterialButton
-
             android:id="@+id/btnMore"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Theme.Salma.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
             android:text="@string/show_more"
-            app:strokeColor="#FFFFFF"
-            android:textColor="#FFFFFF"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/recyclerInformationalItems" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

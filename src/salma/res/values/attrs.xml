@@ -2,6 +2,7 @@
 <resources>
     <!--    New colors -->
     <!--    Main colors-->
+
     <attr name="primaryColor" format="color" />
     <attr name="secondaryColor" format="color" />
     <attr name="accentColor" format="color" />

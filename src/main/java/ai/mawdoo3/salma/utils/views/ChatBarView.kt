@@ -93,7 +93,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             resetLayoutState()
         }
 
-        binding.audioLayout.imgMute.setOnClickListener {
+        binding.audioLayout.fabMute.setOnClickListener {
             resetLayoutState()
         }
         binding.inputLayout.imgAction.setOnClickListener {
@@ -134,7 +134,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         }
         binding.inputLayout.etMessage.doAfterTextChanged {
             if (it.isNullOrEmpty()) {
-                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_user_logo)
             } else {
                 binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
             }

@@ -35,6 +35,7 @@
             android:layout_marginBottom="@dimen/small_margin"
             android:drawableStart="@drawable/ic_chatbot_search"
             android:drawablePadding="@dimen/small_margin"
+            app:drawableTint="?attr/textFieldHintTextColor"
             android:hint="@string/chatbot_search_hint"
             android:imeOptions="actionDone"
             android:inputType="text"

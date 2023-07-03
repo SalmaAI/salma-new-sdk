@@ -11,6 +11,7 @@ import ai.mawdoo3.salma.utils.AppUtils
 import android.widget.LinearLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.button.MaterialButton
 
 
@@ -25,18 +26,17 @@ class InComingBillMessageViewHolder(
             this.linearButtons.removeAllViews()
             var buttonIndex = 0
             billMessageItem?.buttons?.forEach { button ->
-                val themeWrapper = ContextThemeWrapper(
-                    this.root.context,
-                    R.style.Theme_Salma_Button_CardButton // my button style
-                )
 
-                val actionButton = MaterialButton(themeWrapper)
-                actionButton.setBackgroundColor(
-                    AppUtils.getColorFromAttr(
-                        this.root.context,
-                        R.attr.cardButtonBackgroundColor
-                    )
-                )
+
+                val actionButton =
+                    MaterialButton(linearButtons.context, null, R.attr.cardButtonStyle)
+
+//                actionButton.setBackgroundColor(
+//                    AppUtils.getColorFromAttr(
+//                        this.root.context,
+//                        R.attr.cardButtonBackgroundColor
+//                    )
+//                )
 
                 actionButton.text = button.title
                 val params = LinearLayout.LayoutParams(
@@ -50,21 +50,27 @@ class InComingBillMessageViewHolder(
                     ).toInt(), 0, 0, 0
                 )
                 actionButton.layoutParams = params
-                //set font family
-//                val typeface = ResourcesCompat.getFont(this.root.context, R.font.font_medium)
-//                actionButton.typeface = typeface
-                var textColor = ContextCompat.getColor(
-                    this.root.context,
-                    R.color.masaPrimaryActionColor
-                )
-                //make last button color as secondary
+//                set font family
+                val typeface = ResourcesCompat.getFont(this.root.context, R.font.font_medium)
+                actionButton.typeface = typeface
+//                var textColor = ContextCompat.getColor(
+//                    this.root.context,
+//                    R.color.masaPrimaryActionColor
+//                )
+//                make last button color as secondary
                 if (buttonIndex > 0 && buttonIndex == billMessageItem?.buttons.size - 1) {
-                    textColor = ContextCompat.getColor(
+                    val textColor = ContextCompat.getColor(
                         this.root.context,
-                        R.color.masaPrimaryActionColor
+                        R.color.prussianBlue
                     )
+                    actionButton.setTextColor(textColor)
+                    val backgroundColor = androidx.core.content.ContextCompat.getColor(
+                        this.root.context,
+                        R.color.yellow
+                    )
+                    actionButton.setBackgroundColor(backgroundColor)
                 }
-                actionButton.setTextColor(textColor)
+
                 if (!billMessageItem.isHistory) {
                     actionButton.setOnClickListener {
                         when {

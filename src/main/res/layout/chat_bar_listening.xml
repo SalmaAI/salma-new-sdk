@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="wrap_content">
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/aviListening"
@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -27,22 +28,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvSpeak"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/img_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/speak_im_listening"
-            android:textColor="?attr/textFieldTextColor"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:fabCustomSize="48dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/small_margin"
+            android:visibility="visible"
+            app:borderWidth="1dp"
+            android:clickable="false"
+            app:tint="@null"
+            app:srcCompat="@drawable/ic_user_logo"
+            android:backgroundTint="?attr/actionButtonBackgroundColor"
+            app:backgroundTint="@color/yellow"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvSpeak"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_margin="@dimen/small_margin"
+            android:text="@string/speak_im_listening"
+            android:background="@drawable/edit_text_bg"
+            android:textColor="?attr/textFieldTextColor"
+            android:textAlignment="center"
+            android:gravity="center" />
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/imageView"
             style="@style/AVLoadingIndicatorView"
             android:layout_width="30dp"
             android:layout_height="25dp"
+            android:visibility="gone"
             app:indicatorColor="@android:color/white"
             app:indicatorName="BallPulseIndicator"
             app:layout_constraintBottom_toBottomOf="parent"
