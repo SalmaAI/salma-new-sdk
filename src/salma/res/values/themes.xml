@@ -16,7 +16,7 @@
         <item name="inComingMessageTextColor">@color/masaInComingMessageTextColor</item>
         <item name="outComingMessageTextColor">@color/masaOutComingMessageTextColor</item>
         <item name="currencyFieldBorderColor">@color/masaCurrencyFieldBorderColor</item>
-        <item name="progressColor">@color/masaProgressColor</item>
+        <item name="loaderColor">@color/masaProgressColor</item>
         <item name="messageTimeTextColor">@color/masaMessageTimeTextColor</item>
         <item name="amount1TextColor">@color/masaAmount1TextColor</item>
         <item name="amount2TextColor">@color/masaAmount2TextColor</item>

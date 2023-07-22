@@ -4,6 +4,7 @@ import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.databinding.FragmentHelpBinding
+import ai.mawdoo3.salma.module.FirstLibInitializer
 import ai.mawdoo3.salma.utils.setNavigationResult
 import android.os.Bundle
 import android.util.Log
@@ -13,16 +14,29 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.startup.AppInitializer
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.Scope
 
 
-class HelpFragment : BaseFragment() {
+class HelpFragment : BaseFragment(),KoinScopeComponent {
     private val viewModel: ChatBotViewModel by viewModel()
     private val adapter: HelpMessagesAdapter by inject { parametersOf(viewModel) }
     private lateinit var binding: FragmentHelpBinding
+
+    override val scope: Scope by lazy { fragmentScope() }
+
+    private val myKoin: Koin by lazy {
+        AppInitializer.getInstance(this.requireContext())
+            .initializeComponent(FirstLibInitializer::class.java)
+    }
+    override fun getKoin() = myKoin
 
 
     override fun onCreateView(

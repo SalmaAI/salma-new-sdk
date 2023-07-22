@@ -1,6 +1,6 @@
 package ai.mawdoo3.salma.ui.chatBot
 
-import ai.mawdoo3.salma.MasaSdkInstance
+import ai.mawdoo3.salma.SalmaSdkInstance
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
@@ -8,6 +8,7 @@ import ai.mawdoo3.salma.data.dataModel.*
 import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
+import ai.mawdoo3.salma.module.FirstLibInitializer
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.getNavigationResult
@@ -27,6 +28,7 @@ import android.view.View.OnTouchListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.startup.AppInitializer
 import com.afollestad.assent.GrantResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
@@ -37,10 +39,14 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.Scope
 
-class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
+class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,KoinScopeComponent {
 
     private var scrollingUp: Boolean = false
     private var phone = ""
@@ -54,6 +60,14 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
     }
 
     private var cancellationTokenSource = CancellationTokenSource()
+
+    override val scope: Scope by lazy { fragmentScope() }
+
+    private val myKoin: Koin by lazy {
+        AppInitializer.getInstance(this.requireContext())
+            .initializeComponent(FirstLibInitializer::class.java)
+    }
+    override fun getKoin() = myKoin
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -71,15 +85,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             adapter.addItem(
                 HeaderUiModel(
                     sender = MessageSender.Masa,
-                    name = MasaSdkInstance.username
+                    name = SalmaSdkInstance.username
                 )
             )
             viewModel.sendMessage("", "القائمة الرئيسية", showMessage = false, newSession = true)
         }
-        if (MasaSdkInstance.chatBarType == ChatBarType.NONE) {
+        if (SalmaSdkInstance.chatBarType == ChatBarType.NONE) {
             binding.chatBarView.makeGone()
         } else {
-            binding.chatBarView.setChatBarType(MasaSdkInstance.chatBarType)
+            binding.chatBarView.setChatBarType(SalmaSdkInstance.chatBarType)
         }
         binding.loadPrevious.setOnClickListener {
             loadMore()

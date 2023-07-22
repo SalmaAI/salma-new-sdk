@@ -12,7 +12,7 @@ import org.koin.core.context.loadKoinModules
 /**
  * created by Omar Qadomi on 3/24/21
  */
-object MasaSdkInstance {
+object SalmaSdkInstance {
     var botId: String = "1"
     var botChannelId: String = "1"
     var key: String = "1"
@@ -32,7 +32,7 @@ object MasaSdkInstance {
         launcher.launch(intent)
     }
 
-    fun setChatType(chatBarType: ChatBarType): MasaSdkInstance {
+    fun setChatType(chatBarType: ChatBarType): SalmaSdkInstance {
         this.chatBarType = chatBarType
         return this
     }
@@ -43,13 +43,13 @@ object MasaSdkInstance {
         key: String,
         username: String = ""
     ) {
-        loadKoinModules(
-            listOf(
-                ChatModule,
-                remoteModule
-            )
-
-        )
+//        loadKoinModules(
+//            listOf(
+//                ChatModule,
+//                remoteModule
+//            )
+//
+//        )
         this.botId = botId
         this.botChannelId = botChannelId
         this.key = key

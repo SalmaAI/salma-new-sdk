@@ -22,6 +22,7 @@
     <attr name="currencyFieldBorderColor" format="color" />
     <attr name="separatorColor" format="color" />
     <attr name="chipTextColor" format="color" />
+    <attr name="loaderColor" format="color" />
 
     <!-- Text filed colors-->
     <attr name="chatTextFieldHintTextColor" format="color" />

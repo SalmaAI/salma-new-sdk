@@ -1,6 +1,6 @@
 package ai.mawdoo3.salma.ui.chatBot
 
-import ai.mawdoo3.salma.MasaSdkInstance
+import ai.mawdoo3.salma.SalmaSdkInstance
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.TtsItem
@@ -75,8 +75,8 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
                 SendMessageRequest(
                     userId = PhoneUtils.getDeviceId(applicationContext),
                     message = payload,
-                    secretKey = MasaSdkInstance.key,
-                    JWT = MasaSdkInstance.jwtToken,
+                    secretKey = SalmaSdkInstance.key,
+                    JWT = SalmaSdkInstance.jwtToken,
                     newSession = newSession
                 )
             )

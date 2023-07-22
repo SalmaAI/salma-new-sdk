@@ -12,7 +12,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 
-class BotMainActivity : BaseActivity() {
+class BotMainActivity() : BaseActivity()
+//    , KoinScopeComponent
+{
     private lateinit var navController: NavController
     lateinit var binding: ActivityMainBotBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +22,7 @@ class BotMainActivity : BaseActivity() {
         binding = ActivityMainBotBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        this.supportActionBar?.title = getString(R.string.app_title)
+        this.supportActionBar?.title = getString(R.string.assistant_name)
         navController = findNavController(R.id.navHostBotMain)
         val appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(),
@@ -54,4 +56,26 @@ class BotMainActivity : BaseActivity() {
         }
         return navController.navigateUp()
     }
+
+
+//    private val myKoin: Koin by lazy {
+//        koinApplication {
+//            androidContext(this@BotMainActivity)
+//            modules(
+//                listOf(
+//                    appModule,
+//                    ChatModule,
+//                    remoteModule
+//                )
+//            )
+//        }.koin
+//    }
+//
+//    private val scopeID: ScopeID by lazy { getScopeId() }
+//
+//    override val scope : Scope by lazy {
+//        activityScope()
+//    }
+//
+//    override fun getKoin() = myKoin
 }

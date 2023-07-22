@@ -5,21 +5,27 @@ import ai.mawdoo3.salma.R.id.design_bottom_sheet
 import ai.mawdoo3.salma.base.BaseAdapter
 import ai.mawdoo3.salma.data.dataModel.DropdownListItem
 import ai.mawdoo3.salma.databinding.ListBottomSheetBinding
+import ai.mawdoo3.salma.module.FirstLibInitializer
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import androidx.startup.AppInitializer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.koin.androidx.scope.fragmentScope
+import org.koin.core.Koin
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.Scope
 
 
 /**
  * Created on 12/31/20
  */
-class ListBottomSheetFragment() : BottomSheetDialogFragment(),
+class ListBottomSheetFragment() : BottomSheetDialogFragment(),KoinScopeComponent,
     BaseAdapter.OnItemClickListener<DropdownListItem> {
 
 
@@ -32,6 +38,15 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
     lateinit var items: List<DropdownListItem>
     lateinit var listener: ListListener
     lateinit var title: String
+
+    override val scope: Scope by lazy { fragmentScope() }
+
+    private val myKoin: Koin by lazy {
+        AppInitializer.getInstance(this.requireContext())
+            .initializeComponent(FirstLibInitializer::class.java)
+    }
+    override fun getKoin() = myKoin
+
 
     companion object {
         val TAG = "ListBottomSheetFragment"

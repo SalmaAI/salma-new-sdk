@@ -26,7 +26,7 @@
     <string name="record_audio_permission_message">تحتاج ماسة للوصول إلى المايكروفون الخاص بك</string>
     <string name="record_audio_permission_button_title">الحصول على صلاحيات الوصول إلى المايكروفون</string>
     <string name="permission_denied_message">لتتمكن من اتمام هذه العملية الرجاء اعطاء الصلاحية</string>
-    <string name="app_title">ماسة</string>
+    <string name="assistant_name">ماسة</string>
     <string name="good_morning">"صباح الخير "</string>
     <string name="good_evening">مساء الخير</string>
     <string name="hello">مرحباً</string>
@@ -38,8 +38,8 @@
     <string name="text_copied">تم نسخ النص</string>
     <string name="equals">تساوي</string>
     <string name="chatbot_search_hint">بحث</string>
-    <string name="about_app_title">عن ماسة</string>
-    <string name="help_hello_title">مرحباً ! أنا ماسة،</string>
+    <string name="about_assistant_title">عن ماسة</string>
+    <string name="help_hello_title">مرحباً ! أنا %s،</string>
     <string name="help_subtitle">مساعدتك الرقمية. يمكنني مساعدتك بما يلي:</string>
     <string name="credit_mc_resolving_classic">ريفولفينغ كلاسيك</string>
     <string name="credit_mc_resolving_titanium">ريفولفينغ تيتانيوم</string>
