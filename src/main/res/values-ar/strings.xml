@@ -1,7 +1,6 @@
 <resources>
     <!-- masa-->
 
-    <string name="app_name">ماسة</string>
     <string name="try_again">يرجى إعادة المحاولة مرة أخرى</string>
     <string name="no_connection_message">الرجاء التأكد من الإتصال بالإنترنت</string>
     <string name="no_data_available">لا يوجد بيانات</string>

@@ -5,8 +5,13 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.protobuf'
     id 'kotlin-parcelize'
+//    id 'com.mobbeel.plugin'
+    id 'com.kezong.fat-aar'
+//    id 'com.github.johnrengelman.shadow'
+
+
 }
-apply from: "${rootProject.projectDir}/flavors.gradle"
+//apply from: "${rootProject.projectDir}/flavors.gradle"
 
 ext.grpc_plugin = "0.8.15"
 ext.grpc_lib = "1.35.0"
@@ -47,11 +52,28 @@ protobuf {
 
 
 android {
-    with flavorConfig
+    aaptOptions {
+        // This will force the build system to use your merge strategy
+        // instead of the default "fail" strategy for resource conflicts.
+        additionalParameters "--auto-add-overlay"
+    }
+
+//    fataar {
+//        /**
+//         * If transitive is true, local jar module and remote library's dependencies will be embed. (local aar module does not support)
+//         * If transitive is false, just embed first level dependency
+//         * Default value is false
+//         * @since 1.3.0
+//         */
+//        transitive = true
+//    }
+
+
     compileSdkVersion 32
 
     defaultConfig {
         //applicationId "ai.mawdoo3.salma"
+        resValue "string", "app_name", ""
         minSdkVersion 21
         targetSdkVersion 32
         vectorDrawables.useSupportLibrary = true
@@ -66,7 +88,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"')
+            // production
             buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
             buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
@@ -75,7 +98,8 @@ android {
             shrinkResources false
             minifyEnabled false
             //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"')
+            // production
             buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
             buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
@@ -95,35 +119,45 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
 }
 
 dependencies {
 
-    implementation "androidx.activity:activity-ktx:$activity_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    implementation "androidx.activity:activity-ktx:1.3.0-alpha07"
+    implementation "androidx.fragment:fragment-ktx:1.3.3"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:$androidx_core_version"
-    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.10"
+    implementation "androidx.core:core-ktx:1.5.0"
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "com.google.android.material:material:1.4.0"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.preference:preference-ktx:1.1.1'
+    //constraint layout
+    implementation "androidx.constraintlayout:constraintlayout:2.1.0-beta01"
 
+
+    // Architecture Components
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.0")
+
+
+    //Navigation UI
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
 
 
     //Dependency ejection
-    implementation "org.koin:koin-androidx-scope:$koin_version"
-    implementation "org.koin:koin-core:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    implementation "org.koin:koin-android:$koin_version"
-
-    // Architecture Components
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "org.koin:koin-androidx-scope:2.2.0"
+    implementation "org.koin:koin-core:2.2.0"
+    implementation "org.koin:koin-androidx-viewmodel:2.2.0"
+    implementation "org.koin:koin-android:2.2.0"
+    implementation 'androidx.startup:startup-runtime:1.1.1'
 
     //Live event for single live event
-    implementation "com.github.hadilq.liveevent:liveevent:1.2.0"
+    embed "com.github.hadilq.liveevent:liveevent:1.2.0"
 
     //Loading images
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -132,7 +166,7 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
 
     //AV loader
-    implementation 'com.wang.avi:library:2.1.3'
+    embed 'com.wang.avi:library:2.1.3'
 
     //Networking
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -144,34 +178,19 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
 
-    //Navigation UI
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_ui_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_ui_version"
 
-    //constraint layout
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    //pager indicator
-    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
-    //facebook shimmer
-    implementation 'com.facebook.shimmer:shimmer:0.4.0'
     //Gson json converter
-    implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.google.code.gson:gson:2.8.6"
 
     //Runtime permissions
-    implementation 'com.afollestad.assent:core:3.0.0-RC4'
+    embed 'com.afollestad.assent:core:3.0.0-RC4'
 
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
-    implementation 'org.apache.commons:commons-lang3:3.0'
-    //Unit test
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    embed 'org.apache.commons:commons-lang3:3.0'
 
 
     //recycler animator
-    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
+    embed 'jp.wasabeef:recyclerview-animators:4.0.2'
 
     //grpc
     implementation "io.grpc:grpc-okhttp:$grpc_lib" // CURRENT_GRPC_VERSION
@@ -186,11 +205,21 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-ui:$exp_player_version"
 
     //location services
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
-    implementation 'me.saket:better-link-movement-method:2.2.0'
+    embed 'me.saket:better-link-movement-method:2.2.0'
 
-    implementation "com.github.skydoves:balloon:1.4.1"
+    embed ('com.github.skydoves:balloon:1.4.1'){
+        exclude(group:'androidx.lifecycle', module:'lifecycle-livedata-ktx')
+        exclude(group:'androidx.lifecycle', module:'lifecycle-common-java8')
+        exclude(group:'androidx.core')
+
+    }
+
+    //Unit test
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 }
 
