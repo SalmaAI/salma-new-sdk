@@ -139,7 +139,9 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         }
 
         override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-            return gestureDetector.onTouchEvent(event)
+            return event?.let {
+                gestureDetector.onTouchEvent(event)
+            } ?: false
         }
 
         private inner class GestureListener : SimpleOnGestureListener() {
@@ -368,11 +370,11 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             startActivity(intent)
         }
 
-        viewModel.openNumberKeyPad.observe(this) {
+        viewModel.openNumberKeyPad.observe(viewLifecycleOwner) {
             binding.chatBarView.showNumberKeyPad()
         }
 
-        viewModel.openTextKeyPad.observe(this) {
+        viewModel.openTextKeyPad.observe(viewLifecycleOwner) {
             binding.chatBarView.showTextKeyPad()
         }
         binding.chatBarView.resultListener = { item ->

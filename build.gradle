@@ -48,12 +48,12 @@ protobuf {
 
 android {
     with flavorConfig
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         //applicationId "ai.mawdoo3.salma"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

@@ -42,7 +42,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     private var cancelCurrentRecord: Boolean = false
     private var audioList: ArrayList<TtsItem>? = null
     private var chatBarType: ChatBarType = ChatBarType.TEXT_AND_AUDIO
-
+    var resultListener: ((result: Boolean?) -> Unit)? = null
     interface ChatBarListener {
         fun sendMessage(messageText: String)
         fun requestMicPermission()
@@ -239,6 +239,8 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         }
         audioList?.clear()
         TTSStreamHelper.getInstance(this.context).stopStream()
+        resultListener?.invoke(true)
+
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -308,6 +310,10 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         binding.inputLayout.root.makeVisible()
         binding.inputLayout.etMessage.inputType =
             InputType.TYPE_CLASS_TEXT
+        AppUtils.requestFocus(context, binding.inputLayout.etMessage)
+    }
+
+    fun requestEditTextFocus() {
         AppUtils.requestFocus(context, binding.inputLayout.etMessage)
     }
 
