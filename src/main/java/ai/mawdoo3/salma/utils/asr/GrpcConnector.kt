@@ -63,8 +63,12 @@ object GrpcConnector {
                             }
                             CoroutineScope(Dispatchers.Main).launch {
                                 if (value.final.value) {
-                                    streamObserverSpeakChunk?.onCompleted()
-                                    ref.onFinalTranscriptionReceived(it.text.value)
+                                    try {
+                                        streamObserverSpeakChunk?.onCompleted()
+                                        ref.onFinalTranscriptionReceived(it.text.value)
+                                    } catch (e: Exception) {
+
+                                    }
                                 }
                             }
                         }
