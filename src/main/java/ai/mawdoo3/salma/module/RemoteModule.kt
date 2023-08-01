@@ -6,6 +6,7 @@ import ai.mawdoo3.salma.remote.AppAuthenticator
 import ai.mawdoo3.salma.remote.AuthorizationInterceptor
 import ai.mawdoo3.salma.remote.MasaApiEndpoints
 import ai.mawdoo3.salma.utils.DefaultIfNullFactory
+import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -42,6 +43,10 @@ val remoteModule = module {
             .writeTimeout(6, TimeUnit.MINUTES)
             .connectTimeout(6, TimeUnit.MINUTES)
             .callTimeout(6, TimeUnit.MINUTES)
+
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(OkHttpProfilerInterceptor())
+        }
 
         builder.addInterceptor(get<AuthorizationInterceptor>(named("masaAuthInterceptor")))
         builder.authenticator(get<AppAuthenticator>(named("masaAuth")))
