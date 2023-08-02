@@ -6,13 +6,11 @@
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/aviListening"
-        style="@style/AVLoadingIndicatorView"
+
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_margin="@dimen/small_margin"
         android:visibility="invisible"
-        app:indicatorColor="?attr/secondaryColor"
-        app:indicatorName="BallScaleMultipleIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,11 +38,9 @@
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/imageView"
-            style="@style/AVLoadingIndicatorView"
             android:layout_width="30dp"
             android:layout_height="25dp"
-            app:indicatorColor="@android:color/white"
-            app:indicatorName="BallPulseIndicator"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

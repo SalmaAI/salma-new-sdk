@@ -18,12 +18,9 @@
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/aviPlayingAudio"
-        style="@style/AVLoadingIndicatorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        app:indicatorColor="?attr/secondaryColor"
-        app:indicatorName="LineScalePulseOutIndicator"
         app:layout_constraintBottom_toBottomOf="@+id/imgMute"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imgMute" />

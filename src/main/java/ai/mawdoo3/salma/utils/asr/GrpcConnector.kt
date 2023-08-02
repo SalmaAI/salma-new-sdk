@@ -4,8 +4,6 @@ import ai.mawdoo3.salma.BuildConfig
 import android.content.Context
 import android.provider.Settings
 import android.util.Log
-import asr_service.Asr
-import asr_service.asr_serviceGrpc
 import com.google.protobuf.BoolValue
 import com.google.protobuf.BytesValue
 import com.google.protobuf.Int32Value

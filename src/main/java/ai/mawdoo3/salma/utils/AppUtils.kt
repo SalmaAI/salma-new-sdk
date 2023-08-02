@@ -32,6 +32,7 @@ object AppUtils {
     private var snackbar: Snackbar? = null
 
 
+   /*
     fun showSnackbarMessage(msg: String, activity: Activity, view: View?) {
         hideKeyboard(activity, view)
         view?.let {
@@ -48,6 +49,8 @@ object AppUtils {
             snackbar?.show()
         }
     }
+
+    */
 
     fun showSettingsDialog(context: Context, @StringRes message: Int) {
         val alertDialogBuilder = MaterialAlertDialogBuilder(

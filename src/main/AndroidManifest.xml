@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     package="ai.mawdoo3.salma">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,18 +13,20 @@
 
     <application
         android:name=".SalmaApplication"
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_sec_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        >
         <activity
             android:name=".ui.BotMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false"
+            >
+
+        </activity>
 
         <provider
             android:name="androidx.startup.InitializationProvider"
