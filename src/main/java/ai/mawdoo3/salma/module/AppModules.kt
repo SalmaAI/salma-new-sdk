@@ -4,9 +4,8 @@ import ai.mawdoo3.salma.utils.PreferenceHelper
 import android.content.SharedPreferences
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
 
+/*
 const val KOIN_NAME_DISPATCHER_MAIN = "DispatcherMain"
 const val KOIN_NAME_DISPATCHER_IO = "DispatcherIO"
 
@@ -24,4 +23,6 @@ val appModule = module {
     }
 
 }
+
+ */
 

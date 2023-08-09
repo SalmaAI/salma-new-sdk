@@ -2,13 +2,16 @@ package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.SalmaSdkInstance
 import ai.mawdoo3.salma.R
+import ai.mawdoo3.salma.SalmaApplication
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.dataModel.*
+import ai.mawdoo3.salma.data.dataSource.ChatRemoteDataSource
+import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.data.enums.ChatBarType
 import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.databinding.FragmentChatBotBinding
-import ai.mawdoo3.salma.module.FirstLibInitializer
+import ai.mawdoo3.salma.module.RemoteModule
 import ai.mawdoo3.salma.ui.GpsUtils
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.getNavigationResult
@@ -38,20 +41,13 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
-import org.koin.android.ext.android.inject
-import org.koin.androidx.scope.fragmentScope
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.Koin
-import org.koin.core.parameter.parametersOf
-import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.Scope
 
-class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,KoinScopeComponent {
+class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     private var scrollingUp: Boolean = false
     private var phone = ""
-    private val viewModel: ChatBotViewModel by viewModel()
-    private val adapter: MessagesAdapter by inject { parametersOf(viewModel) }
+    private lateinit var viewModel: ChatBotViewModel
+    private lateinit var adapter: MessagesAdapter
     private lateinit var binding: FragmentChatBotBinding
     private var homeMenu: MenuItem? = null
 
@@ -61,13 +57,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,KoinScopeCom
 
     private var cancellationTokenSource = CancellationTokenSource()
 
-    override val scope: Scope by lazy { fragmentScope() }
 
-    private val myKoin: Koin by lazy {
-        AppInitializer.getInstance(this.requireContext())
-            .initializeComponent(FirstLibInitializer::class.java)
-    }
-    override fun getKoin() = myKoin
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -76,6 +66,19 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener,KoinScopeCom
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         setHasOptionsMenu(true)
+
+        val remote = RemoteModule()
+
+        val chatRepo = remote.getAPIServices()?.let { ChatRemoteDataSource(it) }
+            ?.let { ChatRepository(it) }
+
+        viewModel = chatRepo?.let { context?.let { it1 ->
+            ChatBotViewModel(SalmaApplication(), it,
+                it1
+            )
+        } }!!
+        adapter = MessagesAdapter(viewModel)
+
         binding = FragmentChatBotBinding.inflate(inflater, container, false)
         binding.chatBarView.setActionsListener(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(context)

@@ -2,7 +2,6 @@ package ai.mawdoo3.salma.module
 
 
 import ai.mawdoo3.salma.BuildConfig
-import ai.mawdoo3.salma.remote.AppAuthenticator
 import ai.mawdoo3.salma.remote.AuthorizationInterceptor
 import ai.mawdoo3.salma.remote.MasaApiEndpoints
 import ai.mawdoo3.salma.utils.DefaultIfNullFactory
@@ -10,61 +9,57 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-@JvmField
-val remoteModule = module {
+open class RemoteModule {
 
-    single<Moshi>(named("masaMoshi")) {
-        Moshi.Builder()
+    private var retrofit: Retrofit? = null
+
+    fun getRetrofitInstance(): Retrofit? {
+        if (retrofit == null) {
+            retrofit = Retrofit.Builder()
+                .baseUrl(BuildConfig.BOT_API_BASE_URL)
+                .addConverterFactory(MoshiConverterFactory.create(getMoshiBuilder()))
+                .client(getOkHttpClientBuilder())
+                .build()
+        }
+        return retrofit
+    }
+
+   private fun getMoshiBuilder():Moshi{
+        return Moshi.Builder()
             .add(DefaultIfNullFactory())
             .add(KotlinJsonAdapterFactory())
             .build()
-        //adapter
-    }
-    single(named("masaAuthInterceptor")) {
-        AuthorizationInterceptor(get())
     }
 
-    single(named("masaAuth")) {
-        AppAuthenticator()
-    }
-
-    //create OkHttpClient
-    single(named("masaOkhttpClient")) {
+    private fun getOkHttpClientBuilder() : OkHttpClient{
         val builder = OkHttpClient.Builder()
             .readTimeout(6, TimeUnit.MINUTES)
             .writeTimeout(6, TimeUnit.MINUTES)
             .connectTimeout(6, TimeUnit.MINUTES)
             .callTimeout(6, TimeUnit.MINUTES)
-
-        builder.addInterceptor(get<AuthorizationInterceptor>(named("masaAuthInterceptor")))
-        builder.authenticator(get<AppAuthenticator>(named("masaAuth")))
+        builder.addInterceptor(AuthorizationInterceptor())
+        //builder.authenticator(get<AppAuthenticator>(named("masaAuth")))
 
         if (BuildConfig.DEBUG) {
             val logger = HttpLoggingInterceptor()
             logger.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(logger)
         }
-        builder.build()
+        return builder.build()
     }
 
-    //Create retrofit builder
-    single<Retrofit>(named("masaRetrofit")) {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.BOT_API_BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(get<Moshi>(named("masaMoshi"))))
-            .client(get<OkHttpClient>(named("masaOkhttpClient")))
-            .build()
+    fun getAPIServices() : MasaApiEndpoints? {
+        return getRetrofitInstance()?.create(
+            MasaApiEndpoints::class.java
+        ) ?: null
+
     }
 
-    //Create an implementation of the API endpoints
-    single<MasaApiEndpoints>(named("masaApiEndpoints")) {
-        get<Retrofit>(named("masaRetrofit")).create(MasaApiEndpoints::class.java)
-    }
+
+
 }

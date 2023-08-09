@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:name=".SalmaApplication"
+
         android:networkSecurityConfig="@xml/network_sec_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -28,16 +28,6 @@
 
         </activity>
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name=
-                    "ai.mawdoo3.salma.module.FirstLibInitializer"
-                android:value="androidx.startup" />
-        </provider>
     </application>
 
 </manifest>

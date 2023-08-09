@@ -3,6 +3,7 @@ package ai.mawdoo3.salma.base
 import ai.mawdoo3.salma.R
 import ai.mawdoo3.salma.utils.UnauthorizedException
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 
 import com.hadilq.liveevent.LiveEvent
@@ -10,7 +11,8 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-open class BaseViewModel(application: Application) : AndroidViewModel(application) {
+open class BaseViewModel(application: Application,context: Context) : AndroidViewModel(application) {
+    val context = context
     val applicationContext = application
     val showErrorMessage = LiveEvent<String>()
     val showErrorMessageRid = LiveEvent<Int>()
@@ -52,7 +54,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
                 if (asToast) {
                     showErrorMessage.postValue(
                         error.message
-                            ?: applicationContext.getString(R.string.general_error_message)
+                            ?: context.getString(R.string.general_error_message)
                     )
                 } else {
                     screenState.value = BaseFragment.ScreenState.General(

@@ -13,6 +13,7 @@ import ai.mawdoo3.salma.remote.RepoSuccessResponse
 import ai.mawdoo3.salma.utils.AppUtils
 import ai.mawdoo3.salma.utils.PhoneUtils
 import android.app.Application
+import android.content.Context
 import android.text.InputType
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -23,8 +24,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ChatBotViewModel(application: Application, val chatRepository: ChatRepository) :
-    BaseViewModel(application) {
+class ChatBotViewModel(application: Application, val chatRepository: ChatRepository,context: Context) :
+    BaseViewModel(application,context) {
 
     var historyStartIndex = 0
     val makeCall = LiveEvent<String>()
@@ -73,7 +74,7 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
             delay(1000)
             val result = chatRepository.sendMessage(
                 SendMessageRequest(
-                    userId = PhoneUtils.getDeviceId(applicationContext),
+                    userId = PhoneUtils.getDeviceId(context),
                     message = payload,
                     secretKey = SalmaSdkInstance.key,
                     JWT = SalmaSdkInstance.jwtToken,

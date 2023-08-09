@@ -3,10 +3,8 @@ package ai.mawdoo3.salma.remote
 import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.koin.core.component.KoinComponent
 
-class AuthorizationInterceptor(val context: Context) : Interceptor,
-    KoinComponent {
+class AuthorizationInterceptor() : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()

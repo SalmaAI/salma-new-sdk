@@ -1,13 +1,10 @@
 package ai.mawdoo3.salma
 
 import ai.mawdoo3.salma.data.enums.ChatBarType
-import ai.mawdoo3.salma.module.ChatModule
-import ai.mawdoo3.salma.module.remoteModule
 import ai.mawdoo3.salma.ui.BotMainActivity
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
-import org.koin.core.context.loadKoinModules
 
 /**
  * created by Omar Qadomi on 3/24/21
@@ -43,13 +40,7 @@ object SalmaSdkInstance {
         key: String,
         username: String = ""
     ) {
-//        loadKoinModules(
-//            listOf(
-//                ChatModule,
-//                remoteModule
-//            )
-//
-//        )
+
         this.botId = botId
         this.botChannelId = botChannelId
         this.key = key

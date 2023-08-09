@@ -1,42 +1,31 @@
 package ai.mawdoo3.salma.ui.chatBot
 
+import ai.mawdoo3.salma.SalmaApplication
 import ai.mawdoo3.salma.base.BaseFragment
 import ai.mawdoo3.salma.base.BaseViewModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
+import ai.mawdoo3.salma.data.dataSource.ChatRemoteDataSource
+import ai.mawdoo3.salma.data.dataSource.ChatRepository
 import ai.mawdoo3.salma.databinding.FragmentHelpBinding
-import ai.mawdoo3.salma.module.FirstLibInitializer
+import ai.mawdoo3.salma.module.RemoteModule
 import ai.mawdoo3.salma.utils.setNavigationResult
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.startup.AppInitializer
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
-import org.koin.android.ext.android.inject
-import org.koin.androidx.scope.fragmentScope
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.Koin
-import org.koin.core.parameter.parametersOf
-import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.Scope
 
 
-class HelpFragment : BaseFragment(),KoinScopeComponent {
-    private val viewModel: ChatBotViewModel by viewModel()
-    private val adapter: HelpMessagesAdapter by inject { parametersOf(viewModel) }
+class HelpFragment : BaseFragment() {
+    private lateinit var viewModel: ChatBotViewModel
+    private lateinit var adapter: HelpMessagesAdapter
     private lateinit var binding: FragmentHelpBinding
-
-    override val scope: Scope by lazy { fragmentScope() }
-
-    private val myKoin: Koin by lazy {
-        AppInitializer.getInstance(this.requireContext())
-            .initializeComponent(FirstLibInitializer::class.java)
-    }
-    override fun getKoin() = myKoin
 
 
     override fun onCreateView(
@@ -45,6 +34,20 @@ class HelpFragment : BaseFragment(),KoinScopeComponent {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentHelpBinding.inflate(inflater, container, false)
+
+        val remote = RemoteModule()
+
+        val chatRepo = remote.getAPIServices()?.let { ChatRemoteDataSource(it) }
+            ?.let { ChatRepository(it) }
+
+        viewModel = chatRepo?.let { context?.let { it1 ->
+            ChatBotViewModel(SalmaApplication(), it,
+                it1
+            )
+        } }!!
+        adapter = HelpMessagesAdapter(viewModel)
+
+
         adapter.clear()
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
@@ -55,10 +58,16 @@ class HelpFragment : BaseFragment(),KoinScopeComponent {
             moveDuration = 0
             changeDuration = 0
         }
+        viewModel = chatRepo?.let { context?.let { it1 ->
+            ChatBotViewModel(SalmaApplication(), it,
+                it1
+            )
+        } }!!
         viewModel.sendMessage("", "القائمة الرئيسية", false)
         setNavigationResult("Message", "")
         return attachView(binding.root)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,6 +76,7 @@ class HelpFragment : BaseFragment(),KoinScopeComponent {
             Log.d("GRPC", "Message response")
             adapter.addItems(it)
         })
+
 
 
         viewModel.messageSent.observe(viewLifecycleOwner, {
