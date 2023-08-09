@@ -93,6 +93,7 @@ public class TTSStreamHelper {
                 ttsParams = "key=" + ttsId + "&diacritize_text=false&override_diacritics=false&streaming=true&encoding=mp3&transfer=false&tempo=0";
             }
 
+            Log.i("AHAH",headers().toString());
             player = new SimpleExoPlayer.Builder(context.get())
                     .setMediaSourceFactory(new DefaultMediaSourceFactory(headers())).build();
             player.setPlayWhenReady(true);

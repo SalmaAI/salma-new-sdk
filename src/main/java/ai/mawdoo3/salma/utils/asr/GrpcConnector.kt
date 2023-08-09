@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.InputStream
 
-const val CERT_NAME = "asr-latest.crt"
+const val CERT_NAME = "asr_jkb.crt"
 
 object GrpcConnector {
 
