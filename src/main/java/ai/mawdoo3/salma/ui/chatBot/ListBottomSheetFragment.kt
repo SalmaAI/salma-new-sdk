@@ -76,15 +76,15 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        dialog = BottomSheetDialog(requireContext(), R.style.Theme_Salma_BottomSheetDialogTheme);
-        dialog.setOnShowListener {
-            val d = it as BottomSheetDialog
-            val sheet: View? = d.findViewById<View>(design_bottom_sheet)
-            behavior = BottomSheetBehavior.from(sheet!!)
-            behavior.isHideable = true
-            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog.setOnShowListener { dialogInterface ->
+            if (dialogInterface is BottomSheetDialog) {
+                val sheet: View? = dialogInterface.findViewById<View>(R.id.design_bottom_sheet)
+                val behavior = sheet?.let { BottomSheetBehavior.from(it) }
+                behavior?.isHideable = false
+                behavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
         }
-
         return dialog
     }
 
