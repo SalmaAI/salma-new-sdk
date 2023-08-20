@@ -98,7 +98,8 @@ android {
             shrinkResources false
             minifyEnabled false
             //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"')
+//            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"')
+            buildConfigField("String", "ASR_URL", '"asr-riva-stg.salma-app.com"')
             // production
             buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
@@ -193,11 +194,10 @@ dependencies {
     embed 'jp.wasabeef:recyclerview-animators:4.0.2'
 
     //grpc
-    implementation "io.grpc:grpc-okhttp:$grpc_lib" // CURRENT_GRPC_VERSION
-    implementation "io.grpc:grpc-protobuf-lite:$grpc_lib" // CURRENT_GRPC_VERSION
-    implementation "io.grpc:grpc-stub:$grpc_lib" // CURRENT_GRPC_VERSION
+    implementation 'io.grpc:grpc-okhttp:1.55.1' // CURRENT_GRPC_VERSION
+    implementation 'io.grpc:grpc-stub:1.55.1' // CURRENT_GRPC_VERSION
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
-    implementation group: 'com.google.protobuf', name: 'protobuf-javalite', version: '3.14.0'
+    implementation("com.google.api:gax-grpc:2.29.0")
 
     // exo player
     implementation "com.google.android.exoplayer:exoplayer-core:$exp_player_version"

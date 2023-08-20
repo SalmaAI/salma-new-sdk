@@ -262,21 +262,14 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
                 Log.d("GRPC", "onVoiceStart")
                 cancelCurrentRecord = false
                 firstTime = true
+                GrpcConnector.sendVoice(null)
+
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
-                Log.d("GRPC", "onVoice $data")
                 data?.apply {
-                    val stringByte =
-                        GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
-                            ?.build()
-                    GrpcConnector.sendVoice(
-                        channel,
-                        GrpcConnector.getID(context),
-                        stringByte,
-                        firstTime
-                    )
-                    firstTime = false
+                Log.d("GRPC", "onVoice $data")
+                    GrpcConnector.sendVoice(data)
                 }
             }
         }
