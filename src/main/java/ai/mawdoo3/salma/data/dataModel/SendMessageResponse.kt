@@ -282,11 +282,11 @@ data class MessageResponse(
                     when (PropertyType.from(property.type)) {
                         PropertyType.CurrencyFrom -> {
                             currencyMessageUiModel.fromCurrency =
-                                Currency(property.name!!, property.value!!, "")
+                                Currency(property.name.toString(), property.value.toString(), "")
                         }
                         PropertyType.CurrencyTo -> {
                             currencyMessageUiModel.toCurrency =
-                                Currency(property.name!!, property.value!!, "")
+                                Currency(property.name.toString(), property.value.toString(), "")
                         }
                         PropertyType.CurrencyFromValue -> {
                             currencyMessageUiModel.fromValue = property.value.toString()

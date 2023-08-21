@@ -48,24 +48,24 @@ class HelpFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.messageResponseList.observe(viewLifecycleOwner, {
+        viewModel.messageResponseList.observe(viewLifecycleOwner) {
             Log.d("SendMessage", "Add Masa message")
             Log.d("GRPC", "Message response")
             adapter.addItems(it)
-        })
+        }
 
 
-        viewModel.messageSent.observe(viewLifecycleOwner, {
+        viewModel.messageSent.observe(viewLifecycleOwner) {
             Log.d("SendMessage", "Add user message")
             Log.d("GRPC", "Message sent")
-            setNavigationResult("Message", (it as TextMessageUiModel).text!!)
+            (it as TextMessageUiModel).text?.let { textMessage -> setNavigationResult("Message", textMessage) }
             findNavController().popBackStack()
 
-        })
+        }
 
-        viewModel.showLoader.observe(viewLifecycleOwner, {
+        viewModel.showLoader.observe(viewLifecycleOwner) {
             adapter.loading(it)
-        })
+        }
 
     }
 

@@ -39,7 +39,7 @@ class BotMainActivity : BaseActivity() {
         if (requestCode == GpsUtils.GPS_REQUEST && resultCode == Activity.RESULT_OK) {
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.navHostBotMain)
-            val currentFragment = navHostFragment!!.childFragmentManager.fragments[0]
+            val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
             if (currentFragment is ChatBotFragment) {
                 currentFragment.requestCurrentLocation()
             }

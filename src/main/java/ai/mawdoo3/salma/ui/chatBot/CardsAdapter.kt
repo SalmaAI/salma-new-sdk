@@ -44,7 +44,7 @@ class CardsAdapter(val viewModel: ChatBotViewModel) :
                     this.imgBackground.setImageResource(cardType.drawableID)
                 }
                 this.cardRoot.setOnClickListener {
-                    viewModel.sendMessage(item!!.cardNumber, item.cardId!!)
+                    viewModel.sendMessage(item?.cardNumber, item?.cardId.toString())
                 }
             }
         }
