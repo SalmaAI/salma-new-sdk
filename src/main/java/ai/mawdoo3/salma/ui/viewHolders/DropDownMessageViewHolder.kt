@@ -20,13 +20,16 @@ class DropDownMessageViewHolder(
             binding.tvMessage.setOnClickListener {
                 it.disableWithDelay()
                 val listDialog =
-                    ListBottomSheetFragment.newInstance(listItems!!.title, listItems!!.items,
-                        object : ListBottomSheetFragment.Companion.ListListener {
-                            override fun onItemSelected(title: String, payload: String) {
-                                viewModel.sendMessage(title, payload)
-                            }
-                        })
-                listDialog.show(
+                    listItems?.let { listItms ->
+                        ListBottomSheetFragment.newInstance(
+                            listItms.title, listItms.items,
+                            object : ListBottomSheetFragment.Companion.ListListener {
+                                override fun onItemSelected(title: String, payload: String) {
+                                    viewModel.sendMessage(title, payload)
+                                }
+                            })
+                    }
+                listDialog?.show(
                     (this.root.context as AppCompatActivity).supportFragmentManager,
                     ListBottomSheetFragment.TAG
                 )

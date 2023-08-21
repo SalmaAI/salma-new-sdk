@@ -89,7 +89,7 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),
     }
 
     override fun onItemClicked(view: View, item: DropdownListItem?, position: Int) {
-        item?.let { listener.onItemSelected(it.title!!, it.payload!!) }
+        item?.let { listener.onItemSelected(it.title.toString(), it.payload.toString()) }
         dismissAllowingStateLoss()
     }
 
