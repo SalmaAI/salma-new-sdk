@@ -72,7 +72,7 @@ data class MessageResponse(
                 messages.add(
                     TextMessageUiModel(
                         messageContent.text, MessageSender.Masa,
-                        time = AppUtils.getCurrentTime()
+                        time = AppUtils.getCurrentTime(), ttsId = ttsId, ttsDynamic = ttsDynamic
                     )
                 )
             } else if (messageType == MessageType.Location || messageType == MessageType.UnansweredLocation) {
@@ -111,7 +111,7 @@ data class MessageResponse(
                     )
                 )
             } else if (messageType == MessageType.TextLocation || messageType == MessageType.UnansweredTextLocation) {
-                val text = messageContent.text?.replace("الاحداثيات :", "")
+                val text = messageContent.text?.replace("الاحداثيات :", "")?.replace("الأحداثيات :", "")
                 val data = text?.split('،')
                 var name: String? = null
                 var address: String? = null

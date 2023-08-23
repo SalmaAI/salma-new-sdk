@@ -11,6 +11,8 @@ data class TextMessageUiModel(
     val showLogo: Boolean = false,
     val time: String,
     val showLocation: Boolean = false,
+    val ttsId: String?=null,
+    val ttsDynamic: Boolean=false
 ) :
     MessageUiModel {
     override var sender = messageSender

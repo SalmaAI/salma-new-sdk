@@ -185,6 +185,10 @@ class ChatBotViewModel(application: Application, val chatRepository: ChatReposit
         }
     }
 
+    fun playTTS(ttsId: String, isDynamic: Boolean) {
+        ttsAudioList.value = arrayListOf(TtsItem(ttsId, isDynamic, null))
+    }
+
 
 //    fun getMessagesHistory(
 //    ) {

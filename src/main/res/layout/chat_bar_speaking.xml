@@ -6,6 +6,23 @@
     android:layout_height="60dp">
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_speaking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabCustomSize="48dp"
+        android:layout_margin="@dimen/small_margin"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:borderWidth="2dp"
+        android:src="@drawable/ic_user_logo"
+        app:tint="@null"
+        android:backgroundTint="?attr/actionButtonBackgroundColor"
+        app:backgroundTint="@color/yellow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvGrpcText"
         android:layout_width="0dp"
@@ -13,15 +30,14 @@
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
         android:gravity="center_vertical"
-        android:textColor="?attr/secondaryColor"
-        android:textSize="16sp"
-        app:fontFamily="@font/font_bold"
-        android:minLines="2"
-        app:layout_constraintBottom_toBottomOf="@+id/aviSpeaking"
+        android:padding="@dimen/small_margin"
+        android:textColor="?attr/textFieldTextColor"
+        android:textSize="@dimen/edittext_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/fab_speaking"
         app:layout_constraintEnd_toStartOf="@+id/aviSpeaking"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/aviSpeaking"
-        tools:text="ما هي مزايا القرض الشخصي ما هي مزايا القرض الشخصي ما هي مزايا القرض الشخصي ما هي مزايا القرض الشخصي" />
+        app:layout_constraintStart_toEndOf="@+id/fab_speaking"
+        app:layout_constraintTop_toTopOf="@+id/fab_speaking"
+        tools:text="ما هي مزايا القرض الشخصي" />
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/aviSpeaking"
@@ -29,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
+        android:visibility="gone"
         app:indicatorColor="?attr/secondaryColor"
         app:indicatorName="BallScaleIndicator"
         app:layout_constraintBottom_toBottomOf="parent"

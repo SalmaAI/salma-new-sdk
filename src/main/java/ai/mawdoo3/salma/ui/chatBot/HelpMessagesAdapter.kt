@@ -28,6 +28,15 @@ class HelpMessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+//            MessageViewType.InComingTextMessageViewType.value -> {
+//                return InComingTextMessageViewHolder(
+//                    IncomingTextMessageItemBinding.inflate(
+//                        LayoutInflater.from(parent.context),
+//                        parent,
+//                        false
+//                    ), viewModel
+//                )
+//            }
             else -> {
                 return EmptyMessageViewHolder(
                     EmptyMessageItemBinding.inflate(
@@ -42,12 +51,22 @@ class HelpMessagesAdapter(val viewModel: ChatBotViewModel) :
 
 
     override fun getItemViewType(position: Int): Int {
-        if (position >= list.size)
-            return EnumState.STATE_LOADING.viewType()
-        else if (list[position] is QuickReplyMessageUiModel) {
-            return MessageViewType.QuickRepliesMessageViewType.value
-        } else {
-            return 0
+        if (position >= list.size) return EnumState.STATE_LOADING.viewType()
+
+        when (list[position]){
+            is TextMessageUiModel -> {//text message
+                return if (list[position].sender == MessageSender.User) {
+                    MessageViewType.OutComingTextMessageViewType.value
+                } else {
+                    MessageViewType.InComingTextMessageViewType.value
+                }
+            }
+             is QuickReplyMessageUiModel -> {
+                return MessageViewType.QuickRepliesMessageViewType.value
+            }
+            else -> {
+                return 0
+            }
         }
     }
 

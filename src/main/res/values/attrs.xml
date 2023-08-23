@@ -18,13 +18,20 @@
     <attr name="cardButtonIconColor" format="color" />
     <attr name="dialogBackgroundColor" format="color" />
     <attr name="readMoreTextColor" format="color" />
+    <attr name="loadMoreTextColor" format="color" />
+    <attr name="loadMoreBackgroundColor" format="color" />
+    <attr name="sendLocationBackgroundColor" format="color" />
+    <attr name="progressColor" format="color" />
     <attr name="messageTimeTextColor" format="color" />
     <attr name="currencyFieldBorderColor" format="color" />
     <attr name="separatorColor" format="color" />
     <attr name="chipTextColor" format="color" />
+    <attr name="actionButtonBackgroundColor" format="color" />
+    <attr name="loadingIndicatorColor" format="color" />
+    <attr name="quickReplyBackgroundColor" format="color" />
+    <attr name="cardButtonStyle" format="reference" />
 
     <!-- Text filed colors-->
-    <attr name="chatTextFieldHintTextColor" format="color" />
     <attr name="textFieldHintTextColor" format="color" />
     <attr name="textFieldTextColor" format="color" />
     <attr name="textFieldBackgroundColor" format="color" />
@@ -34,11 +41,7 @@
     <!---->
 
     <attr name="titleTextColor" format="color" />
-    <attr name="subTitleTextColor" format="color" />
-    <attr name="headerTextColor" format="color" />
 
-    <attr name="amount1TextColor" format="color" />
-    <attr name="amount2TextColor" format="color" />
 
     <declare-styleable name="MasaAmountTextView">
         <attr name="reduceAfterChar" format="string" />

@@ -9,7 +9,7 @@ plugins {
 apply from: "${rootProject.projectDir}/flavors.gradle"
 
 ext.grpc_plugin = "0.8.15"
-ext.grpc_lib = "1.35.0"
+ext.grpc_lib = "1.55.1"
 ext.exp_player_version = "2.13.2"
 
 
@@ -66,7 +66,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "ASR_URL", '"asr-riva-stg.salma-app.com"') // production
             buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
             buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
@@ -75,7 +75,7 @@ android {
             shrinkResources false
             minifyEnabled false
             //            buildConfigField("String", "ASR_URL", '"asr.ingress.alpha.mawdu.com"') //staging
-            buildConfigField("String", "ASR_URL", '"asr-latest.ingress.beta.mawdu.com"') // production
+            buildConfigField("String", "ASR_URL", '"asr-riva-stg.salma-app.com"') // production
             buildConfigField("String", "TTS_URL", '"https://ingress.beta.mawdu.com/flowtron-api-v0-5-0/tts"')
             buildConfigField("String", "BOT_API_BASE_URL", '"https://masa.jkbank.com.jo:8443/webhook/mobile/"')
             buildConfigField("String", "MASA_PUB_KEY_FILE_NAME", masaPubKeyFileName)
@@ -94,6 +94,11 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+
+    packagingOptions {
+        exclude 'META-INF/*'
     }
 }
 

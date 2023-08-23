@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card_view_margin"
             android:layout_marginEnd="@dimen/card_view_margin"
-            android:background="@drawable/tv_border_white"
+            android:background="@drawable/dropdown_bg"
             android:drawableEnd="@drawable/ic_chatbot_dropdown_arrow"
             android:padding="@dimen/medium_margin"
             android:textColor="?attr/inComingMessageTextColor"

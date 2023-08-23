@@ -24,6 +24,7 @@ class ItemsListAdapter :
         )
     }
 
+
     inner class ViewHolder(val binding: ListItemBinding) :
         BaseViewHolder<DropdownListItem>(binding) {
         override fun bind(position: Int, item: DropdownListItem?) {
@@ -41,12 +42,14 @@ class ItemsListAdapter :
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val filteredList: MutableList<DropdownListItem> = if (constraint.isNullOrEmpty()) {
-                    list
+                var filteredList: MutableList<DropdownListItem>
+                if (constraint.isNullOrEmpty()) {
+                    filteredList = list
                 } else {
-                    list.filter { item ->
-                        item.title?.contains(constraint.toString()) == true
-                    } as MutableList<DropdownListItem>
+                    filteredList =
+                        list.filter { item ->
+                            item.title?.contains(constraint.toString()) == true
+                        } as MutableList<DropdownListItem>
                 }
                 val filterResults = FilterResults()
                 filterResults.values = filteredList
@@ -56,6 +59,8 @@ class ItemsListAdapter :
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 setFilteredItems(results?.values as List<DropdownListItem>)
             }
+
         }
     }
+
 }

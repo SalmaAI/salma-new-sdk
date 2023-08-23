@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Banking.Masa" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="cardButtonStyle">@style/Theme.Salma.Button.CardButton</item>
         <item name="fontFamily">@font/font_medium</item>
         <!-- Primary brand color. -->
         <item name="primaryColor">@color/masaPrimaryColor</item>
@@ -18,8 +19,6 @@
         <item name="currencyFieldBorderColor">@color/masaCurrencyFieldBorderColor</item>
         <item name="progressColor">@color/masaProgressColor</item>
         <item name="messageTimeTextColor">@color/masaMessageTimeTextColor</item>
-        <item name="amount1TextColor">@color/masaAmount1TextColor</item>
-        <item name="amount2TextColor">@color/masaAmount2TextColor</item>
 
         <!-- Text filed colors-->
         <item name="textFieldHintTextColor">@color/masaTextFieldHintTextColor</item>
@@ -27,9 +26,7 @@
         <item name="textFieldBackgroundColor">@color/masaTextFieldBackgroundColor</item>
         <item name="textFieldCursorColor">@color/masaTextFieldCursorColor</item>
         <!---->
-        <item name="subTitleTextColor">@color/masaSubTitleTextColor</item>
         <item name="titleTextColor">@color/masaTitleTextColor</item>
-        <item name="headerTextColor">@color/masaHeaderTextColor</item>
 
         <item name="cardButtonBackgroundColor">@color/masaCardButtonBackgroundColor</item>
         <item name="cardButtonIconColor">@color/masaCardButtonIconColor</item>

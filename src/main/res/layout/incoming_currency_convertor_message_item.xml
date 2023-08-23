@@ -244,7 +244,7 @@
                 android:drawableEnd="@drawable/ic_chatbot_open_link"
                 android:text="currencyconverterapi.com"
                 android:textAlignment="viewStart"
-                android:textColor="?attr/subTitleTextColor"
+                android:textColor="?attr/titleTextColor"
                 android:visibility="gone"
                 app:fontFamily="@font/font_medium"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -12,9 +12,13 @@
             type="ai.mawdoo3.salma.data.dataModel.ListItemMessageUiModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        style="@style/Theme.Salma.CardView.InComingMessage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_margin">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rootLayout"
@@ -23,7 +27,7 @@
             android:layout_marginStart="@dimen/medium_margin"
             android:layout_marginTop="@dimen/medium_margin"
             android:layout_marginEnd="@dimen/medium_margin"
-            android:background="@drawable/list_item_bg"
+            android:layout_marginBottom="@dimen/medium_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -35,9 +39,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/medium_margin"
                 android:text="@{message.title}"
+                android:textAlignment="viewStart"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_text_size"
-                android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="الحساب الجاري" />
@@ -50,7 +54,7 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:fontFamily="@font/font_regular"
                 android:text="@{message.subTitle}"
-                android:textColor="?attr/subTitleTextColor"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_subtitle_text_size"
                 app:layout_constraintBottom_toTopOf="@+id/tvOptionalInfo"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +71,7 @@
                 android:layout_marginBottom="@dimen/medium_margin"
                 android:fontFamily="@font/font_regular"
                 android:text="@{message.optionalInfo}"
-                android:textColor="?attr/subTitleTextColor"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="@dimen/card_subtitle_text_size"
                 android:visibility="@{message.optionalInfo==null||message.optionalInfo.empty?View.GONE:View.VISIBLE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -84,12 +88,11 @@
                 android:layout_marginEnd="@dimen/medium_margin"
                 android:layout_marginBottom="@dimen/medium_margin"
                 android:adjustViewBounds="true"
-                android:tint="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:src="@drawable/ic_chatbot_arrow_go" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

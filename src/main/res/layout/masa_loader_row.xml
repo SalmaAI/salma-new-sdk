@@ -2,23 +2,41 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        style="@style/Theme.Salma.CardView.InComingMessage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_margin"
+        android:layout_gravity="end">
 
-        android:background="@null">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin">
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/aviListening"
-            style="@style/AVLoadingIndicatorView"
-            android:layout_gravity="end"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_margin="@dimen/small_margin"
-            android:visibility="visible"
-            app:indicatorColor="@android:color/white"
-            app:indicatorName="BallPulseSyncIndicator" />
 
-    </FrameLayout>
+            <com.wang.avi.AVLoadingIndicatorView
+
+                android:id="@+id/aviListening"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                app:indicatorColor="?attr/loadingIndicatorColor"
+                app:indicatorName="BallPulseSyncIndicator"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxHeight="24dp"
+                app:maxWidth="24dp"
+                app:minHeight="24dp"
+                app:minWidth="24dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
 </layout>

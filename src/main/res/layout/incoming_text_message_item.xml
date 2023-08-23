@@ -31,13 +31,37 @@
             app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent">
 
+<!--            <androidx.appcompat.widget.AppCompatImageView-->
+<!--                android:id="@+id/imgSpeak"-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:src="@drawable/ic_assistant_logo"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/materialCardView"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/imgSpeak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabSize="mini"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/small_margin"
+                android:visibility="visible"
+                android:clickable="false"
+                app:borderWidth="0dp"
+                app:srcCompat="@drawable/ic_masa_logo"
+                app:tint="@null"
+                android:backgroundTint="?attr/actionButtonBackgroundColor"
+                app:layout_constraintEnd_toEndOf="@+id/materialCardView"
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
                 style="@style/Theme.Salma.CardView.InComingMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/imgSpeak">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -82,21 +106,25 @@
                 app:layout_constraintEnd_toEndOf="@+id/materialCardView"
                 app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
 
-            <TextView
-                android:id="@+id/tvLocation"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLocation"
+                style="@style/Theme.Salma.Button.CardButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:background="@drawable/tv_border_white"
-                android:drawableStart="@drawable/ic_chatbot_location"
-                android:drawablePadding="@dimen/small_margin"
-                android:fontFamily="@font/font_bold"
-                android:padding="@dimen/small_margin"
+                android:layout_weight="1"
+                android:singleLine="true"
                 android:text="@string/use_my_location"
-                android:textColor="?attr/titleTextColor"
                 android:visibility="gone"
+
+                app:icon="@drawable/ic_chatbot_location"
+                app:iconGravity="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvRate" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

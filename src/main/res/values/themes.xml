@@ -20,9 +20,10 @@
         <item name="messageTimeTextColor">@color/masaMessageTimeTextColor</item>
         <item name="currencyFieldBorderColor">@color/masaCurrencyFieldBorderColor</item>
         <item name="separatorColor">@color/masaSeparatorColor</item>
+        <item name="loadingIndicatorColor">@color/masaLoadingIndicatorColor</item>
+        <item name="quickReplyBackgroundColor">@color/masaQuickReplyBackgroundColor</item>
 
         <!-- Text filed colors-->
-        <item name="chatTextFieldHintTextColor">@color/masaChatTextFieldHintTextColor</item>
         <item name="textFieldHintTextColor">@color/masaTextFieldHintTextColor</item>
         <item name="textFieldTextColor">@color/masaTextFieldTextColor</item>
         <item name="textFieldBackgroundColor">@color/masaTextFieldBackgroundColor</item>
@@ -30,21 +31,20 @@
         <item name="textFieldActiveBorderColor">@color/masaTextFieldActiveBorderColor</item>
         <item name="textFieldInActiveBorderColor">@color/masaTextFieldInActiveBorderColor</item>
         <!---->
-        <item name="subTitleTextColor">@color/masaSubTitleTextColor</item>
         <item name="titleTextColor">@color/masaTitleTextColor</item>
-        <item name="headerTextColor">@color/masaHeaderTextColor</item>
-        <item name="amount1TextColor">@color/masaAmount1TextColor</item>
-        <item name="amount2TextColor">@color/masaAmount2TextColor</item>
 
         <item name="cardButtonBackgroundColor">@color/masaCardButtonBackgroundColor</item>
         <item name="cardButtonIconColor">@color/masaCardButtonIconColor</item>
         <item name="cardButtonTextColor">@color/masaCardButtonTextColor</item>
         <item name="dialogBackgroundColor">@color/masaDialogBackgroundColor</item>
         <item name="readMoreTextColor">@color/masaReadMoreTextColor</item>
+        <item name="loadMoreTextColor">@color/masaLoadMoreTextColor</item>
+        <item name="loadMoreBackgroundColor">@color/masaLoadMoreBackgroundColor</item>
         <item name="progressColor">@color/masaProgressColor</item>
         <item name="chipTextColor">@color/masaChipTextColor</item>
+        <item name="actionButtonBackgroundColor">@color/masaActionButtonBackgroundColor</item>
         <item name="bottomSheetDialogTheme">@style/Theme.Salma.BottomSheetDialogTheme</item>
-
+        <item name="cardButtonStyle">@style/Theme.Salma.Button.CardButton</item>
 
         <!-- Customize your theme here. -->
 
