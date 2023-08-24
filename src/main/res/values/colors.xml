@@ -4,41 +4,40 @@
     <color name="masaPrimaryColor">#001B44</color>
     <color name="masaSecondaryColor">#FFD100</color>
     <color name="masaAccentColor">#0072BF</color>
-    <color name="masaPageBackgroundColor">#011535</color>
+    <color name="masaPageBackgroundColor">#FFFFFF</color>
     <color name="masaHelpPageBackgroundColor">#001B44</color>
-    <color name="masaBottomSheetBackgroundColor">#132B52</color>
-    <color name="masaToolbarBackgroundColor">#011535</color>
-    <color name="masaOutComingMessageBackgroundColor">#0081D9</color>
-    <color name="masaInComingMessageBackgroundColor">#0A417C</color>
+    <color name="masaBottomSheetBackgroundColor">@color/lightGray</color>
+    <color name="masaToolbarBackgroundColor">@color/white</color>
+    <color name="masaOutComingMessageBackgroundColor">@color/prussianBlue</color>
+    <color name="masaInComingMessageBackgroundColor">@color/lightGray</color>
     <color name="masaDialogBackgroundColor">#001B44</color>
-    <color name="masaReadMoreTextColor">#FFD100</color>
-    <color name="masaInComingMessageTextColor">#FFFFFF</color>
-    <color name="masaOutComingMessageTextColor">#FFFFFF</color>
+    <color name="masaReadMoreTextColor">@color/carolinaBlue</color>
+    <color name="masaLoadMoreTextColor">@color/prussianBlue</color>
+    <color name="masaLoadMoreBackgroundColor">@color/yellow</color>
+    <color name="masaInComingMessageTextColor">@color/prussianBlue</color>
+    <color name="masaOutComingMessageTextColor">@color/white</color>
     <color name="masaProgressColor">#FFFFFF</color>
     <color name="masaMessageTimeTextColor">#ABB5C5</color>
     <color name="masaPrimaryActionColor">#FFFFFF</color>
     <color name="masaSecondaryActionColor">#BF294D</color>
     <color name="masaCurrencyFieldBorderColor">#DFE4EC</color>
-    <color name="masaSeparatorColor">#59FFFFFF</color>
+    <color name="masaSeparatorColor">@color/lightGray</color>
     <color name="masaChipTextColor">#FFFFFF</color>
+    <color name="masaActionButtonBackgroundColor">@color/white</color>
+    <color name="masaLoadingIndicatorColor">@color/prussianBlue</color>
+    <color name="masaQuickReplyBackgroundColor">@color/prussianBlue</color>
 
     <!-- Text filed colors-->
-    <color name="masaChatTextFieldHintTextColor">#577CB7</color>
-    <color name="masaTextFieldHintTextColor">#59FFFFFF</color>
-    <color name="masaTextFieldTextColor">#FFFFFFFF</color>
-    <color name="masaTextFieldBackgroundColor">#FFFFFFFF</color>
-    <color name="masaTextFieldCursorColor">#FFFFFFFF</color>
-    <color name="masaTextFieldActiveBorderColor">#FFFFFFFF</color>
-    <color name="masaTextFieldInActiveBorderColor">#59FFFFFF</color>
-    <color name="masaCardButtonBackgroundColor">#001B44</color>
-    <color name="masaCardButtonTextColor">#FFFFFFFF</color>
-    <color name="masaCardButtonIconColor">#0072BF</color>
-
-    <color name="masaAmount1TextColor">#FFFFFF</color>
-    <color name="masaAmount2TextColor">#FFFFFF</color>
-    <color name="masaTitleTextColor">#FFFFFFFF</color>
-    <color name="masaSubTitleTextColor">#FFFFFF</color>
-    <color name="masaHeaderTextColor">#FFFFFFFF</color>
+    <color name="masaTextFieldHintTextColor">#c5c5c5</color>
+    <color name="masaTextFieldTextColor">@color/prussianBlue</color>
+    <color name="masaTextFieldBackgroundColor">@color/lightGray</color>
+    <color name="masaTextFieldCursorColor">@color/prussianBlue</color>
+    <color name="masaTextFieldActiveBorderColor">@color/prussianBlue</color>
+    <color name="masaTextFieldInActiveBorderColor">#c5c5c5</color>
+    <color name="masaCardButtonBackgroundColor">@color/prussianBlue</color>
+    <color name="masaCardButtonTextColor">@color/white</color>
+    <color name="masaCardButtonIconColor">@color/white</color>
+    <color name="masaTitleTextColor">@color/prussianBlue</color>
     <color name="black_overlay">#80000000</color>
 
 </resources>

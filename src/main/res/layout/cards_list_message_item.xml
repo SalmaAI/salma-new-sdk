@@ -19,8 +19,8 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            tools:itemCount="3"
             app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="3"
             tools:listitem="@layout/card_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

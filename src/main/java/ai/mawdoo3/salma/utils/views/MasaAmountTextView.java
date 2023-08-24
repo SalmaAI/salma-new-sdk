@@ -108,8 +108,8 @@ public class MasaAmountTextView extends AppCompatTextView {
 
     public enum AmountType {
 
-        AMOUNT_1(0, R.font.font_bold, R.dimen.amount_1, R.dimen.amount_1_fractions, R.attr.amount1TextColor),
-        AMOUNT_2(1, R.font.font_regular, R.dimen.amount_2, R.dimen.amount_2_fractions, R.attr.amount2TextColor);
+        AMOUNT_1(0, R.font.font_bold, R.dimen.amount_1, R.dimen.amount_1_fractions, R.attr.titleTextColor),
+        AMOUNT_2(1, R.font.font_regular, R.dimen.amount_2, R.dimen.amount_2_fractions, R.attr.titleTextColor);
 
         private final int ID;
         private final int FONT;

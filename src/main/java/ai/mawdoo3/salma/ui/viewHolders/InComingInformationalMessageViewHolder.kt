@@ -29,18 +29,11 @@ class InComingInformationalMessageViewHolder(
             this.linearButtons.removeAllViews()
             var buttonIndex = 0
             message?.buttons?.forEach { button ->
-                val themeWrapper = ContextThemeWrapper(
-                    this.root.context,
-                    R.style.Theme_Salma_Button_CardButton // my button style
-                )
 
-                val actionButton = MaterialButton(themeWrapper)
-                actionButton.setBackgroundColor(
-                    AppUtils.getColorFromAttr(
-                        this.root.context,
-                        R.attr.cardButtonBackgroundColor
-                    )
-                )
+
+                val actionButton =
+                    MaterialButton(linearButtons.context, null, R.attr.cardButtonStyle)
+
                 actionButton.text = button.title
                 val params = LinearLayout.LayoutParams(
                     0,
@@ -60,13 +53,7 @@ class InComingInformationalMessageViewHolder(
                 //set font family
                 val typeface = ResourcesCompat.getFont(this.root.context, R.font.font_medium)
                 actionButton.typeface = typeface
-                var textColor = ContextCompat.getColor(
-                    this.root.context,
-                    R.color.masaPrimaryActionColor
-                )
-
-                actionButton.setTextColor(textColor)
-                if (!message.isHistory){
+                if (!message.isHistory) {
                     actionButton.setOnClickListener {
                         when {
                             ButtonType.from(button.type) == ButtonType.PhoneNumber -> {
@@ -76,7 +63,10 @@ class InComingInformationalMessageViewHolder(
                                 viewModel.openLink.postValue(button.value)
                             }
                             ButtonType.from(button.type) == ButtonType.PostBack -> {
-                                viewModel.sendMessage(text = message.title +" \n "+ message.subTitle, payload = button.value)
+                                viewModel.sendMessage(
+                                    text = message.title + " \n " + message.subTitle,
+                                    payload = button.value
+                                )
                             }
                             ButtonType.from(button.type) == ButtonType.PerformFunction -> {
                                 performFunction(button, this.linearButtons.context)

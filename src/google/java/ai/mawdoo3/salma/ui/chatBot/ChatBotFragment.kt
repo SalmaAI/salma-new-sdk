@@ -42,6 +42,7 @@ import org.koin.core.parameter.parametersOf
 
 class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
+    private var lastSentItemIndex: Int = 0
     private var scrollingUp: Boolean = false
     private var phone = ""
     private val viewModel: ChatBotViewModel by viewModel()
@@ -261,7 +262,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
     private fun addRecyclerItemAnimator() {
         binding.recyclerView.itemAnimator = SlideInUpAnimator()
         binding.recyclerView.itemAnimator?.apply {
-            addDuration = 400
+            addDuration = 200
             removeDuration = 0
             moveDuration = 0
             changeDuration = 0
@@ -281,7 +282,13 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             Log.d("GRPC", "Message response")
             viewModel.historyList.addAll(it)
             adapter.addItems(it)
-            scrollToBottom()
+            adapter.addItem(EmptyMessageUiModel(1))
+//            binding.recyclerView.postDelayed({
+//                (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+//                    adapter.itemCount - 2, 0
+//                )
+//            }, 300)
+//            scrollToBottom()
             homeMenu?.isEnabled = true
         }
 
@@ -299,10 +306,17 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
             Log.d("GRPC", "Message sent")
             viewModel.historyList.add(it)
             binding.chatBarView.setInputType(InputType.TYPE_CLASS_TEXT)
-            adapter.clear()
+//            adapter.clear()
+            adapter.addItem(it)
+            lastSentItemIndex = adapter.lastItemIndex()
+            adapter.addItem(EmptyMessageUiModel(1))
+
             binding.recyclerView.postDelayed({
-                adapter.addItem(it)
-            }, 300)
+                (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                    lastSentItemIndex, 0
+                )
+            }, 100)
+
             // TODO: remove comment on below line of code to show load history icon when send new message
 //            binding.loadPrevious.makeVisible()
 
@@ -321,7 +335,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
         }
         viewModel.getUserLocation.observe(viewLifecycleOwner) {
-            scrollToBottom()
+//            scrollToBottom()
             checkLocationPermission()
         }
         viewModel.requestPermission.observe(viewLifecycleOwner) {
@@ -358,7 +372,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                         Permission.CALL_PHONE
                     )
                 )
-                scrollToBottom()
+//                scrollToBottom()
             }
         }
 
@@ -452,7 +466,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                     )
                 )
                 adapter.loading(false)
-                scrollToBottom()
+//                scrollToBottom()
             }, 500)
         }
 
@@ -578,7 +592,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
                 Permission.RECORD_AUDIO
             )
         )
-        scrollToBottom()
+//        scrollToBottom()
     }
 
     override fun showError(connectionFailedError: Int) =

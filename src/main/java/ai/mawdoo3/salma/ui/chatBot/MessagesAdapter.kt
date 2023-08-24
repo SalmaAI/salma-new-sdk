@@ -7,6 +7,7 @@ import ai.mawdoo3.salma.data.enums.MessageSender
 import ai.mawdoo3.salma.data.enums.MessageViewType
 import ai.mawdoo3.salma.databinding.*
 import ai.mawdoo3.salma.ui.viewHolders.*
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -16,6 +17,44 @@ import android.view.ViewGroup
 class MessagesAdapter(val viewModel: ChatBotViewModel) :
     BaseAdapter<MessageUiModel, BaseViewHolder<MessageUiModel>>() {
 
+    override fun loading(isLoading: Boolean) {
+        rvHandler.post {
+            if (list.size > 0 && list[lastItemIndex()] is EmptyMessageUiModel) {
+                val message = (list[lastItemIndex()] as EmptyMessageUiModel)
+                list[lastItemIndex()] = message.copy(isLoading = isLoading)
+                notifyItemChanged(lastItemIndex())
+                if (!isLoading) {
+                    super.loading(false)
+                }
+            } else {
+                super.loading(isLoading)
+            }
+        }
+    }
+
+    override fun addItems(items: List<MessageUiModel>) {
+        rvHandler.post {
+            val emptyViewIndex = list.lastIndexOf(EmptyMessageUiModel(1))
+            if (emptyViewIndex != -1) {
+                list.removeAt(emptyViewIndex)
+                notifyItemRemoved(emptyViewIndex)
+            }
+            list.addAll(items)
+            notifyItemRangeChanged(list.size - items.size - 1, list.size - 1)
+        }
+    }
+
+    override fun addItem(item: MessageUiModel) {
+        rvHandler.post {
+            val emptyViewIndex = list.lastIndexOf(EmptyMessageUiModel(1))
+            if (emptyViewIndex != -1) {
+                list.removeAt(emptyViewIndex)
+                notifyItemRemoved(emptyViewIndex)
+            }
+            list.add(item)
+            notifyItemInserted(list.size - 1)
+        }
+    }
 
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<MessageUiModel> {
         when (viewType) {
@@ -136,6 +175,15 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
                     ), viewModel
                 )
             }
+            MessageViewType.EmptyMessageWithLoaderViewType.value -> {
+                return EmptyMessageWithLoaderViewHolder(
+                    EmptyMessageWithLoaderItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             else -> {
                 return EmptyMessageViewHolder(
                     EmptyMessageItemBinding.inflate(
@@ -170,6 +218,7 @@ class MessagesAdapter(val viewModel: ChatBotViewModel) :
             is DropdownListUiModel -> return MessageViewType.DropDownMessageViewType.value
             is ListItemMessageUiModel -> return MessageViewType.ListItemMessageViewType.value
             is CardsListMessageUiModel -> return MessageViewType.CardsListMessageViewType.value
+            is EmptyMessageUiModel -> return MessageViewType.EmptyMessageWithLoaderViewType.value
             else -> return 0
         }
     }

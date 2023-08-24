@@ -21,11 +21,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:layout_width="97dp"
+            android:layout_height="97dp"
+            android:layout_margin="@dimen/medium_margin"
             android:src="@drawable/header_morning"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -33,12 +33,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/small_margin"
-            android:textColor="?attr/headerTextColor"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:textColor="?attr/titleTextColor"
             android:textSize="@dimen/header_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgHeader"
+            app:layout_constraintTop_toTopOf="@+id/imgHeader"
             app:showMessageBasedOnTime="@{true}"
             app:showWelcomingMessage="@{name}"
 
@@ -49,17 +48,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/small_margin"
-            android:textColor="?attr/headerTextColor"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textColor="?attr/titleTextColor"
             android:textSize="@dimen/message_time_text_size"
             app:fontFamily="@font/font_light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvHeader"
             app:layout_constraintTop_toBottomOf="@+id/tvHeader"
             app:showTime="@{true}"
             tools:text="الأربعاء 22:9 مساءً " />
 
-
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/large_margin"
+            android:background="?attr/separatorColor"
+            app:layout_constraintTop_toBottomOf="@+id/imgHeader" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

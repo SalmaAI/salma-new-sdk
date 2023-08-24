@@ -59,7 +59,7 @@
                 android:layout_marginBottom="@dimen/x_small_margin"
                 android:fontFamily="@font/font_bold"
                 android:text='@{"\u202A"+card.cardNumber}'
-                android:textColor="?attr/subTitleTextColor"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/tvHolderName"
                 app:layout_constraintEnd_toEndOf="@+id/tvName"
@@ -75,7 +75,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@{card.holderName}"
-                android:textColor="?attr/subTitleTextColor"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/tvExpiryDate"
                 app:layout_constraintEnd_toEndOf="@+id/tvName"

@@ -1,0 +1,42 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Banking.Masa" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="cardButtonStyle">@style/Theme.Salma.Button.CardButton</item>
+        <item name="fontFamily">@font/font_medium</item>
+        <!-- Primary brand color. -->
+        <item name="primaryColor">@color/masaPrimaryColor</item>
+        <item name="secondaryColor">@color/masaSecondaryColor</item>
+        <item name="accentColor">@color/masaAccentColor</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/toolbarBackgroundColor</item>
+        <item name="toolbarBackgroundColor">@color/masaToolbarBackgroundColor</item>
+        <item name="pageBackgroundColor">@color/masaPageBackgroundColor</item>
+        <item name="outComingMessageBackgroundColor">@color/masaOutComingMessageBackgroundColor
+        </item>
+        <item name="inComingMessageBackgroundColor">@color/masaInComingMessageBackgroundColor</item>
+        <item name="inComingMessageTextColor">@color/masaInComingMessageTextColor</item>
+        <item name="outComingMessageTextColor">@color/masaOutComingMessageTextColor</item>
+        <item name="currencyFieldBorderColor">@color/masaCurrencyFieldBorderColor</item>
+        <item name="progressColor">@color/masaProgressColor</item>
+        <item name="messageTimeTextColor">@color/masaMessageTimeTextColor</item>
+
+        <!-- Text filed colors-->
+        <item name="textFieldHintTextColor">@color/masaTextFieldHintTextColor</item>
+        <item name="textFieldTextColor">@color/masaTextFieldTextColor</item>
+        <item name="textFieldBackgroundColor">@color/masaTextFieldBackgroundColor</item>
+        <item name="textFieldCursorColor">@color/masaTextFieldCursorColor</item>
+        <!---->
+        <item name="titleTextColor">@color/masaTitleTextColor</item>
+
+        <item name="cardButtonBackgroundColor">@color/masaCardButtonBackgroundColor</item>
+        <item name="cardButtonIconColor">@color/masaCardButtonIconColor</item>
+        <item name="cardButtonTextColor">@color/masaCardButtonTextColor</item>
+        <item name="dialogBackgroundColor">@color/masaDialogBackgroundColor</item>
+        <item name="readMoreTextColor">@color/masaReadMoreTextColor</item>
+
+        <!-- Customize your theme here. -->
+
+        <!--    Main colors-->
+
+    </style>
+</resources>

@@ -5,10 +5,7 @@ import ai.mawdoo3.salma.data.dataModel.MessageUiModel
 import ai.mawdoo3.salma.data.dataModel.TextMessageUiModel
 import ai.mawdoo3.salma.databinding.IncomingTextMessageItemBinding
 import ai.mawdoo3.salma.ui.chatBot.ChatBotViewModel
-import ai.mawdoo3.salma.utils.disableWithDelay
-import ai.mawdoo3.salma.utils.getTextLineCount
-import ai.mawdoo3.salma.utils.makeGone
-import ai.mawdoo3.salma.utils.makeVisible
+import ai.mawdoo3.salma.utils.*
 import android.os.Handler
 import android.text.util.Linkify
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
@@ -38,6 +35,13 @@ class InComingTextMessageViewHolder(
             } ?: run {
                 binding.constraintView.makeGone()
             }
+            binding.imgSpeak.setVisible(item?.ttsId != null)
+            binding.imgSpeak.setOnClickListener {
+                item?.ttsId?.let {
+                    viewModel.playTTS(it, item.ttsDynamic)
+                }
+            }
+
             binding.tvMore.setOnClickListener {
                 binding.tvMessage.maxLines = Int.MAX_VALUE
                 binding.tvMore.makeGone()
@@ -59,16 +63,16 @@ class InComingTextMessageViewHolder(
             }, 200)
 
             if (item?.showLocation == true) {
-                binding.tvLocation.makeVisible()
+                binding.btnLocation.makeVisible()
             } else {
-                binding.tvLocation.makeGone()
+                binding.btnLocation.makeGone()
             }
 
             binding.tvRate.setOnClickListener {
                 binding.tvRate.disableWithDelay()
                 viewModel.rateAnswer.postValue("1")
             }
-            binding.tvLocation.setOnClickListener {
+            binding.btnLocation.setOnClickListener {
                 viewModel.getUserLocation.postValue(true)
             }
         }

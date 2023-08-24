@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.widget.doAfterTextChanged
 import com.afollestad.assent.Permission
 import com.afollestad.assent.isAllGranted
@@ -91,7 +92,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
             resetLayoutState()
         }
 
-        binding.audioLayout.imgMute.setOnClickListener {
+        binding.audioLayout.fabMute.setOnClickListener {
             resetLayoutState()
         }
         binding.inputLayout.imgAction.setOnClickListener {
@@ -132,7 +133,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         }
         binding.inputLayout.etMessage.doAfterTextChanged {
             if (it.isNullOrEmpty()) {
-                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_microphone)
+                binding.inputLayout.imgAction.setImageResource(R.drawable.ic_user_logo)
             } else {
                 binding.inputLayout.imgAction.setImageResource(R.drawable.ic_chatbot_send)
             }
@@ -201,6 +202,7 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
     fun startListening() {
         if (channel != null) {
             CoroutineScope(Dispatchers.Main).launch {
+                GrpcConnector.connect(context)
                 mVoiceRecorder?.updateHearingStatus(true)
                 actionStatus = ChatBarStatus.Listening
                 binding.inputLayout.root.makeInvisible()
@@ -259,24 +261,29 @@ class ChatBarView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         return object : VoiceRecorder.Callback() {
             override fun onVoiceStart() {
                 Log.d("GRPC", "onVoiceStart")
+                GrpcConnector.sendVoice(null)
+
                 cancelCurrentRecord = false
                 firstTime = true
+
             }
 
             override fun onVoice(data: ByteArray?, size: Int) {
                 Log.d("GRPC", "onVoice $data")
-                data?.apply {
-                    val stringByte =
-                        GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
-                            ?.build()
-                    GrpcConnector.sendVoice(
-                        channel,
-                        GrpcConnector.getID(context),
-                        stringByte,
-                        firstTime
-                    )
-                    firstTime = false
-                }
+//                data?.apply {
+//                    val stringByte =
+//                        GrpcConnector.getByteBuilder().setValue(ByteString.copyFrom(data))
+//                            ?.build()
+//                    GrpcConnector.sendVoice(
+//                        channel,
+//                        GrpcConnector.getID(context),
+//                        stringByte,
+//                        firstTime
+//                    )
+//                    firstTime = false
+//                }
+                GrpcConnector.sendVoice(data)
+
             }
         }
     }

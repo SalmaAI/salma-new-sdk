@@ -25,6 +25,8 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
 
     open fun isLastItem(position: Int): Boolean = (position == list.size - 1)
 
+    fun lastItemIndex(): Int = list.size - 1
+
 
 /*
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -41,7 +43,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     }
 
 
-    fun loading(isLoading: Boolean) {
+    open fun loading(isLoading: Boolean) {
         rvHandler.post {
             if (isLoading && currentState == EnumState.STATE_NORMAL) {
                 currentState = EnumState.STATE_LOADING
@@ -67,7 +69,7 @@ abstract class BaseAdapter<M, V : BaseViewHolder<M>> : RecyclerView.Adapter<V>()
     }
 
 
-    fun addItems(items: List<M>) {
+   open fun addItems(items: List<M>) {
         rvHandler.post {
             list.addAll(items)
             notifyItemRangeChanged(list.size - items.size - 1, list.size - 1)
