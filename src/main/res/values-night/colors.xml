@@ -38,7 +38,7 @@
     <color name="masaCardButtonTextColor">@color/prussianBlue</color>
     <color name="masaCardButtonIconColor">@color/prussianBlue</color>
 
-
+    <color name="darkLightMasa">#242735</color>
     <color name="masaTitleTextColor">@color/white</color>
     <color name="black_overlay">#80000000</color>
 
