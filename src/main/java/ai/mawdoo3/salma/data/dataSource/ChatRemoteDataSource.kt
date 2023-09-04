@@ -7,36 +7,66 @@ import ai.mawdoo3.salma.data.dataModel.SendMessageRequest
 import ai.mawdoo3.salma.data.dataModel.SendMessageResponse
 import ai.mawdoo3.salma.remote.MasaApiEndpoints
 import ai.mawdoo3.salma.remote.RepoResponse
-import okhttp3.MultipartBody
+import ai.mawdoo3.salma.utils.security.FulfilmentEncryptedRequest
+import ai.mawdoo3.salma.utils.security.RSASecurityWithSymmetric
+import android.content.Context
+import android.util.Log
+import java.security.InvalidKeyException
+import java.security.NoSuchAlgorithmException
+import javax.crypto.BadPaddingException
+import javax.crypto.IllegalBlockSizeException
 
 /**
  * created by Omar Qadomi on 3/18/21
  */
-class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
-
+class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints,context: Context) {
+    private var security: RSASecurityWithSymmetric = RSASecurityWithSymmetric(context)
     suspend fun sendMessage(sendMessageRequest: SendMessageRequest): RepoResponse<SendMessageResponse>? {
         return try {
 
-            val body = MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("secretKey", sendMessageRequest.secretKey)
-                .addFormDataPart("userId", sendMessageRequest.userId)
-                .addFormDataPart("message", sendMessageRequest.message)
-                .addFormDataPart("mobileJWT", sendMessageRequest.JWT)
-                .build()
+            val request = "clientSecretKey." + sendMessageRequest.secretKey + ".userUniqueKey." + sendMessageRequest.userId + ".startNewSession." + sendMessageRequest.newSession + ".messagePayload." + sendMessageRequest.message
+            val encryptedRequest : FulfilmentEncryptedRequest? = encryptRequestBody(request)
 
-            val result = endpoints.sendMessage(
-                botId = SalmaSdkInstance.botId,
-                botChannelId = SalmaSdkInstance.botChannelId,
-                userId = body.part(0),
-                message = body.part(1),
-                secretKey = body.part(2),
-                mobileJWT = body.part(3),
-                newSession = sendMessageRequest.newSession
-            )
-            RepoResponse.create(result)
+            encryptedRequest?.let {
+                val result = endpoints.sendMessage(
+                    botId = SalmaSdkInstance.botId,
+                    botChannelId = SalmaSdkInstance.botChannelId,
+                    it
+                )
+                RepoResponse.create(result)
+            }
+
         } catch (e: Exception) {
             RepoResponse.create(e)
         }
+    }
+
+    private fun encryptRequestBody(body: String): FulfilmentEncryptedRequest? {
+        try {
+            val encodedKey: ByteArray = security.encodedKey
+            val encryptedKey: String = security.encryptKey(encodedKey)
+            val encryptedBody: String = security.encrypt(body, encodedKey)
+            return FulfilmentEncryptedRequest(encryptedBody, encryptedKey)
+        } catch (e: NoSuchAlgorithmException) {
+            Log.d("securityA",e.message.toString())
+            //logger.error("Error in encryption", e)
+        } catch (e: IllegalBlockSizeException) {
+            //logger.error("Error in encryption", e)
+            Log.d("securityA",e.message.toString())
+        } catch (e: BadPaddingException) {
+            //logger.error("Error in encryption", e)
+            Log.d("securityA",e.message.toString())
+        } catch (e: IllegalAccessException) {
+            //logger.error("Error in encryption", e)
+            Log.d("securityA",e.message.toString())
+        } catch (e: InvalidKeyException) {
+            //logger.error("Error in encryption", e)
+            Log.d("securityA",e.message.toString())
+        }
+        catch (e : Exception){
+            Log.d("securityA",e.message.toString())
+        }
+        return null
     }
 
     suspend fun getHistory(
@@ -55,5 +85,7 @@ class ChatRemoteDataSource(private val endpoints: MasaApiEndpoints) {
             RepoResponse.create(e)
         }
     }
+
+
 
 }

@@ -16,18 +16,23 @@ class BotMainActivity() : BaseActivity()
 //    , KoinScopeComponent
 {
     private lateinit var navController: NavController
-    lateinit var binding: ActivityMainBotBinding
+    //lateinit var binding: ActivityMainBotBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBotBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+        //binding = ActivityMainBotBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_main_bot)
+        //setSupportActionBar(binding.toolbar)
         this.supportActionBar?.title = getString(R.string.assistant_name)
-        navController = findNavController(R.id.navHostBotMain)
+        //navController = findNavController(R.id.navHostBotMain)
+
+        /*
         val appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(),
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
+
+         */
+        /*
         NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             this.supportActionBar?.setDisplayHomeAsUpEnabled(true);
@@ -35,6 +40,8 @@ class BotMainActivity() : BaseActivity()
                 this.supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_chatbot_close);
             }
         }
+
+         */
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

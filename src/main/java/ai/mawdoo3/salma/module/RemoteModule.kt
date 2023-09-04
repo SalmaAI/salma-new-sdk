@@ -24,6 +24,7 @@ open class RemoteModule {
                 .baseUrl(BuildConfig.BOT_API_BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create(getMoshiBuilder()))
                 .client(getOkHttpClientBuilder())
+
                 .build()
         }
         return retrofit

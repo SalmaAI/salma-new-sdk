@@ -37,7 +37,7 @@ class HelpFragment : BaseFragment() {
 
         val remote = RemoteModule()
 
-        val chatRepo = remote.getAPIServices()?.let { ChatRemoteDataSource(it) }
+        val chatRepo = remote.getAPIServices()?.let { ChatRemoteDataSource(it,requireContext()) }
             ?.let { ChatRepository(it) }
 
         viewModel = chatRepo?.let { context?.let { it1 ->

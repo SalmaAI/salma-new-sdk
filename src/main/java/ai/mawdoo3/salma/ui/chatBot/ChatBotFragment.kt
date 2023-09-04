@@ -38,7 +38,6 @@ import com.afollestad.assent.askForPermissions
 import com.afollestad.assent.isAllGranted
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
@@ -55,7 +54,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         LocationServices.getFusedLocationProviderClient(requireContext().applicationContext)
     }
 
-    private var cancellationTokenSource = CancellationTokenSource()
+
 
 
 
@@ -69,7 +68,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
         val remote = RemoteModule()
 
-        val chatRepo = remote.getAPIServices()?.let { ChatRemoteDataSource(it) }
+        val chatRepo = remote.getAPIServices()?.let { ChatRemoteDataSource(it,requireContext()) }
             ?.let { ChatRepository(it) }
 
         viewModel = chatRepo?.let { context?.let { it1 ->
@@ -283,12 +282,15 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /*
         getNavigationResult("Message")?.observe(viewLifecycleOwner) {
             it as String
             if (it.isNotEmpty()) {
                 viewModel.sendMessage(it, it, true)
             }
         }
+
+         */
         viewModel.messageResponseList.observe(viewLifecycleOwner) {
             Log.d("SendMessage", "Add Masa message")
             Log.d("GRPC", "Message response")
@@ -328,9 +330,12 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
         }
         viewModel.rateAnswer.observe(viewLifecycleOwner) {
 
+            /*
             findNavController().navigate(
                 ChatBotFragmentDirections.actionChatBotFragmentToRateAnswerDialogFragment(it)
             )
+
+             */
 
         }
         viewModel.getUserLocation.observe(viewLifecycleOwner) {
@@ -416,7 +421,7 @@ class ChatBotFragment : BaseFragment(), ChatBarView.ChatBarListener {
 
             }
             R.id.action_help -> {
-                AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
+               // AppUtils.navigateToFragment(this, R.id.action_chatBotFragment_to_helpFragment)
             }
             R.id.action_home -> {
 

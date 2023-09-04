@@ -14,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class RateAnswerDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: RateAnswerDialogBinding
-    private val args: RateAnswerDialogFragmentArgs by navArgs()
+    //private val args: RateAnswerDialogFragmentArgs by navArgs()
     private lateinit var answerId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class RateAnswerDialogFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = RateAnswerDialogBinding.inflate(inflater, container, false)
-        answerId = args.answerID
+        //answerId = args.answerID
         return binding.root
 
     }
