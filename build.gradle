@@ -214,9 +214,9 @@ dependencies {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'org.bitbucket.mawdoo3'
-            artifactId = 'salma-ai-android'
-            version = "1.3.5"
+            groupId = 'com.github.smshublaq91'
+            artifactId = 'salma-sdk'
+            version = "1.3.6"
             pom {
                 description = 'First release'
             }
@@ -226,3 +226,4 @@ publishing {
         mavenLocal()
     }
 }
+
