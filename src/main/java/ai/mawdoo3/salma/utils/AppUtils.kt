@@ -39,12 +39,15 @@ object AppUtils {
                 .setAction(activity.getString(R.string.general_error_message)) {
                     Log.d("", "")
                 }
+            /*
             snackbar?.setActionTextColor(
                 getColorFromAttr(
                     activity,
                     R.attr.actionMenuTextColor
                 )
             )
+
+             */
             snackbar?.show()
         }
     }

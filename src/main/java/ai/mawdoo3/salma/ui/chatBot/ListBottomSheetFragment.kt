@@ -1,7 +1,6 @@
 package ai.mawdoo3.salma.ui.chatBot
 
 import ai.mawdoo3.salma.R
-import ai.mawdoo3.salma.R.id.design_bottom_sheet
 import ai.mawdoo3.salma.base.BaseAdapter
 import ai.mawdoo3.salma.data.dataModel.DropdownListItem
 import ai.mawdoo3.salma.databinding.ListBottomSheetBinding
@@ -94,10 +93,13 @@ class ListBottomSheetFragment() : BottomSheetDialogFragment(),KoinScopeComponent
         dialog = BottomSheetDialog(requireContext(), R.style.Theme_Salma_BottomSheetDialogTheme);
         dialog.setOnShowListener {
             val d = it as BottomSheetDialog
+            /*
             val sheet: View? = d.findViewById<View>(design_bottom_sheet)
             behavior = BottomSheetBehavior.from(sheet!!)
             behavior.isHideable = true
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+             */
         }
 
         return dialog

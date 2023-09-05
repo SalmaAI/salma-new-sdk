@@ -23,7 +23,8 @@
             android:name=".ui.BotMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"/>
 
         <provider
             android:name="androidx.startup.InitializationProvider"
@@ -35,6 +36,8 @@
                     "ai.mawdoo3.salma.module.FirstLibInitializer"
                 android:value="androidx.startup" />
         </provider>
+
+
     </application>
 
 </manifest>

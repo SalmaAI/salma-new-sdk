@@ -3,13 +3,12 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
-    id 'com.google.protobuf'
     id 'kotlin-parcelize'
 //    id 'com.mobbeel.plugin'
     id 'com.kezong.fat-aar'
 //    id 'com.github.johnrengelman.shadow'
 
-
+    id 'maven-publish'
 }
 //apply from: "${rootProject.projectDir}/flavors.gradle"
 
@@ -18,40 +17,14 @@ ext.grpc_lib = "1.35.0"
 ext.exp_player_version = "2.13.2"
 
 
-protobuf {
-    protoc {
-        // must match protobuf-javalite version
-        if (osdetector.os == "osx") {
-            artifact = 'com.google.protobuf:protoc:3.14.0:osx-x86_64'
-        } else {
-            artifact = 'com.google.protobuf:protoc:3.14.0'
-        }
-    }
-    plugins {
-        grpc {
-
-
-            if (osdetector.os == "osx") {
-                artifact = 'io.grpc:protoc-gen-grpc-java:1.35.0:osx-x86_64'
-            } else {
-                artifact = "io.grpc:protoc-gen-grpc-java:$grpc_lib"
-            }
-        }
-    }
-    generateProtoTasks {
-        all().each { task ->
-            task.builtins {
-                java { option 'lite' }
-            }
-            task.plugins {
-                grpc { option 'lite' }
-            }
-        }
-    }
-}
 
 
 android {
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+    }
+
     aaptOptions {
         // This will force the build system to use your merge strategy
         // instead of the default "fail" strategy for resource conflicts.
@@ -123,12 +96,26 @@ android {
 
 }
 
+// 4. Add below line
+//===============================
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)        // << --- ADD This
+    }
+}
+//===============================
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17            // << --- ADD This
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 dependencies {
 
     implementation "androidx.activity:activity-ktx:1.3.0-alpha07"
     implementation "androidx.fragment:fragment-ktx:1.3.3"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.0"
     implementation "androidx.core:core-ktx:1.5.0"
     implementation "androidx.appcompat:appcompat:1.2.0"
     implementation "com.google.android.material:material:1.4.0"
@@ -140,14 +127,14 @@ dependencies {
 
 
     // Architecture Components
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.0")
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.4.0")
 
 
     //Navigation UI
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.3"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.0"
 
 
     //Dependency ejection
@@ -175,9 +162,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
     //Moshi
-    implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
-    implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation('com.squareup.moshi:moshi-kotlin:1.15.0')
+    kapt('com.squareup.moshi:moshi-kotlin-codegen:1.15.0')
 
 
     //Gson json converter
@@ -186,7 +173,7 @@ dependencies {
     //Runtime permissions
     embed 'com.afollestad.assent:core:3.0.0-RC4'
 
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
+    kapt('com.squareup.moshi:moshi-kotlin-codegen:1.15.0')
     embed 'org.apache.commons:commons-lang3:3.0'
 
 
@@ -197,6 +184,7 @@ dependencies {
     implementation 'io.grpc:grpc-okhttp:1.55.1' // CURRENT_GRPC_VERSION
     implementation 'io.grpc:grpc-stub:1.55.1' // CURRENT_GRPC_VERSION
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
     implementation("com.google.api:gax-grpc:2.29.0")
 
     // exo player
@@ -223,3 +211,18 @@ dependencies {
 
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.smshublaq91'
+            artifactId = 'salma-sdk'
+            version = "1.3.3"
+            pom {
+                description = 'First release'
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
