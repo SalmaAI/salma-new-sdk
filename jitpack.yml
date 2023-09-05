@@ -3,5 +3,5 @@ jdk:
 before_install:
   - ./scripts/prepareJitpackEnvironment.sh
 install:
-  - FILE="-Dfile=salma-ai-android-debug.aar" 
+  - FILE="-Dfile=outputs/aar/salma-ai-android-debug.aar" 
   - mvn install:install-file $FILE -DgroupId=com.github.smshublaq91 -DartifactId=salma-ai-android-debug -Dversion=1.3.10 -Dpackaging=aar -DgeneratePom=true
